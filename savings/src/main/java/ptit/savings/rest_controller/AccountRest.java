@@ -1,10 +1,10 @@
 package ptit.savings.rest_controller;
 
 import ptit.savings.model.*;
-import ptit.savings.repository.BankAccountRepository;
-// import ptit.savings.repository.ClientRepository;
+import ptit.savings.repository.AccountRepository;
 import ptit.savings.service.EmailSender;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +17,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(path = "/api/staff/bankaccount")
-public class BankAccountRest {
-  // @Autowired
-  // private ClientRepository clientRepo;
+public class AccountRest {
 
   @Autowired
-  private BankAccountRepository bankAccountRepository;
+  private AccountRepository bankAccountRepository;
   @Autowired
   private EmailSender emailSender;
 
   @PostMapping(path = "/add")
-  public @ResponseBody BankAccount addNewAccount(
+  public @ResponseBody Account addNewAccount(
       @RequestParam String email,
-      @RequestParam String owner,
+      @RequestParam String firstName,
+      @RequestParam String lastName,
       @RequestParam String cccd) {
 
-    BankAccount b = new BankAccount();
+    Account b = new Account();
 
     b.setEmail(email);
-    b.setOwner(owner);
+    b.setFirst_name(firstName);
+    b.setLast_name(lastName);
     b.setCccd(cccd);
+    b.setCreated_at(LocalDateTime.now());
+    b.setUpdated_at(b.getCreated_at());
     Random random = new Random();
     String stk;
     do {
@@ -44,15 +46,14 @@ public class BankAccountRest {
     } while (!bankAccountRepository.findByStk(stk).isEmpty());
     b.setStk(stk);
     b.setBalance(Long.parseLong("50000"));
-    b.setClientAccount(null);
     bankAccountRepository.save(b);
 
-    emailSender.newBankAccountEmail(email, owner, stk);
+    emailSender.newBankAccountEmail(email, lastName + " " + firstName, stk);
     return b;
   }
 
-  @GetMapping(path = "/all")
-  public @ResponseBody Iterable<BankAccount> getAllAccounts() {
-    return bankAccountRepository.findAll();
-  }
+    @GetMapping(path = "/all")
+    public @ResponseBody Iterable<Account> getAllAccounts() {
+      return bankAccountRepository.findAll();
+    }
 }

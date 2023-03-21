@@ -1,5 +1,8 @@
 package ptit.savings.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.micrometer.common.lang.Nullable;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,19 +24,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BankAccount {
+public class Account {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
-    private String stk,cccd,owner;
+    @NotEmpty(message = "The First name field cannot be empty")
+    @Size(min=3, message = "The First name field must greater that 3 characters")
+    private String first_name;
+    @NotEmpty(message = "The Last name field cannot be empty")
+    @Size(min=3, message = "The First name field must greater that 3 characters")
+    private String last_name;
+
+    private String stk,cccd;
     private String email;
     private Long balance;
 
-
-    @Nullable
-    @JsonIgnore
-    @OneToOne(mappedBy = "bankAccount")
-    private Client clientAccount;
+    private LocalDate verified_at;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 
 }

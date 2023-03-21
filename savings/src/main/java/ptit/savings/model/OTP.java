@@ -14,6 +14,6 @@ public class OTP {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    private String entity;
+    private String account;
     private String action,strValue;
 }

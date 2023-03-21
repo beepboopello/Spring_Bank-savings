@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://colorlib.com/etc/tb/Table_Fixed_Header/index.html -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Table V04</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" type="image/png" href="https://colorlib.com/etc/tb/Table_Fixed_Header/images/icons/favicon.ico">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/font-awesome.min.css">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/animate.css">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/select2.min.css">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/perfect-scrollbar.css">
+
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/util.css">
+	<link rel="stylesheet" type="text/css" href="./admin-dashboard_files/main.css">
+
+	<meta name="robots" content="noindex, follow">
+	<script type="text/javascript" async="" src="./admin-dashboard_files/analytics.js"
+		nonce="92c539dc-9799-4af8-ab9c-fb18e1fc1781"></script>
+	<script defer="" referrerpolicy="origin" src="./admin-dashboard_files/s.js"></script>
+	<script
+		nonce="92c539dc-9799-4af8-ab9c-fb18e1fc1781">(function (w, d) { !function (bv, bw, bx, by) { bv[bx] = bv[bx] || {}; bv[bx].executed = []; bv.zaraz = { deferred: [], listeners: [] }; bv.zaraz.q = []; bv.zaraz._f = function (bz) { return function () { var bA = Array.prototype.slice.call(arguments); bv.zaraz.q.push({ m: bz, a: bA }) } }; for (const bB of ["track", "set", "debug"]) bv.zaraz[bB] = bv.zaraz._f(bB); bv.zaraz.init = () => { var bC = bw.getElementsByTagName(by)[0], bD = bw.createElement(by), bE = bw.getElementsByTagName("title")[0]; bE && (bv[bx].t = bw.getElementsByTagName("title")[0].text); bv[bx].x = Math.random(); bv[bx].w = bv.screen.width; bv[bx].h = bv.screen.height; bv[bx].j = bv.innerHeight; bv[bx].e = bv.innerWidth; bv[bx].l = bv.location.href; bv[bx].r = bw.referrer; bv[bx].k = bv.screen.colorDepth; bv[bx].n = bw.characterSet; bv[bx].o = (new Date).getTimezoneOffset(); if (bv.dataLayer) for (const bI of Object.entries(Object.entries(dataLayer).reduce(((bJ, bK) => ({ ...bJ[1], ...bK[1] }))))) zaraz.set(bI[0], bI[1], { scope: "page" }); bv[bx].q = []; for (; bv.zaraz.q.length;) { const bL = bv.zaraz.q.shift(); bv[bx].q.push(bL) } bD.defer = !0; for (const bM of [localStorage, sessionStorage]) Object.keys(bM || {}).filter((bO => bO.startsWith("_zaraz_"))).forEach((bN => { try { bv[bx]["z_" + bN.slice(7)] = JSON.parse(bM.getItem(bN)) } catch { bv[bx]["z_" + bN.slice(7)] = bM.getItem(bN) } })); bD.referrerPolicy = "origin"; bD.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(bv[bx]))); bC.parentNode.insertBefore(bD, bC) };["complete", "interactive"].includes(bw.readyState) ? zaraz.init() : bv.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document);</script>
+</head>
+
+<body>
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100 ver1 m-b-110">
+					<div class="table100-head">
+						<table>
+							<thead>
+								<tr class="row100 head">
+									<th class="cell100 column1">Họ và tên</th>
+									<th class="cell100 column2">Email</th>
+									<th class="cell100 column3">Username</th>
+									<th class="cell100 column4">Thời điểm tạo</th>
+									<th class="cell100 column5">Xác minh</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="table100-body js-pscroll ps ps--active-y">
+						<table>
+							<tbody>
+								<tr th:each="staff : ${unverifiedList}" class="row100 body">
+									<td class="cell100 column1" th:text="${staff.lastName +' '+staff.firstName}"></td>
+									<td class="cell100 column2" th:text="${staff.email}"></td>
+									<td class="cell100 column3" th:text="${staff.username}"></td>
+									<td class="cell100 column4"
+										th:text="${#temporals.format(staff.created_at, 'dd-MM-yyyy HH:mm')}"></td>
+									<td class="cell100 column5"><button>Cấp quyền truy cập</button></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="ps__rail-x" style="left: 0px; bottom: -581px;">
+							<div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+						</div>
+						<div class="ps__rail-y" style="top: 581px; height: 585px; right: 5px;">
+							<div class="ps__thumb-y" tabindex="0" style="top: 292px; height: 293px;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="table100 ver3 m-b-110">
+					<div class="table100-head">
+						<table>
+							<thead>
+								<tr class="row100 head">
+									<th class="cell100 column1">Kì hạn</th>
+									<th class="cell100 column2">Lãi suất</th>
+									<th class="cell100 column3"></th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="table100-body js-pscroll ps ps--active-y">
+						<table>
+							<tbody>
+								<tr th:each="interest : ${interestList}" class="row100 body">
+									<td class="cell100 column1" th:text="${interest.name}"></td>
+									<td class="cell100 column2"
+										th:text="${#numbers.formatDecimal(interest.rate*100,1,3)+'%'}"></td>
+									<td class="cell100 column3">
+										<button th:id="'id_delInterest'+${interest.id}"
+											onclick="deleteInterest(this.id)"
+											style="padding-left: 10%;padding-right: 10%;float: right;color: gray;">Xoá</button>
+										<button th:id="'id_editInterest'+${interest.id}" onclick="editInterest(this.id)"
+											style="padding-left: 10%;padding-right: 10%;float: right;color: gray;">Sửa</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="ps__rail-x" style="left: 0px; bottom: -581px;">
+							<div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+						</div>
+						<div class="ps__rail-y" style="top: 581px; height: 585px; right: 5px;">
+							<div class="ps__thumb-y" tabindex="0" style="top: 292px; height: 293px;"></div>
+						</div>
+						<input type="hidden" id="id_token" name="token" th:value="${session.token}">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function deleteInterest(clicked_id) {
+			let data = {
+				id : clicked_id.substring(14),
+				token : document.getElementById("id_token").value,
+			};
+			let endpoint = "/api/admin/interest/delete";
+			let res = fetchApi(endpoint, data);
+			try{
+				if(fetchApi(endpoint, data).error) console.log("failed");
+			}
+			catch(err){
+				location.reload();
+			}
+		}
+		function fetchApi(endpoint, data) {
+			fetch(endpoint, {
+				method: "POST",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data)
+			}).then(r => r.json().then(data => ({ status: r.status, body: data })))
+				.then(obj => {
+					return obj;
+				});
+		}
+	</script>
+	<script src="./admin-dashboard_files/jquery-3.2.1.min.js"></script>
+
+	<script src="./admin-dashboard_files/popper.js"></script>
+	<script src="./admin-dashboard_files/bootstrap.min.js"></script>
+
+	<script src="./admin-dashboard_files/select2.min.js"></script>
+
+	<script src="./admin-dashboard_files/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function () {
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function () {
+				ps.update();
+			})
+		});
+
+
+	</script>
+
+	<script async="" src="./admin-dashboard_files/js"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-23581568-13');
+	</script>
+
+	<script src="./admin-dashboard_files/main.js"></script>
+	<script defer="" src="./admin-dashboard_files/vaafb692b2aea4879b33c060e79fe94621666317369993"
+		integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
+		data-cf-beacon="{&quot;rayId&quot;:&quot;7ab50ced9f44050c&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;,&quot;version&quot;:&quot;2023.2.0&quot;,&quot;si&quot;:100}"
+		crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
