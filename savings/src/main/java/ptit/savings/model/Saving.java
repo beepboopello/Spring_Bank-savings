@@ -27,13 +27,13 @@ public class Saving {
 
     @Positive
     @NonNull
-    private Long initial;
+    private Long initial;           // tien ban dau gui
 
     @Nullable
-    private Long current, mature;
+    private Long current, mature;  // current = tien hien co / mature = tien nhan duoc cuoi ky han
 
     @NotNull
-    private String number;
+    private String number;          //
 
     @NotNull
     private LocalDateTime created_at, updated_at;
@@ -77,7 +77,7 @@ public class Saving {
     }
 
     private void withdrawal(){
-
+        
     }
 
     public void prematureWithdrawal(){
