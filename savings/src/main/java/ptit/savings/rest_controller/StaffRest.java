@@ -85,9 +85,13 @@ public class StaffRest {
             response.put("error", "Couldn't find employee with id: " + body.getId());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-
-        staff.setVerified(0);
-        repository.save(staff);
+        if(staff.getVerified() == 1){
+            response.put("error", "Employee with id: " + body.getId() + " has already been verified");
+        }else{
+            staff.setVerified(1);
+            repository.save(staff);
+            response.put("staff", staff);
+        }
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
