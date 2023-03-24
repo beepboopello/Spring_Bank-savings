@@ -32,7 +32,22 @@ public class Interest {
 
     @NotNull
     @Positive
-    private double rate; 
+    private double rate;
+
+
+    public Interest(String name, int months, double interestRate) {
+        this.name = name;
+        this.months = months;
+        this.rate = interestRate;
+    }
+
+    public Interest(int id, String name, int months, double interestRate) {
+        this.id = id;
+        this.name = name;
+        this.months = months;
+        this.rate = interestRate;
+    }
+
 
     // @JsonIgnore
     // @OneToMany(mappedBy = "interest", cascade = CascadeType.ALL)

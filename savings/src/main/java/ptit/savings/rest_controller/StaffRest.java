@@ -29,31 +29,31 @@ public class StaffRest {
     private StaffRepository repository;
 
     @PostMapping("/api/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult){
-        HashMap<String,Object> response = new HashMap<>();
-        HashMap<String,Object> error = new HashMap<>();
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<Object> register(@RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+        if (bindingResult.hasErrors()) {
             error = new HashMap<>();
             for (Object object : bindingResult.getAllErrors()) {
-                if(object instanceof FieldError) {
+                if (object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
                     error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
                 }
             }
-            response.put("error",error);
+            response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-        if(!repository.findByUsername(body.getUsername()).isEmpty()){
+        if (!repository.findByUsername(body.getUsername()).isEmpty()) {
             error.put("username", "Duplicate username");
-            response.put("error",error);
+            response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
 
         Staff newStaff = new Staff(body.getFirstName(),
-                                    body.getLastName(),
-                                    body.getEmail(),
-                                    body.getUsername(),
-                                    BCrypt.hashpw(body.getPassword(), BCrypt.gensalt()));
+                body.getLastName(),
+                body.getEmail(),
+                body.getUsername(),
+                BCrypt.hashpw(body.getPassword(), BCrypt.gensalt()));
         newStaff.setVerified(0);
         newStaff.setCreated_at(LocalDateTime.now());
         newStaff.setUpdated_at(newStaff.getCreated_at());
@@ -64,22 +64,21 @@ public class StaffRest {
 
     @PostMapping("/api/admin/verify")
     public ResponseEntity<Object> verify(
-        // @RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
-    ){
-        HashMap<String,Object> response = new HashMap<>();
-        HashMap<String,Object> error = new HashMap<>();
-
-        // if(bindingResult.hasErrors()){
-        //     error = new HashMap<>();
-        //     for (Object object : bindingResult.getAllErrors()) {
-        //         if(object instanceof FieldError) {
-        //             FieldError fieldError = (FieldError) object;
-        //             error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-        //         }
-        //     }
-        //     response.put("error",error);
-        //     return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        // }
+            @RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
+    ) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+//         if(bindingResult.hasErrors()){
+//             error = new HashMap<>();
+//             for (Object object : bindingResult.getAllErrors()) {
+//                 if(object instanceof FieldError) {
+//                     FieldError fieldError = (FieldError) object;
+//                     error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+//                 }
+//             }
+//             response.put("error",error);
+//             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+//         }
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
