@@ -48,7 +48,6 @@ public class StaffRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-
         Staff newStaff = new Staff(body.getFirstName(),
                 body.getLastName(),
                 body.getEmail(),
@@ -92,7 +91,6 @@ public class StaffRest {
             repository.save(staff);
             response.put("staff", staff);
         }
-
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 

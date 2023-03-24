@@ -37,6 +37,7 @@ public class AccountRest {
     b.setFirst_name(firstName);
     b.setLast_name(lastName);
     b.setCccd(cccd);
+
     b.setCreated_at(LocalDateTime.now());
     b.setUpdated_at(b.getCreated_at());
     Random random = new Random();
