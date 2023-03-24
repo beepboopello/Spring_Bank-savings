@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Account {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotEmpty(message = "The First name field cannot be empty")
     @Size(min=3, message = "The First name field must greater that 3 characters")

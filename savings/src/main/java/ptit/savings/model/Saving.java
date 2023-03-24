@@ -23,7 +23,7 @@ public class Saving {
     
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Positive
     @NonNull

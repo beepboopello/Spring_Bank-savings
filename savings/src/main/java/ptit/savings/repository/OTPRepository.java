@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ptit.savings.model.OTP;
 
-public interface OTPRepository extends JpaRepository<OTP,Integer>{
+public interface OTPRepository extends JpaRepository<OTP,Long>{
     public List<OTP> findByAccount(String stk);
     
 }

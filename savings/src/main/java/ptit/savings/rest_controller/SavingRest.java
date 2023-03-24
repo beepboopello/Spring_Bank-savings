@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import ptit.savings.model.Saving;
 import ptit.savings.model.requestBody.Saving.AddSavingBody;
+import ptit.savings.model.requestBody.Saving.PrematureWithdrawalBody;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.SavingRepository;
@@ -35,7 +36,7 @@ public class SavingRest {
         // @RequestBody @Valid AddSavingBody body, BindingResult bindingResult
         @RequestParam(name = "stk") String stk,
         @RequestParam(name = "initial") Long initial, 
-        @RequestParam(name = "interestID") int interestId, 
+        @RequestParam(name = "interestID") Long interestId,
         @RequestParam(name = "token") String token
         ){
         HashMap<String,Object> response = new HashMap<>();
@@ -82,11 +83,18 @@ public class SavingRest {
     }
 
     @PostMapping("/api/staff/saving/premature")
-    public ResponseEntity<Object> premature(        
-        // @RequestBody @Valid PrematureWithdrawalBody body, BindingResult bindingResult        //body gom id so tiet kiem can rut, token
+    public ResponseEntity<Object> premature(
+            @RequestBody @Valid PrematureWithdrawalBody body, BindingResult bindingResult        //body gom id so tiet kiem can rut, token
         ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
+
+        if(bindingResult.hasErrors()){
+            response.put("error",error);
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        }
+
+
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }

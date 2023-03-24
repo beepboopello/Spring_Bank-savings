@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ptit.savings.model.Saving;
 
-public interface SavingRepository extends JpaRepository<Saving,Integer>{
+public interface SavingRepository extends JpaRepository<Saving,Long>{
     public  List<Saving> findByNumber(String number);
 }

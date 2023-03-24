@@ -20,7 +20,7 @@ public class InterestServiceImpl implements InterestService {
 
     @Override
     public Interest getInterestById(Long id) {
-        return interestRepo.findById(Math.toIntExact(id)).orElse(null);
+        return interestRepo.findById(id).orElse(null);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class InterestServiceImpl implements InterestService {
     }
 
     @Override
-    public void deleteInterest(int id) {
+        public void deleteInterest(Long id) {
         interestRepo.deleteById(id);
     }
 }

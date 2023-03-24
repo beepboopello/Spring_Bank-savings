@@ -9,5 +9,5 @@ public interface InterestService {
     Interest getInterestById(Long id);
     void addInterest(Interest interest);
     void updateInterest(Interest interest);
-    void deleteInterest(int id);
+    void deleteInterest(Long id);
 }

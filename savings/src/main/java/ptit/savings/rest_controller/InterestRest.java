@@ -42,8 +42,8 @@ public class InterestRest {
 //        repo.deleteById(body.getId());
 //        return new ResponseEntity<Object>(response, HttpStatus.OK);
 
-        if(repo.existsById(body.getId())){ // hàm existsById kiểm tra lãi suất có tồn tại không
-            repo.deleteById(body.getId());
+        if(interestService.getInterestById(body.getId()) != null){
+            interestService.deleteInterest(body.getId());
             return new ResponseEntity<>("Interest deleted successfully", HttpStatus.OK);
         } else {
             error.put("error", "Interest with given id does not exist");

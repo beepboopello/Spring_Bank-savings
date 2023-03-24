@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Interest {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @NotNull
     private String name;
@@ -41,12 +41,7 @@ public class Interest {
         this.rate = interestRate;
     }
 
-    public Interest(int id, String name, int months, double interestRate) {
-        this.id = id;
-        this.name = name;
-        this.months = months;
-        this.rate = interestRate;
-    }
+
 
 
     // @JsonIgnore

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     @NotEmpty(message = "The First name field cannot be empty")
     @Size(min = 3, message = "The First name field must greater that 3 characters")
     private String firstName;

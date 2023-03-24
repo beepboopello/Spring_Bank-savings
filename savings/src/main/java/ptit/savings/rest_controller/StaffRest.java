@@ -68,17 +68,26 @@ public class StaffRest {
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-//         if(bindingResult.hasErrors()){
-//             error = new HashMap<>();
-//             for (Object object : bindingResult.getAllErrors()) {
-//                 if(object instanceof FieldError) {
-//                     FieldError fieldError = (FieldError) object;
-//                     error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-//                 }
-//             }
-//             response.put("error",error);
-//             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-//         }
+         if(bindingResult.hasErrors()){
+             error = new HashMap<>();
+             for (Object object : bindingResult.getAllErrors()) {
+                 if(object instanceof FieldError) {
+                     FieldError fieldError = (FieldError) object;
+                     error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+                 }
+             }
+             response.put("error",error);
+             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+         }
+
+        Staff staff = repository.findById(body.getId()).orElse(null);
+        if (staff == null) {
+            response.put("error", "Couldn't find employee with id: " + body.getId());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        staff.setVerified(0);
+        repository.save(staff);
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }

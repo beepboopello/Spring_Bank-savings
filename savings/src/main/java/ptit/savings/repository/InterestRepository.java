@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ptit.savings.model.Interest;
 
-public interface InterestRepository extends JpaRepository<Interest,Integer>{
+public interface InterestRepository extends JpaRepository<Interest,Long>{
     public List<Interest> findByMonths(int months);
 }
