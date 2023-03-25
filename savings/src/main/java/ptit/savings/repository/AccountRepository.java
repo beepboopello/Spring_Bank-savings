@@ -8,4 +8,5 @@ import ptit.savings.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long>{
     public List<Account> findByStk(String stk);
+//    public String findByStk(String stk);
 }

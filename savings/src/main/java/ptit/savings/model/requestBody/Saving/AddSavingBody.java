@@ -8,7 +8,7 @@ import ptit.savings.model.Account;
 @Data
 public class AddSavingBody {
 
-//    private Account account;
+    private String stk;
     @Positive(message = "Negative")
     @NotNull(message = "Empty initial value")
     private Long initial;

@@ -1,18 +1,21 @@
 package ptit.savings.rest_controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import ptit.savings.model.Account;
 import ptit.savings.model.Saving;
 import ptit.savings.model.requestBody.Saving.AddSavingBody;
 import ptit.savings.model.requestBody.Saving.PrematureWithdrawalBody;
@@ -33,34 +36,31 @@ public class SavingRest {
 
     @PostMapping("/api/staff/saving/add")
     public ResponseEntity<Object> add(
-        // @RequestBody @Valid AddSavingBody body, BindingResult bindingResult
-        @RequestParam(name = "stk") String stk,
-        @RequestParam(name = "initial") Long initial, 
-        @RequestParam(name = "interestID") Long interestId,
-        @RequestParam(name = "token") String token
+         @RequestBody @Valid AddSavingBody body, BindingResult bindingResult
         ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
 
-
-            
-        // if(bindingResult.hasErrors()){
-        //     for (Object object : bindingResult.getAllErrors()) {
-        //         if(object instanceof FieldError) {
-        //             FieldError fieldError = (FieldError) object;
-        //             error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-        //         }
-        //     }
-        //     response.put("error",error);
-        //     return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        // }
-        
+        if(bindingResult.hasErrors()){
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+                }
+            }
+            response.put("error",error);
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
         // kiem tra token
         // if(false){
         //     error.put("token", "Invalid token");
         // }
 
-        //
+        String stk = body.getStk();
+        Long initial = body.getInitial();
+        Long interestId = body.getInterestId();
+        String token = body.getToken();
+
         if(accountRepo.findByStk(stk).isEmpty()){
             error.put("stk", "stk doesn't exist");
         }
@@ -93,8 +93,6 @@ public class SavingRest {
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-
-
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }

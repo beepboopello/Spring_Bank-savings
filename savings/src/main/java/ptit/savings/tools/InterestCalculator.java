@@ -13,6 +13,8 @@ public class InterestCalculator {
     }
 
     public static Long prematureWithdrawal(Saving saving){
+        int actualDay = saving.get
+        Long total = saving.getInitial() * (saving.getInterest().getRate()*);
         return Long.valueOf(0);
     }
 

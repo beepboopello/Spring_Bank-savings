@@ -88,6 +88,7 @@ public class StaffRest {
             response.put("error", "Employee with id: " + body.getId() + " has already been verified");
         }else{
             staff.setVerified(1);
+            staff.setVerified_at(LocalDateTime.now());
             repository.save(staff);
             response.put("staff", staff);
         }
