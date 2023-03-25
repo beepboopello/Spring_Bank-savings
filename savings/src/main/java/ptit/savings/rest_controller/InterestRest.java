@@ -18,8 +18,8 @@ import ptit.savings.service.InterestService;
 
 @RestController
 public class InterestRest {
-    @Autowired
-    private InterestRepository repo;
+//    @Autowired
+//    private InterestRepository repo;
 
     @Autowired
     private InterestService interestService;
@@ -82,7 +82,7 @@ public class InterestRest {
         interest.setRate(rate);
         interestService.updateInterest(interest);
 
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
+        return new ResponseEntity<Object>(response , HttpStatus.OK);
     }
 
     @PostMapping("/api/admin/interest/add")

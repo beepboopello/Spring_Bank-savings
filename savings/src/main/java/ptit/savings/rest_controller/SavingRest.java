@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import ptit.savings.model.Account;
 import ptit.savings.model.Saving;
+import ptit.savings.model.requestBody.Interest.AddBody;
 import ptit.savings.model.requestBody.Saving.AddSavingBody;
 import ptit.savings.model.requestBody.Saving.PrematureWithdrawalBody;
 import ptit.savings.repository.AccountRepository;
@@ -81,10 +82,9 @@ public class SavingRest {
         savingRepo.save(saving);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
-
     @PostMapping("/api/staff/saving/premature")
     public ResponseEntity<Object> premature(
-            @RequestBody @Valid PrematureWithdrawalBody body, BindingResult bindingResult        //body gom id so tiet kiem can rut, token
+            @RequestBody @Valid PrematureWithdrawalBody body, BindingResult bindingResult
         ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
@@ -94,6 +94,24 @@ public class SavingRest {
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
 
+        Long id = body.getId(); // Lấy ID sổ tiết kiệm
+        Saving saving = savingRepo.findById(id).get();
+//        Optional<Saving> optionalSaving = savingRepo.findById(id);
+//        if(!optionalSaving.isPresent()){
+        if(saving == null){
+            error.put("id","Saving doesn't exist!");
+            response.put("error",error);
+            return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
+        }
+        if(saving.getStatus() == -1){
+            error.put("status","The SavingsBook was withdrawn early!");
+            response.put("error",error);
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
+        saving.prematureWithdrawal();
+//        saving.setStatus(-1);
+        savingRepo.save(saving);
+        response.put("message", "Successful early withdrawal savings book!");
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 

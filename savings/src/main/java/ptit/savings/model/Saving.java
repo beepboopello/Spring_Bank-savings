@@ -29,7 +29,7 @@ public class Saving {
     @NonNull
     private Long initial;           // tien ban dau gui
 
-    @Nullable
+    @NonNull
     private Long current, mature;  // current = tien hien co / mature = tien nhan duoc cuoi ky han
 
     @NotNull
@@ -58,13 +58,15 @@ public class Saving {
         this.account = account;
         this.initial = initial;
         this.number = number;
+        this.current = initial;
         this.interest = interest;
         this.created_at = LocalDateTime.now();
         this.updated_at = this.created_at;
         if(interest.getMonths()!=0){
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }
-        this.mature = InterestCalculator.withdrawal(this.initial, this.interest);
+        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
+//        this.mature = InterestCalculator.withdrawal(this.initial, this.interest);
         this.status = 1;
     }
 
@@ -77,7 +79,7 @@ public class Saving {
     }
 
     private void withdrawal(){
-        
+
     }
 
     public void prematureWithdrawal(){
