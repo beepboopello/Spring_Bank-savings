@@ -9,8 +9,11 @@ import java.time.temporal.ChronoUnit;
 
 public class InterestCalculator {
     public static Long update(Saving saving) {
-
-        return Long.valueOf(0);
+        // Số tháng thực đã gửi
+        Long actualMonth = ChronoUnit.MONTHS.between(saving.getCreated_at(), LocalDateTime.now());
+        // Tính tổng tiền nhận được sau khi rút
+        Long total = (long) ((saving.getInitial() * saving.getInterest().getRate()) / (12 * actualMonth));
+        return saving.getCurrent() + total;
     }
 
 //    public static Long withdrawal(Long amount, Interest interest) {
@@ -18,23 +21,15 @@ public class InterestCalculator {
 //        return total;
 //    }
 
-    public static Long withdrawal(Long amount, Interest interest, Saving saving) {
+    public static Long withdrawal(Long amount, Interest interest) {
         Long total = 0L;
-        if (interest.getMonths() == 0) {
-            // Tiền gửi không kỳ hạn
-            LocalDateTime now = LocalDateTime.now();
-            Duration duration = Duration.between(saving.getCreated_at(), now);
-            long days = duration.toDays();
-            double interestRate = saving.getInterest().getRate();
-            total = (long) ((amount * interestRate * days) / 365);
-        } else {
-            // Tiền gửi có kỳ hạn
-            long months = interest.getMonths();
-            double interestRate = interest.getRate();
-            total = (long) ((amount * interestRate) / (12 * months));
-        }
+        // Tiền gửi có kỳ hạn
+        long months = interest.getMonths();
+        double interestRate = interest.getRate();
+        total = (long) ((amount * interestRate) / (12 * months));
         return total;
     }
+
     public static Long prematureWithdrawal(Saving saving) {
 //        Số ngày thực đã gửi
         Long actualDay = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());

@@ -1,5 +1,6 @@
 package ptit.savings.rest_controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -115,33 +116,5 @@ public class SavingRest {
         response.put("message", "Successful early withdrawal savings book!");
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
-//    @PostMapping("/api/staff/saving/withdraw")
-//    public ResponseEntity<Object> withdraw(
-//            @RequestBody @Valid withdrawBody body, BindingResult bindingResult // body gom id so tiet kiem,
-//    ){
-//        HashMap<String,Object> response = new HashMap<>();
-//        HashMap<String,Object> error = new HashMap<>();
-//
-//        if(bindingResult.hasErrors()){
-//            response.put("error",error);
-//            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-//        }
-//        Long id = body.getId(); // Lấy ID sổ tiết kiệm
-//        Saving saving = savingRepo.findById(id).get();
-//        if(saving == null){
-//            error.put("id","Saving doesn't exist!");
-//            response.put("error",error);
-//            return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
-//        }
-//        if(saving.getStatus() == -1){
-//            error.put("status","The SavingsBook was withdrawn!");
-//            response.put("error",error);
-//            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-//        }
-//        saving.prematureWithdrawal();
-////        saving.setStatus(-1);
-//        savingRepo.save(saving);
-//        response.put("message", "Successful withdrawal savings book!");
-//        return new ResponseEntity<Object>(response, HttpStatus.OK);
-//    }
+
 }

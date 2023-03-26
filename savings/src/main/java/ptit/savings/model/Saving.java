@@ -20,7 +20,7 @@ import ptit.savings.tools.InterestCalculator;
 @Data
 @NoArgsConstructor
 public class Saving {
-    
+
     @Id
     @GeneratedValue
     private Long id;
@@ -42,7 +42,7 @@ public class Saving {
     private LocalDateTime receive_at;
 
     @NotNull
-    private int status;
+    private int status; //status = 0: da rut dung ky han, status = 1: dang gui, status = -1: da rut truoc ky han
 
     @NotNull
     @ManyToOne
@@ -54,7 +54,7 @@ public class Saving {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    public Saving(Account account, Long initial, Interest interest, String number){
+    public Saving(Account account, Long initial, Interest interest, String number) {
         this.account = account;
         this.initial = initial;
         this.number = number;
@@ -62,30 +62,31 @@ public class Saving {
         this.interest = interest;
         this.created_at = LocalDateTime.now();
         this.updated_at = this.created_at;
-        if(interest.getMonths()!=0){
+        if (interest.getMonths() != 0) {
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }
-        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
-//        this.mature = InterestCalculator.withdrawal(this.initial, this.interest);
+//        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
+        this.mature = InterestCalculator.withdrawal(this.initial, this.interest);
         this.status = 1;
     }
 
-    public void dailyUpdate(){
+    public void dailyUpdate() {
         this.current = InterestCalculator.update(this);
-        if(LocalDateTime.now().isAfter(this.receive_at)){
+        if (LocalDateTime.now().isAfter(this.receive_at)) {
             withdrawal();
         }
         this.updated_at = LocalDateTime.now();
     }
 
-    private void withdrawal(){
-
+    private void withdrawal() {
+//        khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
+        this.account.setBalance(this.account.getBalance() + this.mature);
+        this.status = -1;
     }
 
-    public void prematureWithdrawal(){
+    public void prematureWithdrawal() {
         this.current = InterestCalculator.prematureWithdrawal(this);
         this.mature = this.current;
         this.status = -1;
     }
-    
 }
