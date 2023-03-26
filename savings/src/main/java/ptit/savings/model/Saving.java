@@ -79,7 +79,7 @@ public class Saving {
     }
 
     private void withdrawal() {
-//        khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
+//      khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
         this.status = -1;
     }
@@ -88,5 +88,7 @@ public class Saving {
         this.current = InterestCalculator.prematureWithdrawal(this);
         this.mature = this.current;
         this.status = -1;
+//       khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
+        this.account.setBalance(this.account.getBalance() + this.mature);
     }
 }
