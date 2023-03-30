@@ -93,6 +93,7 @@ public class Saving {
 
     }
     public void withdrawalCash() {
+        this.updated_at = LocalDateTime.now();
         this.current = InterestCalculator.withdrawal(this);
         this.mature = this.current;
         this.status = -1;

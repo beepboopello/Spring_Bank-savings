@@ -2268,6 +2268,7 @@
 																								<th>Kỳ hạn</th>
 																								<th>Lãi suất</th>
 																								<th>Trạng thái</th>
+																								<th>Ngày đáo hạn</th>
 																								<th>Chọn</th>
 																							</tr>
 																						</thead>
@@ -2306,8 +2307,11 @@
                                                                                                         th:text="${saving.status == 1 ? 'Đang hoạt động' : 'Không hoạt động'}">
 																										Author
 																									</span></td>
+																								<td><span th:text="${saving.status != 1 ? saving.updated_at :'---'}">
+																										Author
+																									</span></td>
 																								<td>
-																									<button
+																									<button th:disabled="${saving.status != 1}"
                                                                                                             onclick="showForm(this.id)"
                                                                                                             th:id="${saving.number}">Chọn</button>
 																								</td>
