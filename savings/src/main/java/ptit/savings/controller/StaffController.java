@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import jakarta.servlet.http.HttpSession;
+import ptit.savings.model.Account;
 import ptit.savings.model.Staff;
+import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.StaffRepository;
 import ptit.savings.tools.Token;
@@ -28,6 +33,8 @@ public class StaffController {
     private StaffRepository staffRepo;
     @Autowired
     private InterestRepository interestRepo;
+    @Autowired
+    private AccountRepository accountRepo;
 
     @GetMapping("/")
     public ModelAndView getLogin(){
@@ -38,8 +45,72 @@ public class StaffController {
     }
 
     @RequestMapping(path = "/register")
-    public String register(){
-        return "register";
+    public String register(HttpSession session, Model model){
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff==null)
+            return "register";
+        else if(staff.getIsAdmin()==0) 
+            return "redirect:/dashboard";
+        else return "redirect:/admin";
+    }
+
+    @RequestMapping(path = "/logout")
+    public String logout(HttpSession session, Model model){
+        session.removeAttribute("staff");
+        session.removeAttribute("token");
+        return "redirect:/";
+    }
+
+    @GetMapping("/addSaving")
+    public String addSaving(HttpSession session, Model model){
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff==null)
+            return "redirect:/";
+        else if(staff.getIsAdmin()==1) 
+            return "redirect:/admin";
+        else{
+            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            model.addAttribute("accountList", accountRepo.findAll());
+            return "addSaving";
+        } 
+    }
+
+    @GetMapping("/findstk")
+    public String findstk(HttpSession session, Model model, @RequestParam String stk){
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff==null)
+            return "redirect:/";
+        else if(staff.getIsAdmin()==1) 
+            return "redirect:/admin";
+        else{
+            System.out.println(stk);
+            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            model.addAttribute("accountList", accountRepo.findByStk(stk));
+            return "addSaving";
+        } 
+    }
+
+    @GetMapping("/searchSaving")
+    public String searchSaving(HttpSession session, Model model){
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff==null)
+            return "redirect:/";
+        else if(staff.getIsAdmin()==1) 
+            return "redirect:/admin";
+        else return "searchSaving";
+    }
+
+    @GetMapping("/calculate")
+    public String calculate(HttpSession session, Model model){
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff==null)
+            return "redirect:/";
+        else if(staff.getIsAdmin()==1) 
+            return "redirect:/admin";
+        else{
+            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            return "calculate";
+        } 
     }
 
     @GetMapping("/admin")
@@ -51,7 +122,7 @@ public class StaffController {
             return "redirect:/dashboard";
         model.addAttribute("num", Double.valueOf("2.12"));
         model.addAttribute("unverifiedList",staffRepo.findByVerified(0));
-        model.addAttribute("interestList", interestRepo.findAll());
+        model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
         return "admin/admin-dashboard";
     }
 

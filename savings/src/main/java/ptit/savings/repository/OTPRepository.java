@@ -8,5 +8,6 @@ import ptit.savings.model.OTP;
 
 public interface OTPRepository extends JpaRepository<OTP,Long>{
     public List<OTP> findByAccount(String stk);
+    public List<OTP> findByStrValue(String value);
     
 }

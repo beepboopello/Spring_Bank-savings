@@ -28,7 +28,8 @@
 		nonce="92c539dc-9799-4af8-ab9c-fb18e1fc1781"></script>
 	<script defer="" referrerpolicy="origin" src="./admin-dashboard_files/s.js"></script>
 	<script
-		nonce="92c539dc-9799-4af8-ab9c-fb18e1fc1781">(function (w, d) { !function (bv, bw, bx, by) { bv[bx] = bv[bx] || {}; bv[bx].executed = []; bv.zaraz = { deferred: [], listeners: [] }; bv.zaraz.q = []; bv.zaraz._f = function (bz) { return function () { var bA = Array.prototype.slice.call(arguments); bv.zaraz.q.push({ m: bz, a: bA }) } }; for (const bB of ["track", "set", "debug"]) bv.zaraz[bB] = bv.zaraz._f(bB); bv.zaraz.init = () => { var bC = bw.getElementsByTagName(by)[0], bD = bw.createElement(by), bE = bw.getElementsByTagName("title")[0]; bE && (bv[bx].t = bw.getElementsByTagName("title")[0].text); bv[bx].x = Math.random(); bv[bx].w = bv.screen.width; bv[bx].h = bv.screen.height; bv[bx].j = bv.innerHeight; bv[bx].e = bv.innerWidth; bv[bx].l = bv.location.href; bv[bx].r = bw.referrer; bv[bx].k = bv.screen.colorDepth; bv[bx].n = bw.characterSet; bv[bx].o = (new Date).getTimezoneOffset(); if (bv.dataLayer) for (const bI of Object.entries(Object.entries(dataLayer).reduce(((bJ, bK) => ({ ...bJ[1], ...bK[1] }))))) zaraz.set(bI[0], bI[1], { scope: "page" }); bv[bx].q = []; for (; bv.zaraz.q.length;) { const bL = bv.zaraz.q.shift(); bv[bx].q.push(bL) } bD.defer = !0; for (const bM of [localStorage, sessionStorage]) Object.keys(bM || {}).filter((bO => bO.startsWith("_zaraz_"))).forEach((bN => { try { bv[bx]["z_" + bN.slice(7)] = JSON.parse(bM.getItem(bN)) } catch { bv[bx]["z_" + bN.slice(7)] = bM.getItem(bN) } })); bD.referrerPolicy = "origin"; bD.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(bv[bx]))); bC.parentNode.insertBefore(bD, bC) };["complete", "interactive"].includes(bw.readyState) ? zaraz.init() : bv.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document);</script>
+		nonce="92c539dc-9799-4af8-ab9c-fb18e1fc1781">(function (w, d) { !function (bv, bw, bx, by) { bv[bx] = bv[bx] || {}; bv[bx].executed = []; bv.zaraz = { deferred: [], listeners: [] }; bv.zaraz.q = []; bv.zaraz._f = function (bz) { return function () { var bA = Array.prototype.slice.call(arguments); bv.zaraz.q.push({ m: bz, a: bA }) } }; for (const bB of ["track", "set", "debug"]) bv.zaraz[bB] = bv.zaraz._f(bB); bv.zaraz.init = () => { var bC = bw.getElementsByTagName(by)[0], bD = bw.createElement(by), bE = bw.getElementsByTagName("title")[0]; bE && (bv[bx].t = bw.getElementsByTagName("title")[0].text); bv[bx].x = Math.random(); bv[bx].w = bv.screen.width; bv[bx].h = bv.screen.height; bv[bx].j = bv.innerHeight; bv[bx].e = bv.innerWidth; bv[bx].l = bv.location.href; bv[bx].r = bw.referrer; bv[bx].k = bv.screen.colorDepth; bv[bx].n = bw.characterSet; bv[bx].o = (new Date).getTimezoneOffset(); if (bv.dataLayer) for (const bI of Object.entries(Object.entries(dataLayer).reduce(((bJ, bK) => ({ ...bJ[1], ...bK[1] }))))) zaraz.set(bI[0], bI[1], { scope: "page" }); bv[bx].q = []; for (; bv.zaraz.q.length;) { const bL = bv.zaraz.q.shift(); bv[bx].q.push(bL) } bD.defer = !0; for (const bM of [localStorage, sessionStorage]) Object.keys(bM || {}).filter((bO => bO.startsWith("_zaraz_"))).forEach((bN => { try { bv[bx]["z_" + bN.slice(7)] = JSON.parse(bM.getItem(bN)) } catch { bv[bx]["z_" + bN.slice(7)] = bM.getItem(bN) } })); bD.referrerPolicy = "origin"; bD.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(bv[bx]))); bC.parentNode.insertBefore(bD, bC) };["complete", "interactive"].includes(bw.readyState) ? zaraz.init() : bv.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document);
+	</script>
 </head>
 
 <body>
@@ -58,7 +59,8 @@
 									<td class="cell100 column3" th:text="${staff.username}"></td>
 									<td class="cell100 column4"
 										th:text="${#temporals.format(staff.created_at, 'dd-MM-yyyy HH:mm')}"></td>
-									<td class="cell100 column5"><button>Cấp quyền truy cập</button></td>
+									<td class="cell100 column5"><button onclick="verify(this.id)"
+											th:id="'id_verify'+${staff.id}">Cấp quyền truy cập</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -93,7 +95,8 @@
 										<button th:id="'id_delInterest'+${interest.id}"
 											onclick="deleteInterest(this.id)"
 											style="padding-left: 10%;padding-right: 10%;float: right;color: gray;">Xoá</button>
-										<button th:id="'id_editInterest'+${interest.id}" onclick="editInterest(this.id)"
+										<button th:id="'id_editInterest'+${interest.id}" 
+											onclick="editInterest(this.id)"
 											style="padding-left: 10%;padding-right: 10%;float: right;color: gray;">Sửa</button>
 									</td>
 								</tr>
@@ -112,19 +115,67 @@
 		</div>
 	</div>
 	<script>
+		function verify(clicked_id) {
+			let data = {
+				id: clicked_id.substring(9),
+				token: document.getElementById("id_token").value,
+			}
+			let endpoint = "/api/admin/verify";
+			let res = fetchApi(endpoint, data);
+			try {
+				if (res.error) console.log("failed");
+			}
+			catch (err) {
+				// location.reload();
+			}
+			location.reload();
+		}
+
+		function editInterest(clicked_id) {
+			let irate = prompt("Enter new rate");
+			if (irate == null || irate == ""){
+				console.log("Empty rate");
+				return;
+			}
+			if (isNaN(irate)|| irate > 3 || irate < 0.003){
+				console.log("invalid rate");
+				return;
+			}
+			let data = {
+				id: clicked_id.substring(15),
+				rate : irate/100,
+				token: document.getElementById("id_token").value,
+			};
+			let endpoint = "/api/admin/interest/edit";
+			let res = fetchApi(endpoint, data);
+			try{
+				if(res.error){
+
+				}
+			}
+			catch{
+				
+			}
+			location.reload();
+			
+		}
+
 		function deleteInterest(clicked_id) {
 			let data = {
-				id : clicked_id.substring(14),
-				token : document.getElementById("id_token").value,
+				id: clicked_id.substring(14),
+				token: document.getElementById("id_token").value,
 			};
 			let endpoint = "/api/admin/interest/delete";
 			let res = fetchApi(endpoint, data);
 			try{
-				if(fetchApi(endpoint, data).error) console.log("failed");
+				if(res.error){
+
+				}
 			}
-			catch(err){
-				location.reload();
+			catch{
+				
 			}
+			location.reload();
 		}
 		function fetchApi(endpoint, data) {
 			fetch(endpoint, {

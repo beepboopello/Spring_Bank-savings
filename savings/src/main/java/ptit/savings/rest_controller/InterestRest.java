@@ -18,8 +18,8 @@ import ptit.savings.service.InterestService;
 
 @RestController
 public class InterestRest {
-//    @Autowired
-//    private InterestRepository repo;
+    @Autowired
+    private InterestRepository repo;
 
     @Autowired
     private InterestService interestService;
@@ -66,8 +66,8 @@ public class InterestRest {
         }
 
         Long id = body.getId();
-        String name = body.getName();
-        int months = body.getMonths();
+        // String name = body.getName();
+        // int months = body.getMonths();
         double rate = body.getRate();
 
         // Thực hiện cập nhật thông tin lãi suất vào database
@@ -77,8 +77,8 @@ public class InterestRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
-        interest.setName(name);
-        interest.setMonths(months);
+        // interest.setName(name);
+        // interest.setMonths(months);
         interest.setRate(rate);
         interestService.updateInterest(interest);
 
@@ -98,9 +98,16 @@ public class InterestRest {
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
         // Lấy thông tin từ body
-        String name = body.getName();
+        // String name = body.getName();
         int months = body.getMonths();
+        String name = String.valueOf(months) + " thang";
         double rate = body.getRate();
+
+        if(!repo.findByMonths(months).isEmpty()){
+            error.put("months","Duplicate month value");
+            response.put("error", error);
+            return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
+        }
 
         // Thêm thông tin lãi suất vào database
         Interest interest = new Interest(name, months, rate);

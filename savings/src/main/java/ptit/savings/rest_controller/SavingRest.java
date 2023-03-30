@@ -20,8 +20,7 @@ import ptit.savings.model.Account;
 import ptit.savings.model.Saving;
 import ptit.savings.model.requestBody.Interest.AddBody;
 import ptit.savings.model.requestBody.Saving.AddSavingBody;
-import ptit.savings.model.requestBody.Saving.PrematureWithdrawalBody;
-import ptit.savings.model.requestBody.Saving.withdrawBody;
+import ptit.savings.model.requestBody.Saving.WithdrawalBody;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.SavingRepository;
@@ -84,9 +83,9 @@ public class SavingRest {
         savingRepo.save(saving);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
-    @PostMapping("/api/staff/saving/premature")
-    public ResponseEntity<Object> premature(
-            @RequestBody @Valid PrematureWithdrawalBody body, BindingResult bindingResult
+    @PostMapping("/api/staff/saving/withdrawal")
+    public ResponseEntity<Object> withdrawal(
+            @RequestBody @Valid WithdrawalBody body, BindingResult bindingResult
         ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
@@ -110,8 +109,8 @@ public class SavingRest {
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
-        saving.prematureWithdrawal();
-//        saving.setStatus(-1);
+        saving.withdrawal();
+        // saving.setStatus(-1);
         savingRepo.save(saving);
         response.put("message", "Successful early withdrawal savings book!");
         return new ResponseEntity<Object>(response, HttpStatus.OK);

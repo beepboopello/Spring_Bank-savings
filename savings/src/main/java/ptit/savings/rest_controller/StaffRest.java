@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import ptit.savings.model.Staff;
 import ptit.savings.model.requestBody.Staff.StaffRegisterBody;
+import ptit.savings.model.requestBody.Staff.StaffVerifyBody;
 import ptit.savings.repository.StaffRepository;
 import ptit.savings.tools.JsonUtil;
 
@@ -63,7 +64,7 @@ public class StaffRest {
 
     @PostMapping("/api/admin/verify")
     public ResponseEntity<Object> verify(
-            @RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
+            @RequestBody @Valid StaffVerifyBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();

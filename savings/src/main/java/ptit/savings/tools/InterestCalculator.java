@@ -21,7 +21,7 @@ public class InterestCalculator {
 //        return total;
 //    }
 
-    public static Long withdrawal(Long amount, Interest interest) {
+    public static Long calculate(Long amount, Interest interest) {
         Long total = 0L;
         // Tiền gửi có kỳ hạn
         long months = interest.getMonths();
@@ -30,7 +30,7 @@ public class InterestCalculator {
         return total;
     }
 
-    public static Long prematureWithdrawal(Saving saving) {
+    public static Long withdrawal(Saving saving) {
 //        Số ngày thực đã gửi
         Long actualDay = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
 //        Tính tổng tiền nhận được sau khi rút

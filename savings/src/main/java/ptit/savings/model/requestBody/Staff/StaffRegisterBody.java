@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class StaffRegisterBody {
-    private Long id;
     @Size(min=3, message = "The First name field must greater that 3 characters")
     private String firstName;
     @Size(min=3, message = "The First name field must greater that 3 characters")
@@ -19,5 +18,4 @@ public class StaffRegisterBody {
     private String email;
     @NotEmpty
     private String password;
-    private int verified;
 }

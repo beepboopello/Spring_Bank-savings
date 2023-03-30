@@ -36,7 +36,7 @@ public class Saving {
     private String number;          //
 
     @NotNull
-    private LocalDateTime created_at, updated_at;
+    private LocalDateTime created_at, started_at, updated_at;
 
     @Nullable
     private LocalDateTime receive_at;
@@ -61,34 +61,39 @@ public class Saving {
         this.current = initial;
         this.interest = interest;
         this.created_at = LocalDateTime.now();
+        this.started_at = this.created_at;
         this.updated_at = this.created_at;
         if (interest.getMonths() != 0) {
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }
 //        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
-        this.mature = InterestCalculator.withdrawal(this.initial, this.interest);
+        this.mature = InterestCalculator.calculate(this.initial, this.interest);
         this.status = 1;
     }
 
-    public void dailyUpdate() {
+    public void hourlyUpdate(){
         this.current = InterestCalculator.update(this);
-        if (LocalDateTime.now().isAfter(this.receive_at)) {
-            withdrawal();
+        if(LocalDateTime.now().isAfter(receive_at)){
+            initial = mature;
+            mature = InterestCalculator.calculate(initial, interest);
+            started_at = receive_at;
+            receive_at = started_at.plusMonths(interest.getMonths());
         }
-        this.updated_at = LocalDateTime.now();
+        updated_at = LocalDateTime.now();        
     }
 
-    private void withdrawal() {
-//      khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
-        this.account.setBalance(this.account.getBalance() + this.mature);
-        this.status = -1;
-    }
+//     private void withdrawal() {
+// //      khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
+//         this.account.setBalance(this.account.getBalance() + this.mature);
+//         this.status = -1;
+//     }
 
-    public void prematureWithdrawal() {
-        this.current = InterestCalculator.prematureWithdrawal(this);
+    public void withdrawal() {
+        this.current = InterestCalculator.withdrawal(this);
         this.mature = this.current;
         this.status = -1;
-//       khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
+        //      khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
+
     }
 }

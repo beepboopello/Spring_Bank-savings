@@ -1,0 +1,47 @@
+﻿@font-face {
+    font-family: 'Kuro';
+    src: url(Kuro-Regular.eot);
+    src: url('Kuro-Regular.eot?#iehack') format('eot'), 
+         url('Kuro-Regular.woff') format('woff'), 
+         url('Kuro-Regular.ttf')  format('truetype'),
+         url('Kuro-Regular.svg#svgFontName') format('svg');
+
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kuro';
+    src: url(Kuro-Bold.eot);
+    
+    src: url('Kuro-Bold.eot?#iehack') format('eot'), 
+         url('Kuro-Bold.woff') format('woff'), 
+         url('Kuro-Bold.ttf')  format('truetype'),
+         url('Kuro-Bold.svg#svgFontName') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kuro';
+    src: url(Kuro-Light.eot);
+        
+    src: url('Kuro-Light.eot?#iehack') format('eot'), 
+         url('Kuro-Light.woff') format('woff'), 
+         url('Kuro-Light.ttf')  format('truetype'),
+         url('Kuro-Light.svg#svgFontName') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kuro';
+    src: url(Kuro-Medium.eot);
+
+    src: url('Kuro-Medium.eot?#iehack') format('eot'), 
+         url('Kuro-Medium.woff') format('woff'), 
+         url('Kuro-Medium.ttf')  format('truetype'),
+         url('Kuro-Medium.svg#svgFontName') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}

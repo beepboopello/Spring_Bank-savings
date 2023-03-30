@@ -42,11 +42,11 @@ public class Dataloader implements ApplicationRunner{
             interestRepo.save(in);
         }
 
-        if(interestRepo.findByMonths(6).isEmpty()){
+        if(interestRepo.findByMonths(0).isEmpty()){
             Interest in = new Interest();
-            in.setName("6 thang");
-            in.setMonths(6);
-            in.setRate(0.028);
+            in.setName("Không kỳ hạn");
+            in.setMonths(0);
+            in.setRate(0.003);
             interestRepo.save(in);
         }
         
