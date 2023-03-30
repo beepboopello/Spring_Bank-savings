@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class WithdrawalBody {
-    private Long id;
+    private String number;
+    private int option;
     private String token;
-
 }

@@ -81,19 +81,20 @@ public class Saving {
         }
         updated_at = LocalDateTime.now();        
     }
-
 //     private void withdrawal() {
 // //      khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
 //         this.account.setBalance(this.account.getBalance() + this.mature);
 //         this.status = -1;
 //     }
-
     public void withdrawal() {
-        this.current = InterestCalculator.withdrawal(this);
-        this.mature = this.current;
-        this.status = -1;
+        withdrawalCash();
         //      khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
 
+    }
+    public void withdrawalCash() {
+        this.current = InterestCalculator.withdrawal(this);
+        this.mature = this.current;
+        this.status = -1;
     }
 }

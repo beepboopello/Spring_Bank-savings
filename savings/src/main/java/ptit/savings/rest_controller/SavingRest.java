@@ -94,9 +94,9 @@ public class SavingRest {
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-
-        Long id = body.getId(); // Lấy ID sổ tiết kiệm
-        Saving saving = savingRepo.findById(id).get();
+        int option = body.getOption();
+        String number = body.getNumber(); // Lấy ID sổ tiết kiệm
+        Saving saving = savingRepo.findByNumber(number).get(0);
 //        Optional<Saving> optionalSaving = savingRepo.findById(id);
 //        if(!optionalSaving.isPresent()){
         if(saving == null){
@@ -109,7 +109,11 @@ public class SavingRest {
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
-        saving.withdrawal();
+        if(option == 0){
+            saving.withdrawal();
+        }else{
+            saving.withdrawalCash();
+        }
         // saving.setStatus(-1);
         savingRepo.save(saving);
         response.put("message", "Successful early withdrawal savings book!");

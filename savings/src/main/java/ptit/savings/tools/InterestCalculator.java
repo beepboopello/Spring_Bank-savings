@@ -22,19 +22,24 @@ public class InterestCalculator {
 //    }
 
     public static Long calculate(Long amount, Interest interest) {
-        Long total = 0L;
-        // Tiền gửi có kỳ hạn
-        long months = interest.getMonths();
-        double interestRate = interest.getRate();
-        total = (long) ((amount * interestRate) / (12 * months));
-        return total;
+        return amount + calculate_interest(amount, interest);
     }
 
+    public static Long calculate_interest(Long amount, Interest interest) {
+//        Long total = 0L;
+        double total = 0;
+        // Tiền gửi có kỳ hạn
+        long months = interest.getMonths();
+        double interestRate = interest.getRate()/100;
+        total =  ((amount * (interestRate / 12) * months));
+        return (long)total;
+    }
     public static Long withdrawal(Saving saving) {
 //        Số ngày thực đã gửi
         Long actualDay = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
 //        Tính tổng tiền nhận được sau khi rút
-        Long total = (long) (saving.getInitial() * saving.getInterest().getRate() * actualDay) / 365;
+        double interestRate = saving.getInterest().getRate()/100;
+        Long total = (long) (saving.getInitial() * interestRate * actualDay) / 365;
         return saving.getCurrent() + total;
     }
 }
