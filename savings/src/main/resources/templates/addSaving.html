@@ -2061,11 +2061,9 @@
 									<ie:menuitem id="MSOMenu_Help" iconsrc="/_layouts/15/images/HelpIcon.gif"
                                                  onmenuclick="MSOWebPartPage_SetNewWindowLocation(MenuWebPart.getAttribute(&#39;helpLink&#39;), MenuWebPart.getAttribute(&#39;helpMode&#39;))"
                                                  text="Trợ giúp" type="option" style="display:none">
-
 									</ie:menuitem>
 								</menu>
 							</section>
-
 							<section class="content">
 								<div class="container">
 									<div class="row">
@@ -2156,9 +2154,8 @@
 																					</b>
 																					<div class="col p-0 mr-5">
 																						<input placeholder="Nhập mã OTP"
-                                                                                               maxlength="18"
-                                                                                               rel="tooltip"
-                                                                                               id="id_initial" value="">
+																							maxlength="18" rel="tooltip"
+																							id="id_txtotp" value="">
 																					</div>
 																				</div>
 																			</div>
@@ -2179,73 +2176,85 @@
 																				<b class="mr-3 col-12 col-md-4 p-0"></b>
 																				<div class="col p-0 mr-5">
 																					<button style="display: none;"
-                                                                                            onclick="addSaving()"
-                                                                                            class="classbutton"
-                                                                                            id="btnAdd">Mở
-																						sổ tiết
+																						onclick="addSaving()"
+																						class="classbutton"
+																						id="btnAdd">Mở sổ tiết
 																						kiệm</button>
 																				</div>
 																			</div>
 																		</div>
 																		<script>
 																			function submitForm() {
-                                                                                let stk = document.getElementById("id_txtstk").value
-                                                                                if (stk == null || stk.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Số tài khoản đang để trống");
-                                                                                    return;
-                                                                                }
-                                                                                jQuery("#lblthongbao").html("");
-                                                                                document.getElementById("id_inputstk").value = stk
-                                                                                document.getElementById("id_form").submit();
-                                                                            }
+																				let stk = document.getElementById("id_txtstk").value
+																				if (stk == null || stk.trim() == "") {
+																					jQuery("#lblthongbao").html("Số tài khoản đang để trống");
+																					return;
+																				}
+																				jQuery("#lblthongbao").html("");
+																				document.getElementById("id_inputstk").value = stk
+																				document.getElementById("id_form").submit();
+																			}
+																			async function addSaving() {
+																				var listIn = document.getElementById("GetKy");
+																				let amount = document.getElementById("id_initial").value;
+																				if (isNaN(amount)) {
+																					jQuery("#lblthongbao").html("Số tiền gửi không hợp lệ");
+																					document.getElementById("id_initial").value = "";
+																					return;
+																				}
+																				else if (amount < 100000) {
+																					jQuery("#lblthongbao").html("Số tiền gửi phải từ 100,000 trở lên");
+																					return;
+																				}
+																				let data = {
+																					stk: document.getElementById("id_txtstk").value,
+																					initial: document.getElementById("id_initial").value,
+																					interestId: listIn.options[listIn.selectedIndex].id.substr(5),
+																					token: document.getElementById("id_token").value,
+																				};
+																				let endpoint = "/api/staff/saving/add"
+																				let response = await fetch(endpoint, {
+																					method: "POST",
+																					headers: { 'Content-Type': 'application/json' },
+																					body: JSON.stringify(data)
+																				});
+																				let res = await response.json();
 
-                                                                            function addSaving() {
-                                                                                var listIn = document.getElementById("GetKy");
-                                                                                let amount = document.getElementById("id_initial").value;
-                                                                                if (isNaN(amount)) {
-                                                                                    jQuery("#lblthongbao").html("Số tiền gửi không hợp lệ");
-                                                                                    return;
-                                                                                } else if (amount < 100000) {
-                                                                                    jQuery("#lblthongbao").html("Số tiền gửi phải từ 100,000 trở lên");
-                                                                                    return;
-                                                                                }
-                                                                                let data = {
-                                                                                    stk: document.getElementById("id_txtstk").value,
-                                                                                    initial: document.getElementById("id_initial").value,
-                                                                                    interestId: listIn.options[listIn.selectedIndex].id.substr(5),
-                                                                                    token: document.getElementById("id_token").value,
-                                                                                };
-                                                                                let endpoint = "/api/staff/saving/add"
-                                                                                let res = fetchApi(endpoint, data);
-                                                                                try {
-                                                                                    if (res.error) {
-                                                                                        console(res.error);
-                                                                                    }
-                                                                                } catch (error) {
-                                                                                    let disable = ["id_txtstk", "id_initial", "GetKy", "btnAction"]
-                                                                                    disable.forEach((i) => {
-                                                                                        document.getElementById(i).disabled = "true"
-                                                                                    })
+																				if (res.error) {
+																					console(res.error);
+																					jQuery("#lblthongbao").html("Có lỗi xảy ra, xin hãy thử lại sau");
+																				}
 
-                                                                                }
-                                                                            }
+																				let disable = ["id_txtstk", "id_initial", "GetKy", "btnAction"]
+																				disable.forEach((i) => {
+																					document.getElementById(i).disabled = "true";
+																				})
+																				document.getElementById("id_otp").style.display = "contents";
+																				document.getElementById("btnAdd").onclick = checkOTP;
+																				document.getElementById("btnAdd").textContent = "Kiểm tra OTP";;
 
-                                                                            function fetchApi(endpoint, data) {
-                                                                                fetch(endpoint, {
-                                                                                    method: "POST",
-                                                                                    headers: {'Content-Type': 'application/json'},
-                                                                                    body: JSON.stringify(data)
-                                                                                }).then(r => r.json().then(data => ({
-                                                                                    status: r.status,
-                                                                                    body: data
-                                                                                })))
-                                                                                    .then(obj => {
-																							alert("Mở sổ tiết kiệm thành công")
-																							location.reload()
-                                                                                        return obj;
-
-                                                                                    });
-                                                                            }
+																			}
+																			async function checkOTP() {
+																				let data = {
+																					otp: document.getElementById("id_txtotp").value,
+																					token: document.getElementById("id_token").value,
+																				};
+																				let endpoint = "/api/otp/saving"
+																				let response = await fetch(endpoint, {
+																					method: "POST",
+																					headers: { 'Content-Type': 'application/json' },
+																					body: JSON.stringify(data)
+																				});
+																				let res = await response.json();
+																				console.log(res);
+																				if (res.error) {
+																					jQuery("#lblthongbao").html("OTP không hợp lệ");
+																				}
+																				else {
+																					alert("Tạo sổ tiết kiệm thành công");
+																					location.reload();
+																				};
+																			}
 																		</script>
 																	</div>
 
@@ -2307,100 +2316,26 @@
 
 																								<td>
 																									<button
-                                                                                                            onclick="showForm(this.id)"
-                                                                                                            th:id="${account.stk}">Mở sổ</button>
+																										onclick="showForm(this.id)"
+																										th:id="${account.stk}">Mở sổ</button>
 																								</td>
 																							</tr>
 																						</tbody>
 																					</table>
 																					<script>
 																						function showForm(clicked_id) {
-                                                                                            document.getElementById("id_info").style.display = "contents";
-                                                                                            document.getElementById("btnAdd").style.display = "block";
-                                                                                            if (!document.getElementById("id_txtstk").disabled)
-                                                                                                document.getElementById("id_txtstk").value = clicked_id;
-                                                                                            console.log(clicked_id);
-                                                                                        }
+																							document.getElementById("id_info").style.display = "contents";
+																							document.getElementById("btnAdd").style.display = "block";
+																							if (!document.getElementById("id_txtstk").disabled)
+																								document.getElementById("id_txtstk").value = clicked_id;
+																							console.log(clicked_id);
+																						}
 																					</script>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
-				    											<div class="box-tab-details">
-																	<div class="content">
-																		<div class="interest" id="interest-rates">
-																			<div style="margin-top: 10px;"
-                                                                                 id="ctvbhuongdan1"
-                                                                                 class="boxContainer">
-																				<style>
-																					.tbl-01 {
-                                                                                        float: none !important;
-                                                                                        margin: 0 auto !important;
-                                                                                        width: 100%;
-                                                                                    }
-																				</style>
-																				<div style="padding: 2%; border-radius: 5px 5px; display: flex;">
-																					<table cellspacing="1"
-                                                                                           style="display: inline-table;"
-                                                                                           id="id_liststk"
-                                                                                           class="tbl-01"
-                                                                                           data-type="1">
-																						<thead>
-																							<tr>
-																								<th>Mã sổ tiết kiệm</th>
-																								<th>Chủ sổ tiết kiệm</th>
-																								<th>Số tiền gửi ban đầu</th>
-																								<th>Tiền thực nhận sau khi gửi hết kỳ hạn</th>
-																								<th>Ngày gửi</th>
-																								<th>Kỳ hạn</th>
-																								<th>Lãi suất</th>
-																								<th>Trạng thái</th>
-																							</tr>
-																						</thead>
-																						<tbody>
-																							<tr
-                                                                                                    th:each="saving : ${savingList}">
-																								<td><span
-                                                                                                        th:text="${saving.number}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.account.last_name} + ' ' +${saving.account.first_name}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.initial}">
-																										Title
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.mature}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.created_at}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.interest.getMonths()}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.interest.rate}">
-																										Author
-																									</span></td>
-																								<td><span
-                                                                                                        th:text="${saving.status == 1 ? 'Đang hoạt động' : 'Không hoạt động'}">
-																										Author
-																									</span></td>
-																							</tr>
-																						</tbody>
-																					</table>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
+				    								
 																<div class="control-group"
                                                                      style="width: 650px !important">
 

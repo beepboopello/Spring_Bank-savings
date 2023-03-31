@@ -204,10 +204,4 @@ public class StaffController {
         return page;
     }
 
-    // @PostMapping("/register")
-    // public ResponseEntity<Object> register(){
-    //     HashMap<String,Object> response = new HashMap<>();
-    //     response.put("name", "true");
-    //     return new ResponseEntity<Object>(response, HttpStatus.OK);
-    // }
 }

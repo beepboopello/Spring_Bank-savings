@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,8 +74,13 @@ public class OTPRest {
         HashMap<String,Object> error = new HashMap<>();
 
         if(bindingResult.hasErrors()){
-            error.put("message", "Invalid request body");
-            response.put("error", error);
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+                }
+            }
+            response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
         if(otpRepository.findByStrValue(body.getOtp()).isEmpty()){
