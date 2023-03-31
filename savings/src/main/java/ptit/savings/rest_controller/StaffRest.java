@@ -68,7 +68,7 @@ public class StaffRest {
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-         if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()){
              error = new HashMap<>();
              for (Object object : bindingResult.getAllErrors()) {
                  if(object instanceof FieldError) {

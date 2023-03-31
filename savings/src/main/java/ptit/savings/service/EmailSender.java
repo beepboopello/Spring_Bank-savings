@@ -6,5 +6,5 @@ public interface EmailSender {
 
     public void newBankAccountEmail(String toEmail,String owner,String stk, String otp);
 
-    public void verifyNewClientEmail(String toEmail,String otp);
+    public void verifySaving(String toEmail, String otp);
 }

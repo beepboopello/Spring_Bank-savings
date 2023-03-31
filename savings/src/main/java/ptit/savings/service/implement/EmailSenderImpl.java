@@ -29,17 +29,18 @@ public class EmailSenderImpl implements EmailSender{
         msg.setTo(toEmail);
         msg.setText("Số tài khoản " +stk+ " đã đuợc mở thành công. \nVui lòng cung cấp mã otp : " + otp + " cho nhân viên quầy để hoàn tất việc đăng ký tài khoản.");
         msg.setSubject("Chào mừng " + owner);
-
         mailSender.send(msg);
     }
 
     @Override
-    public void verifyNewClientEmail(String toEmail, String otp) {
+    public void verifySaving(String toEmail, String otp) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("ptitbankapp@gmail.com");
         msg.setTo(toEmail);
-        msg.setText("Nhập mã OTP " + otp + " để xác nhận đăng ký tài khoản");
-        msg.setSubject("Xác nhận đăng ký tài khoản");
+        msg.setText("Vui lòng cung cấp mã otp : " + otp + " cho nhân viên quầy để hoàn tất việc mở sổ tiết kiệm");
+        msg.setSubject("Xác thực sổ tiết kiệm");
         mailSender.send(msg);
     }
+
+
 }

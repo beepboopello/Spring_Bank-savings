@@ -26,6 +26,7 @@ import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
+import ptit.savings.service.EmailSender;
 
 @RestController
 public class SavingRest {
@@ -40,6 +41,9 @@ public class SavingRest {
 
     @Autowired
     private OTPRepository otpRepo;
+
+    @Autowired
+    private EmailSender emailSender;
 
     @PostMapping("/api/staff/saving/add")
     public ResponseEntity<Object> add(
@@ -96,7 +100,7 @@ public class SavingRest {
         otp.setStrValue(value);
         otpRepo.save(otp);
 
-
+        emailSender.verifySaving(accountRepo.findByStk(stk).get(0).getEmail(), value);
         Saving saving = new Saving(accountRepo.findByStk(stk).get(0),initial,interestRepo.findById(interestId).get(), number);
         response.put("saving", saving);
         savingRepo.save(saving);
