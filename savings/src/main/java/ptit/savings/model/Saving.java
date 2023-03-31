@@ -91,11 +91,16 @@ public class Saving {
 //         this.status = -1;
 //     }
     public void withdrawal() {
+//        nếu rút tiền sớm hơn kỳ hạn months thì lãi sẽ được tính theo số ngày đã gửi và lãi suất tính theo ngày giống gửi tiết kiệm không có kỳ hạn
+//        if(LocalDateTime.now().isBefore(receive_at)){ // kiểm tra thời gian hiện tại có nhỏ hơn thời gian đáo hạn không
+//            this.interest = InterestRepository.findByMonths(0).get(0);
+//        }
         withdrawalCash();
         //      khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
 
     }
+//    hàm rut tien mặt từ tiết kiệm
     public void withdrawalCash() {
         this.updated_at = LocalDateTime.now();
         this.current = InterestCalculator.withdrawal(this);

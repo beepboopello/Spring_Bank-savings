@@ -63,7 +63,19 @@ public class StaffController {
         session.removeAttribute("token");
         return "redirect:/";
     }
-
+    @GetMapping("/addAccount")
+    public String addAccount(HttpSession session, Model model) {
+        Staff staff = (Staff) session.getAttribute("staff");
+        if (staff == null)
+            return "redirect:/";
+        else if (staff.getIsAdmin() == 1)
+            return "redirect:/admin";
+        else {
+            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            model.addAttribute("accountList", accountRepo.findAll());
+            return "addAccount";
+        }
+    }
     @GetMapping("/addSaving")
     public String addSaving(HttpSession session, Model model) {
         Staff staff = (Staff) session.getAttribute("staff");
@@ -89,6 +101,7 @@ public class StaffController {
             System.out.println(stk);
             model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
             model.addAttribute("accountList", accountRepo.findByStk(stk));
+            model.addAttribute("savingList", savingRepo.findByAccount_Stk(stk));
             return "addSaving";
         }
     }
