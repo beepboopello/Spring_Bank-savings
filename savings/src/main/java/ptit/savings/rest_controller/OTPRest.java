@@ -97,7 +97,8 @@ public class OTPRest {
         }
 
         Saving saving = savingRepo.findByNumber(otp.getAccount()).get(0);
-        saving.setVerify(1);
+//        saving.setVerify(1);
+        saving.setStatus(1);
         saving.setVerified_at(LocalDateTime.now());
         savingRepo.save(saving);
         response.put("message", "Xác minh sổ tiết kiệm thành công");
