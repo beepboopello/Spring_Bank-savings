@@ -2143,36 +2143,40 @@
 																			<div
 																				class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
 																				<div id="id_otp" style="display: none;">
+
+																					<b class="mr-3 col-12 col-md-4 p-0">
+																						OTP
+																					</b>
+																					<div class="col p-0 mr-5">
+																						<input placeholder="Nhập mã OTP"
+																							maxlength="18" rel="tooltip"
+																							id="id_initial" value="">
+																					</div>
 																				</div>
-																				<b class="mr-3 col-12 col-md-4 p-0">
-																					OTP
-																				</b>
+																			</div>
+																		</div>
+																		<div class="d-flex flex-wrap">
+																			<div
+																				class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+																				<b class="mr-3 col-12 col-md-4 p-0"></b>
 																				<div class="col p-0 mr-5">
-																					<input placeholder="Nhập mã OTP"
-																						maxlength="18" rel="tooltip"
-																						id="id_initial" value="">
+																					<button onclick="submitForm()"
+																						class="classbutton"
+																						id="btnAction">Tìm tài
+																						khoản</button>
 																				</div>
 																			</div>
-																		</div>
-																		<div
-																			class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
-																			<b class="mr-3 col-12 col-md-4 p-0"></b>
-																			<div class="col p-0 mr-5">
-																				<button onclick="submitForm()"
-																					class="classbutton"
-																					id="btnAction">Tìm tài
-																					khoản</button>
-																			</div>
-																		</div>
-																		<div
-																			class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
-																			<b class="mr-3 col-12 col-md-4 p-0"></b>
-																			<div class="col p-0 mr-5">
-																				<button style="display: none;"
-																					onclick="addSaving()"
-																					class="classbutton" id="btnAdd">Mở
-																					sổ tiết
-																					kiệm</button>
+																			<div
+																				class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+																				<b class="mr-3 col-12 col-md-4 p-0"></b>
+																				<div class="col p-0 mr-5">
+																					<button style="display: none;"
+																						onclick="addSaving()"
+																						class="classbutton"
+																						id="btnAdd">Mở
+																						sổ tiết
+																						kiệm</button>
+																				</div>
 																			</div>
 																		</div>
 																		<script>
@@ -2203,7 +2207,29 @@
 																					interestId: listIn.options[listIn.selectedIndex].id.substr(5),
 																					token: document.getElementById("id_token").value,
 																				};
-																				console.log(data);
+																				let endpoint = "/api/staff/saving/add"
+																				let res = fetchApi(endpoint, data);
+																				try {
+																					if(res.error){
+																						console(res.error);
+																					}
+																				} catch (error) {
+																					let disable = ["id_txtstk", "id_initial", "GetKy", "btnAction"]
+																					disable.forEach((i)=>{
+																						document.getElementById(i).disabled = "true"
+																					})
+																					
+																				}
+																			}
+																			function fetchApi(endpoint, data) {
+																				fetch(endpoint, {
+																					method: "POST",
+																					headers: { 'Content-Type': 'application/json' },
+																					body: JSON.stringify(data)
+																				}).then(r => r.json().then(data => ({ status: r.status, body: data })))
+																					.then(obj => {
+																						return obj;
+																					});
 																			}
 																		</script>
 																	</div>
@@ -2265,8 +2291,7 @@
 																								<td>
 																									<button
 																										onclick="showForm(this.id)"
-																										th:id="${account.stk}">Mở
-																										sổ</button>
+																										th:id="${account.stk}">Mở sổ</button>
 																								</td>
 																							</tr>
 																						</tbody>
@@ -2275,6 +2300,7 @@
 																						function showForm(clicked_id) {
 																							document.getElementById("id_info").style.display = "contents";
 																							document.getElementById("btnAdd").style.display = "block";
+																							if(!document.getElementById("id_txtstk").disabled)
 																							document.getElementById("id_txtstk").value = clicked_id;
 																							console.log(clicked_id);
 																						}

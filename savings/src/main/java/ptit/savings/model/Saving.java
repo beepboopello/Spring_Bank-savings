@@ -39,7 +39,10 @@ public class Saving {
     private LocalDateTime created_at, started_at, updated_at;
 
     @Nullable
-    private LocalDateTime receive_at;
+    private LocalDateTime receive_at, verified_at;
+
+    @NotNull
+    private int verify;
 
     @NotNull
     private int status; //status = 0: da rut dung ky han, status = 1: dang gui, status = -1: da rut truoc ky han
@@ -63,6 +66,7 @@ public class Saving {
         this.created_at = LocalDateTime.now();
         this.started_at = this.created_at;
         this.updated_at = this.created_at;
+        this.verify = 0;
         if (interest.getMonths() != 0) {
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }

@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import ptit.savings.model.Account;
+import ptit.savings.model.OTP;
 import ptit.savings.model.Saving;
 import ptit.savings.model.requestBody.Interest.AddBody;
 import ptit.savings.model.requestBody.Saving.AddSavingBody;
 import ptit.savings.model.requestBody.Saving.WithdrawalBody;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
+import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
 
 @RestController
@@ -35,6 +37,9 @@ public class SavingRest {
 
     @Autowired
     private AccountRepository accountRepo;
+
+    @Autowired
+    private OTPRepository otpRepo;
 
     @PostMapping("/api/staff/saving/add")
     public ResponseEntity<Object> add(
@@ -78,6 +83,20 @@ public class SavingRest {
         do {
             number = "1473" + String.format("%08d", random.nextInt(100000000));
         } while (!savingRepo.findByNumber(number).isEmpty());
+
+        OTP otp = new OTP();
+        otp.setAccount(number);
+        otp.setAction("verify saving");
+        otp.setCreated_at(LocalDateTime.now());
+        otp.setExpired_at(otp.getCreated_at().plusMinutes(5));
+        String value;
+        do{
+            value = String.format("%06d", random.nextInt(1000000));
+        }while(!otpRepo.findByStrValue(value).isEmpty());
+        otp.setStrValue(value);
+        otpRepo.save(otp);
+
+
         Saving saving = new Saving(accountRepo.findByStk(stk).get(0),initial,interestRepo.findById(interestId).get(), number);
         response.put("saving", saving);
         savingRepo.save(saving);

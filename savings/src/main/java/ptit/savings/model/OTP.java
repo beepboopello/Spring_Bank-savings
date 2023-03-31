@@ -25,5 +25,5 @@ public class OTP {
     private String action,strValue;
 
     @NotNull
-    private LocalDateTime created_at;
+    private LocalDateTime created_at, expired_at;
 }

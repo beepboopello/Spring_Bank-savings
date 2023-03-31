@@ -40,7 +40,9 @@ public class Account {
     private String email;
     private Long balance;
 
-    private LocalDate verified_at;
+    private int verifed;
+    
+    private LocalDateTime verified_at;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 

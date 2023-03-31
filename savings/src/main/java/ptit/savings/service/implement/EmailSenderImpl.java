@@ -23,11 +23,11 @@ public class EmailSenderImpl implements EmailSender{
     }
 
     @Override
-    public void newBankAccountEmail(String toEmail, String owner, String stk) {
+    public void newBankAccountEmail(String toEmail, String owner, String stk, String otp) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("ptitbankapp@gmail.com");
         msg.setTo(toEmail);
-        msg.setText("Số tài khoản " +stk+ " đã đuợc mở thành công. \nXin hãy đăng ký tài khoản trên ứng dụng web để sử dụng dịch vụ của ngân hàng.");
+        msg.setText("Số tài khoản " +stk+ " đã đuợc mở thành công. \nVui lòng cung cấp mã otp : " + otp + " cho nhân viên quầy để hoàn tất việc đăng ký tài khoản.");
         msg.setSubject("Chào mừng " + owner);
 
         mailSender.send(msg);

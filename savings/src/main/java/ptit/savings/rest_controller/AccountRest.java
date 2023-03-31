@@ -3,6 +3,7 @@ package ptit.savings.rest_controller;
 import ptit.savings.model.*;
 import ptit.savings.model.requestBody.Account.AddNewAccountBody;
 import ptit.savings.repository.AccountRepository;
+import ptit.savings.repository.OTPRepository;
 import ptit.savings.service.EmailSender;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
@@ -31,6 +31,8 @@ public class AccountRest {
     private AccountRepository bankAccountRepository;
     @Autowired
     private EmailSender emailSender;
+    @Autowired 
+    private OTPRepository otpRepo;
 
     @PostMapping(path = "/add")
     public ResponseEntity<Object> addNewAccount(
@@ -52,6 +54,7 @@ public class AccountRest {
         b.setFirst_name(body.getFirstName());
         b.setLast_name(body.getLastName());
         b.setCccd(body.getCccd());
+        b.setVerifed(0);
 
         b.setCreated_at(LocalDateTime.now());
         b.setUpdated_at(b.getCreated_at());
@@ -64,7 +67,19 @@ public class AccountRest {
         b.setBalance(Long.parseLong("50000"));
         bankAccountRepository.save(b);
 
-        emailSender.newBankAccountEmail(body.getEmail(), body.getLastName() + " " + body.getFirstName(), stk);
+        OTP otp = new OTP();
+        otp.setAccount(stk);
+        otp.setAction("verify account");
+        otp.setCreated_at(LocalDateTime.now());
+        otp.setExpired_at(otp.getCreated_at().plusMinutes(5));
+        String value;
+        do{
+            value = String.format("%06d", random.nextInt(1000000));
+        }while(!otpRepo.findByStrValue(value).isEmpty());
+        otp.setStrValue(value);
+        otpRepo.save(otp);
+
+        emailSender.newBankAccountEmail(body.getEmail(), body.getLastName() + " " + body.getFirstName(), stk, otp.getStrValue());
         response.put("account", b);
         return new ResponseEntity<Object>(response , HttpStatus.OK);
     }
