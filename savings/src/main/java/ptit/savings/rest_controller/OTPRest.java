@@ -61,6 +61,7 @@ public class OTPRest {
         accountRepo.save(account);
         response.put("message", "Xác minh tài khoản thành công");
         response.put("account", account);        
+        otpRepository.delete(otp);
         return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
     }
 
@@ -95,6 +96,7 @@ public class OTPRest {
         savingRepo.save(saving);
         response.put("message", "Xác minh sổ tiết kiệm thành công");
         response.put("saving", saving);    
+        otpRepository.delete(otp);
         return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
     }
 }
