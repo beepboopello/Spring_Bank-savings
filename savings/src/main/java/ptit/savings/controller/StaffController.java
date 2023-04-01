@@ -21,11 +21,13 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jakarta.servlet.http.HttpSession;
 import ptit.savings.model.Account;
+import ptit.savings.model.Interest;
 import ptit.savings.model.Staff;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.SavingRepository;
 import ptit.savings.repository.StaffRepository;
+import ptit.savings.tools.InterestCalculator;
 import ptit.savings.tools.Token;
 
 @Controller

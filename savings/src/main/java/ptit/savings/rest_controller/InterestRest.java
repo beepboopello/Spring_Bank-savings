@@ -2,6 +2,7 @@ package ptit.savings.rest_controller;
 
 import java.util.HashMap;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import ptit.savings.model.Interest;
 import ptit.savings.model.requestBody.Interest.AddBody;
+import ptit.savings.model.requestBody.Interest.CalculateBody;
 import ptit.savings.model.requestBody.Interest.DeleteBody;
 import ptit.savings.model.requestBody.Interest.EditBody;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.service.InterestService;
+import ptit.savings.tools.InterestCalculator;
 
 @RestController
 public class InterestRest {
@@ -100,7 +103,7 @@ public class InterestRest {
         // Lấy thông tin từ body
         // String name = body.getName();
         int months = body.getMonths();
-        String name = String.valueOf(months) + " thang";
+        String name = String.valueOf(months) + " tháng";
         double rate = body.getRate();
 
         if(!repo.findByMonths(months).isEmpty()){
@@ -117,5 +120,16 @@ public class InterestRest {
         response.put("message", "Interest rate added successfully");
         response.put("interest", interest);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/calculate-interest")
+    public ResponseEntity<String> calculateInterest(@RequestParam("idInterest") String idInterest, @RequestParam("amount") String amount) {
+        // code here
+        Interest interest = interestService.getInterestById(Long.parseLong(idInterest));
+        Long result = InterestCalculator.calculate(Long.parseLong(amount), interest);
+
+        Long interestMoney = result - Long.parseLong(amount);
+        String data = interestMoney.toString() + "," + result.toString();
+        return ResponseEntity.ok().body(data);
     }
 }

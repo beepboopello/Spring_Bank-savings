@@ -98,7 +98,6 @@ public class Saving {
         withdrawalCash();
         //      khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
-
     }
 //    hàm rut tien mặt từ tiết kiệm
     public void withdrawalCash() {
