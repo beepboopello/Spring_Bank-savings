@@ -74,29 +74,49 @@ public class OTPRest {
         HashMap<String,Object> error = new HashMap<>();
 
         if(bindingResult.hasErrors()){
+            error = new HashMap<>();
             for (Object object : bindingResult.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+                    response.put("error", fieldError.getDefaultMessage());
+                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
                 }
             }
-            response.put("error",error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
-        if(otpRepository.findByStrValue(body.getOtp()).isEmpty()){
+        if(otpRepository.findByStrValue(body.getOtp()).get(0)==null){
             error.put("otp","OTP không hợp lệ");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
-
         OTP otp = otpRepository.findByStrValue(body.getOtp()).get(0);
+        Saving saving = savingRepo.findByNumber(otp.getAccount()).get(0);
+
+        if(otp.getAction().compareTo("withdrawal")==0){
+            saving.withdrawal();
+            savingRepo.save(saving);
+            otpRepository.delete(otp);
+            response.put("message", "Rút sổ tiết kiệm thành công");
+            response.put("saving", saving);    
+            return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
+        }
+
+        if(otp.getAction().compareTo("withdrawal cash")==0){
+            saving.withdrawalCash();
+            savingRepo.save(saving);
+            otpRepository.delete(otp);
+            response.put("message", "Rút sổ tiết kiệm thành công");
+            response.put("saving", saving);    
+            return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
+        }
+
+
         if(otp.getAction().compareTo("verify saving")!=0){
             error.put("otp","OTP không hợp lệ");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
 
-        Saving saving = savingRepo.findByNumber(otp.getAccount()).get(0);
+
 //        saving.setVerify(1);
         saving.setStatus(1);
         saving.setVerified_at(LocalDateTime.now());

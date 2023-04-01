@@ -114,8 +114,14 @@ public class SavingRest {
         HashMap<String,Object> error = new HashMap<>();
 
         if(bindingResult.hasErrors()){
-            response.put("error",error);
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+            error = new HashMap<>();
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    response.put("error", fieldError.getDefaultMessage());
+                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+                }
+            }
         }
         int option = body.getOption();
         String number = body.getNumber(); // Lấy ID sổ tiết kiệm
@@ -123,23 +129,38 @@ public class SavingRest {
 //        Optional<Saving> optionalSaving = savingRepo.findById(id);
 //        if(!optionalSaving.isPresent()){
         if(saving == null){
-            error.put("id","Saving doesn't exist!");
+            error.put("id","Sổ tiết kiệm không tồn tại!");
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
         if(saving.getStatus() == -1){
-            error.put("status","The SavingsBook was withdrawn early!");
+            error.put("status","Sổ tiết kiệm đã đuợc rút truớc đó!");
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+        OTP otp = new OTP();
+        otp.setAccount(number);
         if(option == 0){
-            saving.withdrawal();
+            // saving.withdrawal();
+            otp.setAction("withdrawal");
         }else{
-            saving.withdrawalCash();
+            // saving.withdrawalCash();
+            otp.setAction("withdrawal cash");
         }
+        otp.setCreated_at(LocalDateTime.now());
+        otp.setExpired_at(otp.getCreated_at().plusMinutes(5));
+        String value;
+        Random random = new Random();
+        do{
+            value = String.format("%06d", random.nextInt(1000000));
+        }while(!otpRepo.findByStrValue(value).isEmpty());
+        otp.setStrValue(value);
+        otpRepo.save(otp);
+
         // saving.setStatus(-1);
-        savingRepo.save(saving);
-        response.put("message", "Successful early withdrawal savings book!");
+        // savingRepo.save(saving);
+        emailSender.verifyWithdrawal(saving.getAccount().getEmail(), value);
+        response.put("message", "Nhập mã otp để xác minh yêu cầu rút sổ tiết kiệm");
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 

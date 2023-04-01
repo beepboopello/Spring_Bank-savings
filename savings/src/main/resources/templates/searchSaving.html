@@ -2155,9 +2155,35 @@
                                                                                     <input type="hidden" name="number">
                                                                                 </form>
                                                                             </div>
+                                                                            
 
 
                                                                             
+                                                                        </div>
+
+                                                                        <div class="d-flex flex-wrap">
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                <b id="id_titleotp" style="display: none;" class="mr-3 col-12 col-md-4 p-0">
+                                                                                    OTP
+                                                                                </b>
+                                                                                <div class="col p-0 mr-5">
+                                                                                    <input
+                                                                                        placeholder="Nhập OTP"
+                                                                                        maxlength="18" rel="tooltip"
+                                                                                        id="id_txtotp" style="display: none;"
+                                                                                        value="">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                <b class="mr-3 col-12 col-md-4 p-0"></b>
+                                                                                <div class="col p-0 mr-5">
+                                                                                    <button onclick="verifyotp()"
+                                                                                        class="classbutton"
+                                                                                        id="id_btnotp" style="display: none;">Xác thực</button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                         <script>
                                                                             function submitForm() {
@@ -2169,6 +2195,28 @@
                                                                                 jQuery("#lblthongbao").html("");
                                                                                 document.getElementById("id_inputNumberSaving").value = numberSaving
                                                                                 document.getElementById("id_form").submit();
+                                                                            }
+
+                                                                            async function verifyotp(){
+                                                                                let data = {
+																					otp: document.getElementById("id_txtotp").value,
+																					token: document.getElementById("id_token").value,
+																				};
+																				let endpoint = "/api/otp/saving"
+																				let response = await fetch(endpoint, {
+																					method: "POST",
+																					headers: { 'Content-Type': 'application/json' },
+																					body: JSON.stringify(data)
+																				});
+																				let res = await response.json();
+																				console.log(res);
+																				if (res.error) {
+																					jQuery("#lblthongbao").html("OTP không hợp lệ");
+																				}
+																				else {
+																					alert(res.message);
+																					location.reload();
+																				};
                                                                             }
 
                                                                             function searchSaving() {
@@ -2190,8 +2238,10 @@
                                                                                 })
                                                                                     .then(response => {
                                                                                         if (response.ok) {
-                                                                                            alert("Rút sổ thành công")
-                                                                                            location.reload();
+                                                                                            alert("Nhập mã OTP khách hàng cung cấp để xác thực rút sổ")
+                                                                                            document.getElementById("id_btnotp").style.display = null;
+                                                                                            document.getElementById("id_txtotp").style.display = null;
+                                                                                            document.getElementById("id_titleotp").style.display = null;
                                                                                         } else {
                                                                                             throw new Error('API request failed with status ' + response.status);
                                                                                         }

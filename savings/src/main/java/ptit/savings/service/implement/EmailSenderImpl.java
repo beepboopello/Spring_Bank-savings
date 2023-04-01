@@ -42,5 +42,15 @@ public class EmailSenderImpl implements EmailSender{
         mailSender.send(msg);
     }
 
+    @Override
+    public void verifyWithdrawal(String toEmail, String otp) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom("ptitbankapp@gmail.com");
+        msg.setTo(toEmail);
+        msg.setText("Vui lòng cung cấp mã otp : " + otp + " cho nhân viên quầy để hoàn tất việc rút sổ tiết kiệm");
+        msg.setSubject("Xác thực rút sổ tiết kiệm");
+        mailSender.send(msg);
+    }
+
 
 }
