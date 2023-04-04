@@ -4,6 +4,7 @@ import ptit.savings.model.*;
 import ptit.savings.model.requestBody.Account.AddNewAccountBody;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.OTPRepository;
+import ptit.savings.repository.StaffRepository;
 import ptit.savings.service.EmailSender;
 
 import java.time.LocalDateTime;
@@ -34,14 +35,12 @@ public class AccountRest {
     private EmailSender emailSender;
     @Autowired 
     private OTPRepository otpRepo;
+    @Autowired
+    private StaffRepository staffRepo;
 
     @PostMapping(path = "/add")
     public ResponseEntity<Object> addNewAccount(
             @RequestBody @Valid AddNewAccountBody body, BindingResult bindingResult) {
-        // @RequestParam String email,
-        // @RequestParam String firstName,
-        // @RequestParam String lastName,
-        // @RequestParam String cccd) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
         if(bindingResult.hasErrors()){
@@ -54,6 +53,10 @@ public class AccountRest {
                 }
             }
         }
+        if(staffRepo.findByToken(body.getToken()).isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
         Account b = new Account();
 
         b.setEmail(body.getEmail());

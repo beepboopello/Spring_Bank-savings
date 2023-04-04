@@ -20,6 +20,7 @@ import ptit.savings.model.requestBody.OTP.VerifyBody;
 import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
+import ptit.savings.repository.StaffRepository;
 
 @RestController
 public class OTPRest {
@@ -32,18 +33,28 @@ public class OTPRest {
     @Autowired
     private OTPRepository otpRepository;
 
+    @Autowired
+    private StaffRepository staffRepo;
+
     @PostMapping("/api/otp/account")
     public ResponseEntity<Object> verifyAccount(
         @RequestBody @Valid VerifyBody body, BindingResult bindingResult
     ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
+        
 
         if(bindingResult.hasErrors()){
             error.put("message", "Invalid request body");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+
+        if(staffRepo.findByToken(body.getToken()).isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+
         if(otpRepository.findByStrValue(body.getOtp()).isEmpty()){
             error.put("otp","OTP không hợp lệ");
             response.put("error", error);
@@ -83,6 +94,12 @@ public class OTPRest {
                 }
             }
         }
+
+        if(staffRepo.findByToken(body.getToken()).isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+        
         if(otpRepository.findByStrValue(body.getOtp()).get(0)==null){
             error.put("otp","OTP không hợp lệ");
             response.put("error", error);

@@ -1,6 +1,7 @@
 package ptit.savings.rest_controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import ptit.savings.model.Interest;
+import ptit.savings.model.Staff;
 import ptit.savings.model.requestBody.Interest.AddBody;
 import ptit.savings.model.requestBody.Interest.CalculateBody;
 import ptit.savings.model.requestBody.Interest.DeleteBody;
 import ptit.savings.model.requestBody.Interest.EditBody;
 import ptit.savings.repository.InterestRepository;
+import ptit.savings.repository.StaffRepository;
 import ptit.savings.service.InterestService;
 import ptit.savings.tools.InterestCalculator;
 
 @RestController
 public class InterestRest {
+    @Autowired
+    private StaffRepository staffRepo;
     @Autowired
     private InterestRepository repo;
 
@@ -68,6 +73,16 @@ public class InterestRest {
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
 
+        List<Staff> admin = staffRepo.findByToken(body.getToken());
+        if(admin.isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+        if(admin.get(0).getIsAdmin()==0){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+
         Long id = body.getId();
         // String name = body.getName();
         // int months = body.getMonths();
@@ -100,6 +115,15 @@ public class InterestRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+        List<Staff> admin = staffRepo.findByToken(body.getToken());
+        if(admin.isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+        if(admin.get(0).getIsAdmin()==0){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
         // Lấy thông tin từ body
         // String name = body.getName();
         int months = body.getMonths();

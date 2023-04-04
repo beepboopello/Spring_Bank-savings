@@ -77,6 +77,10 @@ public class Saving {
 
     public void hourlyUpdate(){
         this.current = InterestCalculator.update(this);
+        if(this.interest.getMonths()==0){
+            updated_at = LocalDateTime.now();        
+            return;
+        }
         if(LocalDateTime.now().isAfter(receive_at)){
             initial = mature;
             mature = InterestCalculator.calculate(initial, interest);

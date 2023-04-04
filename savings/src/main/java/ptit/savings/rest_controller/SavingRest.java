@@ -26,10 +26,14 @@ import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.InterestRepository;
 import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
+import ptit.savings.repository.StaffRepository;
 import ptit.savings.service.EmailSender;
 
 @RestController
 public class SavingRest {
+    @Autowired
+    private StaffRepository staffRepo;
+
     @Autowired
     private SavingRepository savingRepo;
 
@@ -62,10 +66,11 @@ public class SavingRest {
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
-        // kiem tra token
-        // if(false){
-        //     error.put("token", "Invalid token");
-        // }
+        
+        if(staffRepo.findByToken(body.getToken()).isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
 
         String stk = body.getStk();
         Long initial = body.getInitial();
@@ -123,6 +128,12 @@ public class SavingRest {
                 }
             }
         }
+
+        if(staffRepo.findByToken(body.getToken()).isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+
         int option = body.getOption();
         String number = body.getNumber(); // Lấy ID sổ tiết kiệm
         Saving saving = savingRepo.findByNumber(number).get(0);

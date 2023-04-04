@@ -36,6 +36,9 @@
                 for (const id of arrayError) {
                     document.getElementById(id).innerHTML = "";
                 }
+                if(!obj.body.error){
+                    location.href = '/';
+                }
                 console.log(obj.body.error); 
                 for(var error in obj.body.error){
                     document.getElementById("id_err-"+error).innerHTML = obj.body.error[error]
@@ -44,16 +47,6 @@
             });
 
     }
-    // function verify() {
-    //     let data = { stk: document.getElementById("id_stk").value, otp: document.getElementById("id_otp").value };
-    //     fetch("/api/client/verify", {
-    //         method: "POST",
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(data)
-    //     }).then(res => {
-    //         console.log(res);
-    //     })
-    // }
 </script>
 
 <body>

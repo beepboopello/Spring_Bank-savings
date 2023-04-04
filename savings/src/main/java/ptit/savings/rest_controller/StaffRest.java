@@ -27,6 +27,9 @@ import ptit.savings.tools.JsonUtil;
 public class StaffRest {
 
     @Autowired
+    private StaffRepository staffRepo;
+
+    @Autowired
     private StaffRepository repository;
 
     @PostMapping("/api/register")
@@ -78,7 +81,17 @@ public class StaffRest {
              }
              response.put("error",error);
              return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-         }
+        }
+
+        List<Staff> admin = staffRepo.findByToken(body.getToken());
+        if(admin.isEmpty()){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
+        if(admin.get(0).getIsAdmin()==0){
+            response.put("error", "Xác minh token thất bại");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        };
 
         Staff staff = repository.findById(body.getId()).orElse(null);
         if (staff == null) {

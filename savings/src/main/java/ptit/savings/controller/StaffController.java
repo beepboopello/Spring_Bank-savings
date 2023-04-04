@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,8 @@ public class StaffController {
     private SavingRepository savingRepo;
 
     @GetMapping("/")
-    public ModelAndView getLogin() {
+    public ModelAndView getLogin(ModelMap model) {
+        model.clear();
         ModelAndView loginPage = new ModelAndView("login");
         String token = Token.generateToken();
         loginPage.addObject("token", token);
@@ -61,6 +63,9 @@ public class StaffController {
 
     @RequestMapping(path = "/logout")
     public String logout(HttpSession session, Model model) {
+        Staff staff = (Staff) session.getAttribute("staff");
+        staff.setToken(null);
+        staffRepo.save(staff);
         session.removeAttribute("staff");
         session.removeAttribute("token");
         return "redirect:/";
@@ -180,17 +185,19 @@ public class StaffController {
                         HttpSession session) {
         List<Staff> list = staffRepo.findByUsername(username);
         if (list.isEmpty()) {
-            model.addAttribute("error", "User not found");
-            return "blank";
+            model.addAttribute("error", "Không tồn tại nguời dùng");
+            return "login";
         }
         Staff staff = list.get(0);
         if (staff.getVerified() != 1) {
-            model.addAttribute("error", "User is not verified, please contact your administrator for support");
-            return "blank";
+            model.addAttribute("error", "Nguời dùng chưa đuợc xác minh");
+            return "login";
         } else if (!BCrypt.checkpw(password, staff.getPassword())) {
-            model.addAttribute("error", "Invalid password");
-            return "blank";
+            model.addAttribute("error", "Sai mật khẩu");
+            return "login";
         }
+        staff.setToken(token);
+        staffRepo.save(staff);
         session.setAttribute("staff", staff);
         session.setAttribute("token", token);
         if (staff.getIsAdmin() == 1) {
@@ -199,6 +206,12 @@ public class StaffController {
         return "redirect:/dashboard";
     }
 
+
+    @GetMapping("/login")
+    public String redirectLogin(HttpSession session, Model model){
+        model.addAttribute("error", "");
+        return "redirect:/";
+    }
 
     @GetMapping("/register")
     public ModelAndView getRegister() {

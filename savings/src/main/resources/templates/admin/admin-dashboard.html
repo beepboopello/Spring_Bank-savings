@@ -115,31 +115,28 @@
 		</div>
 	</div>
 	<script>
-		function verify(clicked_id) {
+		async function verify(clicked_id) {
 			let data = {
 				id: clicked_id.substring(9),
 				token: document.getElementById("id_token").value,
 			}
 			let endpoint = "/api/admin/verify";
 			let res = fetchApi(endpoint, data);
-			try{
-				if(res.error){
-					console(res.error)
-				}
-			}
-			catch(error){
-				location.reload();
-			}
+			await new Promise(r => setTimeout(r, 500));
+			location.reload();
 		}
 
-		function editInterest(clicked_id) {
-			let irate = prompt("Enter new rate");
+		async function editInterest(clicked_id) {
+			let irate = prompt("Nhập lãi suất mới (0.03% - 3%)");
 			if (irate == null || irate == ""){
-				console.log("Empty rate");
+				alert("Lãi suất không thể để trống");
 				return;
 			}
-			if (isNaN(irate)|| irate > 3 || irate < 0.003){
-				console.log("invalid rate");
+			if(isNaN(irate)){
+				alert("Lãi suất nhập vào không phải số ");
+			}
+			if (irate > 3 || irate < 0.03){
+				alert("Lãi suất không nằm trong khoảng cho phép");
 				return;
 			}
 			let data = {
@@ -149,14 +146,8 @@
 			};
 			let endpoint = "/api/admin/interest/edit";
 			let res = fetchApi(endpoint, data);
-			try{
-				if(res.error){
-					console(res.error)
-				}
-			}
-			catch(error){
-				location.reload();
-			}
+			await new Promise(r => setTimeout(r, 500));
+			location.reload();
 			
 		}
 
