@@ -2117,7 +2117,7 @@
 																				<div
 																					class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
 																					<b class="mr-3 col-12 col-md-4 p-0">
-																						Số tiền gửi
+																						Số tiền gửi (VND)
 																					</b>
 																					<div class="col p-0 mr-5">
 																						<input
@@ -2174,6 +2174,14 @@
 																			
 																		</div>
 																		<script>
+																			jQuery(document).ready(function () {
+																				jQuery("#id_initial").keyup(function () {
+																					var str = jQuery(this).val();
+																					str = str.replace(/\D+/g, '');
+																					str = str.replace(/^(0*)/, '');
+																					jQuery(this).val(str.replace(/\d(?=(?:\d{3})+(?!\d))/g, '$&,'));
+																				});
+																			});
 																			function submitForm() {
 																				let stk = document.getElementById("id_txtstk").value
 																				if (stk == null || stk.trim() == "") {
@@ -2186,7 +2194,7 @@
 																			}
 																			async function addSaving() {
 																				var listIn = document.getElementById("GetKy");
-																				let amount = document.getElementById("id_initial").value;
+																				let amount = document.getElementById("id_initial").value.replaceAll(",", "");
 																				if (isNaN(amount)) {
 																					jQuery("#lblthongbao").html("Số tiền gửi không hợp lệ");
 																					document.getElementById("id_initial").value = "";
@@ -2198,7 +2206,7 @@
 																				}
 																				let data = {
 																					stk: document.getElementById("id_txtstk").value,
-																					initial: document.getElementById("id_initial").value,
+																					initial: amount,
 																					interestId: listIn.options[listIn.selectedIndex].id.substr(5),
 																					token: document.getElementById("id_token").value,
 																				};
@@ -2222,7 +2230,7 @@
 																				document.getElementById("id_otp").style.display = "contents";
 																				document.getElementById("btnAdd").onclick = checkOTP;
 																				document.getElementById("btnAdd").textContent = "Kiểm tra OTP";;
-
+																				alert("Mã OTP đã được gửi đến gmail của bạn, vui lòng kiểm tra!");
 																			}
 																			async function checkOTP() {
 																				let data = {
@@ -2246,6 +2254,7 @@
 																				};
 																			}
 																		</script>
+
 																	</div>
 
 																</div>

@@ -24,7 +24,10 @@ public class UpdateSavings {
     public void hourlySavingUpdate(){
         List<Saving> list = savingRepo.findAll();
         for(Saving s:list){
-            s.hourlyUpdate();
+            if(s.getStatus() == 1) {
+                s.hourlyUpdate();
+                savingRepo.save(s);
+            }
         }
     }
 

@@ -14,13 +14,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import ptit.savings.repository.SavingRepository;
 import ptit.savings.tools.InterestCalculator;
 
 @Entity
 @Data
 @NoArgsConstructor
 public class Saving {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -67,14 +68,18 @@ public class Saving {
         this.started_at = this.created_at;
         this.updated_at = this.created_at;
         this.verify = 0;
-        if (interest.getMonths() != 0) {
+        if (interest.getMonths() == 0) {
+            this.receive_at = null;
+        } else {
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }
+        System.out.println("receive_at: " + receive_at);
 //        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
         this.mature = InterestCalculator.calculate(this.initial, this.interest);
         this.status = 1;
     }
 
+<<<<<<< Updated upstream
     public void hourlyUpdate(){
         this.current = InterestCalculator.update(this);
         if(this.interest.getMonths()==0){
@@ -86,24 +91,36 @@ public class Saving {
             mature = InterestCalculator.calculate(initial, interest);
             started_at = receive_at;
             receive_at = started_at.plusMonths(interest.getMonths());
+=======
+    public void hourlyUpdate() {
+        try {
+            this.current = InterestCalculator.update(this);
+            System.out.println("current: " + this.current);
+            System.out.println();
+            if (receive_at != null) {
+                if (LocalDateTime.now().isAfter(receive_at)) {
+                    initial = mature;
+                    mature = InterestCalculator.calculate(initial, interest);
+                    started_at = receive_at;
+                    receive_at = started_at.plusMonths(interest.getMonths());
+                }
+            }else{
+                this.mature = this.current;
+            }
+            updated_at = LocalDateTime.now();
+        } catch (Exception e) {
+            System.out.println("error ở saving.java");
+>>>>>>> Stashed changes
         }
-        updated_at = LocalDateTime.now();        
     }
-//     private void withdrawal() {
-// //      khi đáo hạn thì tất cả tiền đều được cộng vào tài khoản
-//         this.account.setBalance(this.account.getBalance() + this.mature);
-//         this.status = -1;
-//     }
+
     public void withdrawal() {
 //        nếu rút tiền sớm hơn kỳ hạn months thì lãi sẽ được tính theo số ngày đã gửi và lãi suất tính theo ngày giống gửi tiết kiệm không có kỳ hạn
-//        if(LocalDateTime.now().isBefore(receive_at)){ // kiểm tra thời gian hiện tại có nhỏ hơn thời gian đáo hạn không
-//            this.interest = InterestRepository.findByMonths(0).get(0);
-//        }
         withdrawalCash();
-        //      khi rút trước hạn thì tất cả tiền đều được cộng vào tài khoản
         this.account.setBalance(this.account.getBalance() + this.mature);
     }
-//    hàm rut tien mặt từ tiết kiệm
+
+    //    hàm rut tien mặt từ tiết kiệm
     public void withdrawalCash() {
         this.updated_at = LocalDateTime.now();
         this.current = InterestCalculator.withdrawal(this);

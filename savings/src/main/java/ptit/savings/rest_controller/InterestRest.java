@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import ptit.savings.model.Interest;
 import ptit.savings.model.Staff;
 import ptit.savings.model.requestBody.Interest.AddBody;
-import ptit.savings.model.requestBody.Interest.CalculateBody;
 import ptit.savings.model.requestBody.Interest.DeleteBody;
 import ptit.savings.model.requestBody.Interest.EditBody;
 import ptit.savings.repository.InterestRepository;
@@ -35,10 +34,10 @@ public class InterestRest {
     @PostMapping("/api/admin/interest/delete")
     public ResponseEntity<Object> delete(
         @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
-    ){             
+    ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
-        
+
         // kiem tra token tu body
 
         //
