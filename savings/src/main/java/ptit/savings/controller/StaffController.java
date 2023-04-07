@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,26 @@ public class StaffController {
     private SavingRepository savingRepo;
 
     @GetMapping("/")
-    public ModelAndView getLogin(ModelMap model) {
-        model.clear();
-        ModelAndView loginPage = new ModelAndView("login");
-        String token = Token.generateToken();
-        loginPage.addObject("token", token);
-        return loginPage;
+    public ModelAndView getLogin(HttpSession session, ModelMap model) {
+        if (userIsLoggedIn(session)) {
+            return new ModelAndView("dashboard");
+        } else {
+            String token = Token.generateToken();
+            model.addAttribute("token", token);
+            return new ModelAndView("login", model);
+        }
+//        model.clear();
+//        ModelAndView loginPage = new ModelAndView("login");
+//        String token = Token.generateToken();
+//        loginPage.addObject("token", token);
+//        return loginPage;
+    }
+
+    private boolean userIsLoggedIn(HttpSession session) {
+        Staff staff = (Staff) session.getAttribute("staff");
+        if (staff == null)
+            return false;
+        else return true;
     }
 
     @RequestMapping(path = "/register")
@@ -70,6 +85,7 @@ public class StaffController {
         session.removeAttribute("token");
         return "redirect:/";
     }
+
     @GetMapping("/addAccount")
     public String addAccount(HttpSession session, Model model) {
         Staff staff = (Staff) session.getAttribute("staff");
@@ -83,6 +99,7 @@ public class StaffController {
             return "addAccount";
         }
     }
+
     @GetMapping("/addSaving")
     public String addSaving(HttpSession session, Model model) {
         Staff staff = (Staff) session.getAttribute("staff");
@@ -127,6 +144,7 @@ public class StaffController {
             return "searchSaving";
         }
     }
+
     @GetMapping("/findSavingBook")
     public String findSavingBook(HttpSession session, Model model, @RequestParam String number) {
         Staff staff = (Staff) session.getAttribute("staff");
@@ -208,7 +226,7 @@ public class StaffController {
 
 
     @GetMapping("/login")
-    public String redirectLogin(HttpSession session, Model model){
+    public String redirectLogin(HttpSession session, Model model) {
         model.addAttribute("error", "");
         return "redirect:/";
     }
