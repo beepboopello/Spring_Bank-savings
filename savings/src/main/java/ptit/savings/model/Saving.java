@@ -73,7 +73,6 @@ public class Saving {
         } else {
             this.receive_at = this.created_at.plusMonths(interest.getMonths());
         }
-        System.out.println("receive_at: " + receive_at);
 //        this.mature = InterestCalculator.withdrawal(this.initial, this.interest,this);
         this.mature = InterestCalculator.calculate(this.initial, this.interest);
         this.status = 1;
@@ -82,8 +81,6 @@ public class Saving {
     public void hourlyUpdate() {
         try {
             this.current = InterestCalculator.update(this);
-            System.out.println("current: " + this.current);
-            System.out.println();
             if (receive_at != null) {
                 if (LocalDateTime.now().isAfter(receive_at)) {
                     initial = mature;
@@ -96,6 +93,7 @@ public class Saving {
             }
             updated_at = LocalDateTime.now();
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("error ở saving.java");
         }
     }
