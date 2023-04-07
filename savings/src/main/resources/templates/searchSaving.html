@@ -2243,11 +2243,12 @@
                                                                                             document.getElementById("id_txtotp").style.display = null;
                                                                                             document.getElementById("id_titleotp").style.display = null;
                                                                                         } else {
-                                                                                            throw new Error('API request failed with status ' + response.status);
+                                                                                            alert("Sổ tiết kiệm đã được rút truớc đó")
+                                                                                            throw new Error(response.status);
                                                                                         }
                                                                                     })
                                                                                     .catch(error => {
-                                                                                        console.error('Error Calling API', error);
+                                                                                        console.error(error);
                                                                                     });
                                                                             }
                                                                         </script>
