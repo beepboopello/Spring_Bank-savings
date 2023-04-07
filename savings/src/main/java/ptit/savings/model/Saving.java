@@ -79,19 +79,6 @@ public class Saving {
         this.status = 1;
     }
 
-<<<<<<< Updated upstream
-    public void hourlyUpdate(){
-        this.current = InterestCalculator.update(this);
-        if(this.interest.getMonths()==0){
-            updated_at = LocalDateTime.now();        
-            return;
-        }
-        if(LocalDateTime.now().isAfter(receive_at)){
-            initial = mature;
-            mature = InterestCalculator.calculate(initial, interest);
-            started_at = receive_at;
-            receive_at = started_at.plusMonths(interest.getMonths());
-=======
     public void hourlyUpdate() {
         try {
             this.current = InterestCalculator.update(this);
@@ -104,13 +91,12 @@ public class Saving {
                     started_at = receive_at;
                     receive_at = started_at.plusMonths(interest.getMonths());
                 }
-            }else{
+            } else {
                 this.mature = this.current;
             }
             updated_at = LocalDateTime.now();
         } catch (Exception e) {
             System.out.println("error ở saving.java");
->>>>>>> Stashed changes
         }
     }
 
