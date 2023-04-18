@@ -63,6 +63,10 @@ public class AccountRest {
         b.setFirst_name(body.getFirstName());
         b.setLast_name(body.getLastName());
         b.setCccd(body.getCccd());
+        b.setAddress(body.getAddress());
+        b.setPhone(body.getPhone());
+        b.setGender(body.getGender());
+        b.setDob(body.getDob());
         b.setVerifed(0);
 
         b.setCreated_at(LocalDateTime.now());
