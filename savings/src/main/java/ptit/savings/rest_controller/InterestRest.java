@@ -33,10 +33,10 @@ public class InterestRest {
 
     @PostMapping("/api/admin/interest/delete")
     public ResponseEntity<Object> delete(
-        @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
-    ){
-        HashMap<String,Object> response = new HashMap<>();
-        HashMap<String,Object> error = new HashMap<>();
+            @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
+    ) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
 
         // kiem tra token tu body
 
@@ -49,12 +49,12 @@ public class InterestRest {
 //        repo.deleteById(body.getId());
 //        return new ResponseEntity<Object>(response, HttpStatus.OK);
 
-        if(interestService.getInterestById(body.getId()) != null){
+        if (interestService.getInterestById(body.getId()) != null) {
             interestService.deleteInterest(body.getId());
             return new ResponseEntity<>("Interest deleted successfully", HttpStatus.OK);
         } else {
             error.put("error", "Interest with given id does not exist");
-            response.put("error",error);
+            response.put("error", error);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -62,77 +62,79 @@ public class InterestRest {
     @PostMapping("/api/admin/interest/edit")
     public ResponseEntity<Object> edit(
             @RequestBody @Valid EditBody body, BindingResult bindingResult   //Body gom id lai suat can sua, ten, so thang, lai suat(theo %), token
-    ){
-        HashMap<String,Object> response = new HashMap<>();
-        HashMap<String,Object> error = new HashMap<>();
+    ) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
 
-        if(bindingResult.hasErrors()){
-            error.put("message", "Invalid request body");
+        if (bindingResult.hasErrors()) {
+            error.put("message", "Invalid request body   ");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
 
         List<Staff> admin = staffRepo.findByToken(body.getToken());
-        if(admin.isEmpty()){
+        if (admin.isEmpty()) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
-        if(admin.get(0).getIsAdmin()==0){
+        }
+        if (admin.get(0).getIsAdmin() == 0) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
+        }
 
         Long id = body.getId();
-        // String name = body.getName();
-        // int months = body.getMonths();
+//        String name = body.getName();
+//        int months = body.getMonths();
         double rate = body.getRate();
 
         // Thực hiện cập nhật thông tin lãi suất vào database
         Interest interest = interestService.getInterestById(id);
-        if(interest == null){
+        if (interest == null) {
             error.put("message", "Interest rate not found");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
-        // interest.setName(name);
-        // interest.setMonths(months);
+//        interest.setName(name);
+//        interest.setMonths(months);
         interest.setRate(rate);
         interestService.updateInterest(interest);
 
-        return new ResponseEntity<Object>(response , HttpStatus.OK);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
     @PostMapping("/api/admin/interest/add")
     public ResponseEntity<Object> add(
             @RequestBody @Valid AddBody body, BindingResult bindingResult    //Body gom ten, so thang, lai suat(theo %), token
-    ){
-        HashMap<String,Object> response = new HashMap<>();
-        HashMap<String,Object> error = new HashMap<>();
+    ) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             error.put("message", "Invalid request body");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
         List<Staff> admin = staffRepo.findByToken(body.getToken());
-        if(admin.isEmpty()){
+        if (admin.isEmpty()) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
-        if(admin.get(0).getIsAdmin()==0){
+        }
+        ;
+        if (admin.get(0).getIsAdmin() == 0) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
+        }
+        ;
         // Lấy thông tin từ body
         // String name = body.getName();
         int months = body.getMonths();
         String name = String.valueOf(months) + " tháng";
         double rate = body.getRate();
 
-        if(!repo.findByMonths(months).isEmpty()){
-            error.put("months","Duplicate month value");
+        if (!repo.findByMonths(months).isEmpty()) {
+            error.put("months", "Duplicate month value");
             response.put("error", error);
-            return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
 
         // Thêm thông tin lãi suất vào database

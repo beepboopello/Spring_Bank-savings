@@ -127,7 +127,7 @@
 		}
 
 		async function editInterest(clicked_id) {
-			let irate = prompt("Nhập lãi suất mới (0.03% - 3%)");
+			let irate = prompt("Nhập lãi suất mới (đơn vị %)");
 			if (irate == null || irate == ""){
 				alert("Lãi suất không thể để trống");
 				return;
@@ -135,13 +135,13 @@
 			if(isNaN(irate)){
 				alert("Lãi suất nhập vào không phải số ");
 			}
-			if (irate > 3 || irate < 0.03){
+			if (irate < 0){
 				alert("Lãi suất không nằm trong khoảng cho phép");
 				return;
 			}
 			let data = {
 				id: clicked_id.substring(15),
-				rate : irate/100,
+				rate : irate,
 				token: document.getElementById("id_token").value,
 			};
 			let endpoint = "/api/admin/interest/edit";

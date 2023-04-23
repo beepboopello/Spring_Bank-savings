@@ -34,7 +34,7 @@ public class InterestServiceImpl implements InterestService {
     }
 
     @Override
-        public void deleteInterest(Long id) {
+    public void deleteInterest(Long id) {
         interestRepo.deleteById(id);
     }
 }

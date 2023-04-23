@@ -3,6 +3,7 @@ package ptit.savings.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,12 +56,23 @@ public class Staff {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
+    public Staff(Long id, String firstName, String lastName, String email, String username, String password, int isAdmin) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
 
-    public Staff(String firstName,String lastName, String email, String username, String password){
+    public Staff(String firstName, String lastName, String email, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
     }
+
+
 }
