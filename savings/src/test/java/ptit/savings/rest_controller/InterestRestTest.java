@@ -204,7 +204,7 @@ class InterestRestTest {
         staff.setFirstName("admin");
         staff.setEmail("test@gmail.com");
         staff.setToken("admin");
-        staff.setIsAdmin(1);
+        staff.setIsAdmin(0);
         staff.setUsername("admin");
         List<Staff> list = new ArrayList<>();
         list.add(staff);
@@ -304,7 +304,37 @@ class InterestRestTest {
         String content = result.getResponse().getContentAsString();
         assertEquals(response.get("message").toString(), content);
     }
+    @Test
+    void testAddInterestNotIsAdmin() throws Exception {
+        // Mock request body
+        String requestBody = "{\"months\": 36, \"rate\": 7.0,\"token\": \"test_token\"}";
 
+        // Mock response
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("message", "Token verification failed!");
+
+        Staff staff = new Staff();
+        staff.setId(1L);
+        staff.setLastName("admin");
+        staff.setFirstName("admin");
+        staff.setEmail("test@gmail.com");
+        staff.setToken("token");
+        staff.setIsAdmin(0);
+        staff.setUsername("admin");
+        List<Staff> list = new ArrayList<>();
+        list.add(staff);
+        when(staffRepo.findByToken(staff.getToken())).thenReturn(list);
+
+        // Send request
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/interest/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isForbidden())
+                .andReturn();
+        // Verify response
+        String content = result.getResponse().getContentAsString();
+        assertEquals(response.get("message").toString(), content);
+    }
     @Test
     void testCaculateInterest() throws Exception {
         // Mock request body
