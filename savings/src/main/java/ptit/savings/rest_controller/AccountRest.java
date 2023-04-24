@@ -43,22 +43,11 @@ public class AccountRest {
             @RequestBody @Valid AddNewAccountBody body, BindingResult bindingResult) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-        if(bindingResult.hasErrors()){
-            error = new HashMap<>();
-            for (Object object : bindingResult.getAllErrors()) {
-                if(object instanceof FieldError) {
-                    FieldError fieldError = (FieldError) object;
-                    response.put("error", fieldError.getDefaultMessage());
-                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-                }
-            }
-        }
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
-            response.put("error", "Xác minh token thất bại");
+            response.put("message","Token verification failed!");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         };
         Account b = new Account();
-
         b.setEmail(body.getEmail());
         b.setFirst_name(body.getFirstName());
         b.setLast_name(body.getLastName());
@@ -68,7 +57,6 @@ public class AccountRest {
         b.setGender(body.getGender());
         b.setDob(body.getDob());
         b.setVerifed(0);
-
         b.setCreated_at(LocalDateTime.now());
         b.setUpdated_at(b.getCreated_at());
         Random random = new Random();
@@ -79,7 +67,6 @@ public class AccountRest {
         b.setStk(stk);
         b.setBalance(Long.parseLong("50000"));
         bankAccountRepository.save(b);
-
         OTP otp = new OTP();
         otp.setAccount(stk);
         otp.setAction("verify account");
@@ -91,12 +78,11 @@ public class AccountRest {
         }while(!otpRepo.findByStrValue(value).isEmpty());
         otp.setStrValue(value);
         otpRepo.save(otp);
-
         emailSender.newBankAccountEmail(body.getEmail(), body.getLastName() + " " + body.getFirstName(), stk, otp.getStrValue());
         response.put("account", b);
+        response.put("message", "New account created successfully!");
         return new ResponseEntity<Object>(response , HttpStatus.OK);
     }
-
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Account> getAllAccounts() {
         return bankAccountRepository.findAll();
