@@ -34,7 +34,7 @@ public class Dataloader implements ApplicationRunner{
             staffRepo.save(admin);
         }
 
-        if(interestRepo.findByMonths(12).isEmpty()){
+        if(interestRepo.findByMonths(12) == null){
             Interest in = new Interest();
             in.setName("12 thang");
             in.setMonths(12);
@@ -42,7 +42,7 @@ public class Dataloader implements ApplicationRunner{
             interestRepo.save(in);
         }
 
-        if(interestRepo.findByMonths(0).isEmpty()){
+        if(interestRepo.findByMonths(0) == null){
             Interest in = new Interest();
             in.setName("Không kỳ hạn");
             in.setMonths(0);

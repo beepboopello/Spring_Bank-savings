@@ -35,71 +35,34 @@ public class InterestRest {
     public ResponseEntity<Object> delete(
             @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
     ) {
-        HashMap<String, Object> response = new HashMap<>();
-        HashMap<String, Object> error = new HashMap<>();
-
-        // kiem tra token tu body
-
-        //
-//        if(repo.findById(body.getId()).isEmpty()){
-//            error.put("error", "Interest id doesn't exist");
-//            response.put("error",error);
-//            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-//        }
-//        repo.deleteById(body.getId());
-//        return new ResponseEntity<Object>(response, HttpStatus.OK);
-
         if (interestService.getInterestById(body.getId()) != null) {
             interestService.deleteInterest(body.getId());
             return new ResponseEntity<>("Interest deleted successfully", HttpStatus.OK);
         } else {
-            error.put("error", "Interest with given id does not exist");
-            response.put("error", error);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Interest with given id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/api/admin/interest/edit")
     public ResponseEntity<Object> edit(
-            @RequestBody @Valid EditBody body, BindingResult bindingResult   //Body gom id lai suat can sua, ten, so thang, lai suat(theo %), token
-    ) {
+            @RequestBody @Valid EditBody body, BindingResult bindingResult) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            error.put("message", "Invalid request body   ");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-        }
-
         List<Staff> admin = staffRepo.findByToken(body.getToken());
-        if (admin.isEmpty()) {
-            response.put("error", "Xác minh token thất bại");
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-        if (admin.get(0).getIsAdmin() == 0) {
-            response.put("error", "Xác minh token thất bại");
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        if (admin.isEmpty() || admin.get(0).getIsAdmin() == 0) {
+            return new ResponseEntity<Object>("Token verification failed!", HttpStatus.FORBIDDEN);
         }
 
         Long id = body.getId();
-//        String name = body.getName();
-//        int months = body.getMonths();
         double rate = body.getRate();
 
-        // Thực hiện cập nhật thông tin lãi suất vào database
         Interest interest = interestService.getInterestById(id);
         if (interest == null) {
-            error.put("message", "Interest rate not found");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>("Interest rate not found", HttpStatus.NOT_FOUND);
         }
-//        interest.setName(name);
-//        interest.setMonths(months);
         interest.setRate(rate);
         interestService.updateInterest(interest);
-
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
+        return new ResponseEntity<Object>("Interest rate updated successfully", HttpStatus.OK);
     }
 
     @PostMapping("/api/admin/interest/add")
@@ -108,51 +71,26 @@ public class InterestRest {
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            error.put("message", "Invalid request body");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-        }
         List<Staff> admin = staffRepo.findByToken(body.getToken());
-        if (admin.isEmpty()) {
-            response.put("error", "Xác minh token thất bại");
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        if (admin.isEmpty() || admin.get(0).getIsAdmin() == 0) {
+            return new ResponseEntity<Object>("Token verification failed!", HttpStatus.FORBIDDEN);
         }
-        ;
-        if (admin.get(0).getIsAdmin() == 0) {
-            response.put("error", "Xác minh token thất bại");
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-        ;
-        // Lấy thông tin từ body
-        // String name = body.getName();
         int months = body.getMonths();
         String name = String.valueOf(months) + " tháng";
         double rate = body.getRate();
-
         if (!repo.findByMonths(months).isEmpty()) {
-            error.put("months", "Duplicate month value");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>("Duplicate month value", HttpStatus.BAD_REQUEST);
         }
-
+        System.out.println("name: " + name + ", months: " + months + ", rate: " + rate);
         // Thêm thông tin lãi suất vào database
         Interest interest = new Interest(name, months, rate);
         interestService.addInterest(interest);
-
-        // Trả về thông tin lãi suất vừa thêm
-        response.put("message", "Interest rate added successfully");
-        response.put("interest", interest);
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
+        return new ResponseEntity<Object>("Interest rate added successfully", HttpStatus.OK);
     }
-
     @GetMapping("/calculate-interest")
     public ResponseEntity<String> calculateInterest(@RequestParam("idInterest") String idInterest, @RequestParam("amount") String amount) {
-        // code here
         Interest interest = interestService.getInterestById(Long.parseLong(idInterest));
         Long result = InterestCalculator.calculate(Long.parseLong(amount), interest);
-
         Long interestMoney = result - Long.parseLong(amount);
         String data = interestMoney.toString() + "," + result.toString();
         return ResponseEntity.ok().body(data);
