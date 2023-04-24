@@ -136,14 +136,18 @@ public class SavingRest {
 
         int option = body.getOption();
         String number = body.getNumber(); // Lấy ID sổ tiết kiệm
-        Saving saving = savingRepo.findByNumber(number).get(0);
-//        Optional<Saving> optionalSaving = savingRepo.findById(id);
-//        if(!optionalSaving.isPresent()){
-        if(saving == null){
+        Saving saving;
+        try{
+            saving = savingRepo.findByNumber(number).get(0);
+        }
+        catch(IndexOutOfBoundsException e){
             error.put("id","Sổ tiết kiệm không tồn tại!");
             response.put("error",error);
             return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
+        
+//        Optional<Saving> optionalSaving = savingRepo.findById(id);
+//        if(!optionalSaving.isPresent()){
         if(saving.getStatus() == -1){
             error.put("status","Sổ tiết kiệm đã đuợc rút truớc đó!");
             response.put("error",error);
