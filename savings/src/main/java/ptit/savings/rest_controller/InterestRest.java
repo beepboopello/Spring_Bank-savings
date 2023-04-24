@@ -38,7 +38,9 @@ public class InterestRest {
         if (interestService.getInterestById(body.getId()) != null) {
             interestService.deleteInterest(body.getId());
             return new ResponseEntity<>("Interest deleted successfully", HttpStatus.OK);
-        } else {
+        }
+
+        else {
             return new ResponseEntity<>("Interest with given id does not exist", HttpStatus.NOT_FOUND);
         }
     }

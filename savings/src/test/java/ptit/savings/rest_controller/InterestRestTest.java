@@ -349,16 +349,22 @@ class InterestRestTest {
     void testCalculateInterest1() {
         // Arrange
         Long idInterest = 1L;
-        Long amount = 100670L;
         Interest interest = new Interest();
         interest.setRate(6.9);
         interest.setMonths(18);
+        when(interestService.getInterestById(idInterest)).thenReturn(interest);
+
+        // Gọi hàm calculateInterest
+        Long amount = 100670L;
+        ResponseEntity<String> response = interestController.calculateInterest(idInterest.toString(), amount.toString());
 
         when(interestService.getInterestById(idInterest)).thenReturn(interest);
         ResponseEntity<String> responseEntity = interestController.calculateInterest(idInterest.toString(), amount.toString());
         String data = responseEntity.getBody();
         assertEquals("10419,111089", data);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
     @Test
     void testCalculateInterest2() {
         // Tạo các giả định cho hàm getInterestById
