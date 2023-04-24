@@ -27,13 +27,35 @@ import ptit.savings.tools.JsonUtil;
 public class StaffRest {
 
     @Autowired
-    private StaffRepository staffRepo;
-
-    @Autowired
     private StaffRepository repository;
 
     @PostMapping("/api/register")
     public ResponseEntity<Object> register(@RequestBody @Valid StaffRegisterBody body, BindingResult bindingResult) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+        if (!repository.findByUsername(body.getUsername()).isEmpty()) {
+//            error.put("username", "Duplicate username");
+            response.put("message", "Duplicate username");
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        }
+        Staff newStaff = new Staff(body.getFirstName(),
+                body.getLastName(),
+                body.getEmail(),
+                body.getUsername(),
+                BCrypt.hashpw(body.getPassword(), BCrypt.gensalt()));
+        newStaff.setVerified(0);
+        newStaff.setCreated_at(LocalDateTime.now());
+        newStaff.setUpdated_at(newStaff.getCreated_at());
+        repository.save(newStaff);
+        response.put("staff", newStaff);
+        response.put("message", "Register successfully");
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/admin/verify")
+    public ResponseEntity<Object> verify(
+            @RequestBody @Valid StaffVerifyBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
+    ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
         if (bindingResult.hasErrors()) {
@@ -47,60 +69,27 @@ public class StaffRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-        if (!repository.findByUsername(body.getUsername()).isEmpty()) {
-            error.put("username", "Duplicate username");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-        Staff newStaff = new Staff(body.getFirstName(),
-                body.getLastName(),
-                body.getEmail(),
-                body.getUsername(),
-                BCrypt.hashpw(body.getPassword(), BCrypt.gensalt()));
-        newStaff.setVerified(0);
-        newStaff.setCreated_at(LocalDateTime.now());
-        newStaff.setUpdated_at(newStaff.getCreated_at());
-        repository.save(newStaff);
-        response.put("staff", newStaff);
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
-    }
 
-    @PostMapping("/api/admin/verify")
-    public ResponseEntity<Object> verify(
-            @RequestBody @Valid StaffVerifyBody body, BindingResult bindingResult      //Body gom id staff can xac minh, token
-    ) {
-        HashMap<String, Object> response = new HashMap<>();
-        HashMap<String, Object> error = new HashMap<>();
-        if(bindingResult.hasErrors()){
-             error = new HashMap<>();
-             for (Object object : bindingResult.getAllErrors()) {
-                 if(object instanceof FieldError) {
-                     FieldError fieldError = (FieldError) object;
-                     error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-                 }
-             }
-             response.put("error",error);
-             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-
-        List<Staff> admin = staffRepo.findByToken(body.getToken());
-        if(admin.isEmpty()){
+        List<Staff> admin = repository.findByToken(body.getToken());
+        if (admin.isEmpty()) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
-        if(admin.get(0).getIsAdmin()==0){
+        }
+        ;
+        if (admin.get(0).getIsAdmin() == 0) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
+        }
+        ;
 
         Staff staff = repository.findById(body.getId()).orElse(null);
         if (staff == null) {
             response.put("error", "Couldn't find employee with id: " + body.getId());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        if(staff.getVerified() == 1){
+        if (staff.getVerified() == 1) {
             response.put("error", "Employee with id: " + body.getId() + " has already been verified");
-        }else{
+        } else {
             staff.setVerified(1);
             staff.setVerified_at(LocalDateTime.now());
             repository.save(staff);
