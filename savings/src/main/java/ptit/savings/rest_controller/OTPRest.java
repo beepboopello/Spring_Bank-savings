@@ -85,14 +85,9 @@ public class OTPRest {
         HashMap<String,Object> error = new HashMap<>();
 
         if(bindingResult.hasErrors()){
-            error = new HashMap<>();
-            for (Object object : bindingResult.getAllErrors()) {
-                if(object instanceof FieldError) {
-                    FieldError fieldError = (FieldError) object;
-                    response.put("error", fieldError.getDefaultMessage());
-                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-                }
-            }
+            error.put("message", "Invalid request body");
+            response.put("error", error);
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
 
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
@@ -100,7 +95,7 @@ public class OTPRest {
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         };
         
-        if(otpRepository.findByStrValue(body.getOtp()).get(0)==null){
+        if(otpRepository.findByStrValue(body.getOtp()).isEmpty()){
             error.put("otp","OTP không hợp lệ");
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
