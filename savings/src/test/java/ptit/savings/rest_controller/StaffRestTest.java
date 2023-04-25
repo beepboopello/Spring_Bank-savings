@@ -20,9 +20,11 @@ import ptit.savings.repository.StaffRepository;
 import ptit.savings.service.implement.InterestServiceImpl;
 import ptit.savings.tools.InterestCalculator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
@@ -93,6 +95,41 @@ class StaffRestTest {
     }
 
     @Test
-    void verify() {
+    void testVerifySuccess() throws Exception {
+        String requestBody = "{\"id\":2L, \"token\": \"test_token\"}";
+
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("message", "Verify successfully");
+
+        Staff admin = new Staff();
+        admin.setId(1L);
+        admin.setToken("test_token");
+        admin.setIsAdmin(1);
+        admin.setVerified(0);
+
+        List<Staff> list = new ArrayList<>();
+        list.add(admin);
+        when(staffRepo.findByToken(admin.getToken())).thenReturn(list);
+
+        Staff staff = new Staff("fname", "lname", "email@gmail.com", "user01", "password");
+        staff.setId(2L);
+        staff.setVerified(0);
+        staff.setToken("test_token");
+        staff.setVerified_at(LocalDateTime.now());
+        when(staffRepo.findById(staff.getId())).thenReturn(Optional.of(staff));
+        when(staffRepo.save(staff)).thenReturn(staff);
+        // Mock response
+        // Send request
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String content = result.getResponse().getContentAsString();
+        JsonNode rootNode = objectMapper.readTree(content);
+        String message = rootNode.get("message").asText();
+        assertEquals(response.get("message").toString(), message);
     }
 }

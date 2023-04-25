@@ -58,30 +58,22 @@ public class StaffRest {
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-        if (bindingResult.hasErrors()) {
-            error = new HashMap<>();
-            for (Object object : bindingResult.getAllErrors()) {
-                if (object instanceof FieldError) {
-                    FieldError fieldError = (FieldError) object;
-                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-                }
-            }
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-
+//        if (bindingResult.hasErrors()) {
+//            error = new HashMap<>();
+//            for (Object object : bindingResult.getAllErrors()) {
+//                if (object instanceof FieldError) {
+//                    FieldError fieldError = (FieldError) object;
+//                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+//                }
+//            }
+//            response.put("error", error);
+//            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+//        }
         List<Staff> admin = repository.findByToken(body.getToken());
-        if (admin.isEmpty()) {
+        if (admin.isEmpty() || admin.get(0).getIsAdmin() == 0) {
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
-        ;
-        if (admin.get(0).getIsAdmin() == 0) {
-            response.put("error", "Xác minh token thất bại");
-            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        }
-        ;
-
         Staff staff = repository.findById(body.getId()).orElse(null);
         if (staff == null) {
             response.put("error", "Couldn't find employee with id: " + body.getId());
@@ -89,13 +81,15 @@ public class StaffRest {
         }
         if (staff.getVerified() == 1) {
             response.put("error", "Employee with id: " + body.getId() + " has already been verified");
+            return new ResponseEntity<Object>(response, HttpStatus.OK);
         } else {
             staff.setVerified(1);
             staff.setVerified_at(LocalDateTime.now());
             repository.save(staff);
             response.put("staff", staff);
+            response.put("messagee", "Verity Successfully");
+            return new ResponseEntity<Object>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
 

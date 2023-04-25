@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > InterestRest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ptit.savings.rest_controller</a>
+</div>
+
+<h1>Coverage Summary for Class: InterestRest (ptit.savings.rest_controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InterestRest</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ptit.savings.rest_controller;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.validation.BindingResult;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import jakarta.validation.Valid;
+&nbsp;import ptit.savings.model.Interest;
+&nbsp;import ptit.savings.model.Staff;
+&nbsp;import ptit.savings.model.requestBody.Interest.AddBody;
+&nbsp;import ptit.savings.model.requestBody.Interest.DeleteBody;
+&nbsp;import ptit.savings.model.requestBody.Interest.EditBody;
+&nbsp;import ptit.savings.repository.InterestRepository;
+&nbsp;import ptit.savings.repository.StaffRepository;
+&nbsp;import ptit.savings.service.InterestService;
+&nbsp;import ptit.savings.tools.InterestCalculator;
+&nbsp;
+&nbsp;@RestController
+<b class="nc">&nbsp;public class InterestRest {</b>
+&nbsp;    @Autowired
+&nbsp;    private StaffRepository staffRepo;
+&nbsp;    @Autowired
+&nbsp;    private InterestRepository repo;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private InterestService interestService;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/api/admin/interest/delete&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; delete(
+&nbsp;            @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
+&nbsp;    ) {
+<b class="nc">&nbsp;        if (interestService.getInterestById(body.getId()) != null) {</b>
+<b class="nc">&nbsp;            interestService.deleteInterest(body.getId());</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;Interest deleted successfully&quot;, HttpStatus.OK);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        else {
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;Interest with given id does not exist&quot;, HttpStatus.NOT_FOUND);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/api/admin/interest/edit&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; edit(
+&nbsp;            @RequestBody @Valid EditBody body, BindingResult bindingResult) {
+<b class="nc">&nbsp;        HashMap&lt;String, Object&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        HashMap&lt;String, Object&gt; error = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;Staff&gt; admin = staffRepo.findByToken(body.getToken());</b>
+<b class="nc">&nbsp;        if (admin.isEmpty() || admin.get(0).getIsAdmin() == 0) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;Object&gt;(&quot;Token verification failed!&quot;, HttpStatus.FORBIDDEN);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Long id = body.getId();</b>
+<b class="nc">&nbsp;        double rate = body.getRate();</b>
+&nbsp;
+<b class="nc">&nbsp;        Interest interest = interestService.getInterestById(id);</b>
+<b class="nc">&nbsp;        if (interest == null) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;Object&gt;(&quot;Interest rate not found&quot;, HttpStatus.NOT_FOUND);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        interest.setRate(rate);</b>
+<b class="nc">&nbsp;        interestService.updateInterest(interest);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;Object&gt;(&quot;Interest rate updated successfully&quot;, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/api/admin/interest/add&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; add(
+&nbsp;            @RequestBody @Valid AddBody body, BindingResult bindingResult    //Body gom ten, so thang, lai suat(theo %), token
+&nbsp;    ) {
+<b class="nc">&nbsp;        HashMap&lt;String, Object&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        HashMap&lt;String, Object&gt; error = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;Staff&gt; admin = staffRepo.findByToken(body.getToken());</b>
+<b class="nc">&nbsp;        if (admin.isEmpty() || admin.get(0).getIsAdmin() == 0) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;Object&gt;(&quot;Token verification failed!&quot;, HttpStatus.FORBIDDEN);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        int months = body.getMonths();</b>
+<b class="nc">&nbsp;        String name = String.valueOf(months) + &quot; tháng&quot;;</b>
+<b class="nc">&nbsp;        double rate = body.getRate();</b>
+<b class="nc">&nbsp;        if (!repo.findByMonths(months).isEmpty()) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;Object&gt;(&quot;Duplicate month value&quot;, HttpStatus.BAD_REQUEST);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        System.out.println(&quot;name: &quot; + name + &quot;, months: &quot; + months + &quot;, rate: &quot; + rate);</b>
+&nbsp;        // Thêm thông tin l?i su?t vào database
+<b class="nc">&nbsp;        Interest interest = new Interest(name, months, rate);</b>
+<b class="nc">&nbsp;        interestService.addInterest(interest);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;Object&gt;(&quot;Interest rate added successfully&quot;, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/calculate-interest&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; calculateInterest(@RequestParam(&quot;idInterest&quot;) String idInterest, @RequestParam(&quot;amount&quot;) String amount) {
+<b class="nc">&nbsp;        Interest interest = interestService.getInterestById(Long.parseLong(idInterest));</b>
+<b class="nc">&nbsp;        Long result = InterestCalculator.calculate(Long.parseLong(amount), interest);</b>
+<b class="nc">&nbsp;        Long interestMoney = result - Long.parseLong(amount);</b>
+<b class="nc">&nbsp;        String data = interestMoney.toString() + &quot;,&quot; + result.toString();</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().body(data);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-25 01:01</div>
+</div>
+</body>
+</html>
