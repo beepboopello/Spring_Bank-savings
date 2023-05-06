@@ -21,6 +21,7 @@ import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
 import ptit.savings.repository.StaffRepository;
+import ptit.savings.service.EmailSender;
 
 @RestController
 public class OTPRest {
@@ -35,6 +36,9 @@ public class OTPRest {
 
     @Autowired
     private StaffRepository staffRepo;
+
+    @Autowired
+    private EmailSender emailSender;
 
     @PostMapping("/api/otp/account")
     public ResponseEntity<Object> verifyAccount(
@@ -72,7 +76,8 @@ public class OTPRest {
         account.setVerified_at(LocalDateTime.now());
         accountRepo.save(account);
         response.put("message", "Xác minh tài khoản thành công");
-        response.put("account", account);        
+        response.put("account", account);     
+        emailSender.newBankAccountVerifiedEmail(account);   
         otpRepository.delete(otp);
         return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
     }
@@ -108,6 +113,7 @@ public class OTPRest {
             savingRepo.save(saving);
             otpRepository.delete(otp);
             response.put("message", "Rút sổ tiết kiệm thành công");
+            emailSender.withdrawalVerified(saving);
             response.put("saving", saving);    
             return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
         }
@@ -117,6 +123,7 @@ public class OTPRest {
             savingRepo.save(saving);
             otpRepository.delete(otp);
             response.put("message", "Rút sổ tiết kiệm thành công");
+            emailSender.withdrawalVerified(saving);
             response.put("saving", saving);    
             return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
         }
@@ -135,6 +142,7 @@ public class OTPRest {
         savingRepo.save(saving);
         response.put("message", "Xác minh sổ tiết kiệm thành công");
         response.put("saving", saving);    
+        emailSender.savingVerified(saving);
         otpRepository.delete(otp);
         return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
     }

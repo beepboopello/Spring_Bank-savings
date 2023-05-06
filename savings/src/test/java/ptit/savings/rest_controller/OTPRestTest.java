@@ -33,6 +33,7 @@ import ptit.savings.repository.AccountRepository;
 import ptit.savings.repository.OTPRepository;
 import ptit.savings.repository.SavingRepository;
 import ptit.savings.repository.StaffRepository;
+import ptit.savings.service.EmailSender;
 import ptit.savings.tools.InterestCalculator;
 
 @SpringBootTest
@@ -54,6 +55,9 @@ public class OTPRestTest {
 
     @Mock
     private InterestCalculator interestCalculator;
+
+    @Mock
+    private EmailSender emailSender;
 
     @InjectMocks
     private OTPRest otpRest;
@@ -262,9 +266,11 @@ public class OTPRestTest {
         Account account = new Account();
         account.setStk("123456");
         account.setVerifed(0);
+        account.setEmail("testemail@gmail.com");
         List<Account> listAccount = new ArrayList<>();
         listAccount.add(account);
         when(accountRepo.findByStk("123456")).thenReturn(listAccount);
+
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/otp/account")
         .contentType(MediaType.APPLICATION_JSON)
@@ -473,10 +479,18 @@ public class OTPRestTest {
         listOTP.add(otp);
         when(otpRepository.findByStrValue("512212")).thenReturn(listOTP);
 
+
+
         List<Saving> listSaving = new ArrayList<>();
         Saving saving = new Saving();
         saving.setNumber("123456");
         saving.setVerify(0);
+
+        Account account = new Account();
+        account.setStk("123456");
+        account.setVerifed(1);
+        account.setEmail("testemail@gmail.com");
+        saving.setAccount(account);
         listSaving.add(saving);
         when(savingRepo.findByNumber("123456")).thenReturn(listSaving);
 
@@ -527,6 +541,7 @@ public class OTPRestTest {
         account.setStk("123457");
         account.setVerifed(1);
         account.setBalance(Long.valueOf("10000000"));
+        account.setEmail("testemail@gmail.com");
         List<Account> listAccount = new ArrayList<>();
         listAccount.add(account);
         when(accountRepo.findByStk("123456")).thenReturn(listAccount);
@@ -581,6 +596,7 @@ public class OTPRestTest {
         account.setStk("123457");
         account.setVerifed(1);
         account.setBalance(Long.valueOf("10000000"));
+        account.setEmail("testemail@gmail.com");
         List<Account> listAccount = new ArrayList<>();
         listAccount.add(account);
         when(accountRepo.findByStk("123456")).thenReturn(listAccount);

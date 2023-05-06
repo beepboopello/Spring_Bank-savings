@@ -24,9 +24,9 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link id="ctl00_favicon" rel="shortcut icon" href="https://portal.vietcombank.com.vn/favicon.ico?rev=23"
-          type="image/vnd.microsoft.icon">
+        type="image/vnd.microsoft.icon">
     <link rel="shortcut icon" href="https://portal.vietcombank.com.vn/favicon.ico?rev=23"
-          type="image/vnd.microsoft.icon" id="favicon">
+        type="image/vnd.microsoft.icon" id="favicon">
     <link rel="stylesheet" href="https://localhost:8080/calculate_files/kuro.css">
     <link rel="stylesheet" href="https://localhost:8080/calculate_files/owl.carousel.min.css">
     <link rel="stylesheet" href="https://localhost:8080/calculate_files/owl.theme.default.min.css">
@@ -56,7 +56,7 @@
 
 
     <style type="text/css"
-           data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
+        data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
         .fb_hidden {
             position: absolute;
             top: -10000px;
@@ -99,7 +99,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -161,7 +161,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -243,7 +243,7 @@
             margin: 0
         }
 
-        .fb_dialog_content .dialog_title > span {
+        .fb_dialog_content .dialog_title>span {
             background: url(https://connect.facebook.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;
             float: left;
             padding: 5px 0 7px 26px
@@ -709,7 +709,7 @@
         }
     </style>
     <style type="text/css"
-           data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
+        data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
         .fb_hidden {
             position: absolute;
             top: -10000px;
@@ -752,7 +752,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -814,7 +814,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -896,7 +896,7 @@
             margin: 0
         }
 
-        .fb_dialog_content .dialog_title > span {
+        .fb_dialog_content .dialog_title>span {
             background: url(https://connect.facebook.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;
             float: left;
             padding: 5px 0 7px 26px
@@ -1362,7 +1362,7 @@
         }
     </style>
     <style type="text/css"
-           data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
+        data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">
         .fb_hidden {
             position: absolute;
             top: -10000px;
@@ -1405,7 +1405,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -1467,7 +1467,7 @@
             word-spacing: normal
         }
 
-        .fb_reset > div {
+        .fb_reset>div {
             overflow: hidden
         }
 
@@ -1549,7 +1549,7 @@
             margin: 0
         }
 
-        .fb_dialog_content .dialog_title > span {
+        .fb_dialog_content .dialog_title>span {
             background: url(https://connect.facebook.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;
             float: left;
             padding: 5px 0 7px 26px
@@ -2013,10 +2013,12 @@
                 transform: translateY(0)
             }
         }
+
         #id_txtsdt::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         #id_txtcccd::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
@@ -2025,50 +2027,50 @@
 </head>
 
 <body class="page-so-sanh category-child category-khcn category">
-<header>
-    <!-- logo bongdv và topnav-->
-    <!-- menu moi -->
-    <div class="container">
-        <div class="header">
-            <div class="top-bar">
-                <ul class="link-top">
+    <header>
+        <!-- logo bongdv và topnav-->
+        <!-- menu moi -->
+        <div class="container">
+            <div class="header">
+                <div class="top-bar">
+                    <ul class="link-top">
 
-                    <li>
-                        <a th:text="${session.staff.getLastName() + session.staff.getFirstName()}"
-                           style="pointer-events: none; cursor: default;"></a>
-                    </li>
+                        <li>
+                            <a th:text="${session.staff.getLastName() + session.staff.getFirstName()}"
+                                style="pointer-events: none; cursor: default;"></a>
+                        </li>
 
-                    <li>
-                        <a th:text="${session.staff.getUsername()}"
-                           style="pointer-events: none; cursor: default;"></a>
-                    </li>
+                        <li>
+                            <a th:text="${session.staff.getUsername()}"
+                                style="pointer-events: none; cursor: default;"></a>
+                        </li>
 
-                    <li>
-                        <a href="/logout">Đăng xuất</a>
-                    </li>
+                        <li>
+                            <a href="/logout">Đăng xuất</a>
+                        </li>
 
-                </ul>
+                    </ul>
 
+                </div>
             </div>
         </div>
-    </div>
-    <!--end menu moi -->
+        <!--end menu moi -->
 
-    <!-- logo và topnav-->
-</header>
-<div id="s4-workspace" class="">
-    <div id="s4-bodyContainer" class="">
-        <div id="app" class="">
+        <!-- logo và topnav-->
+    </header>
+    <div id="s4-workspace" class="">
+        <div id="s4-bodyContainer" class="">
+            <div id="app" class="">
 
-            <main class="clearfix">
-                <div data-name="ContentPlaceHolderMain" class="">
+                <main class="clearfix">
+                    <div data-name="ContentPlaceHolderMain" class="">
                         <span id="DeltaPlaceHolderMain" class="">
 
                             <section class="slider-the slider">
                                 <menu class="ms-hide">
                                     <ie:menuitem id="MSOMenu_Help" iconsrc="/_layouts/15/images/HelpIcon.gif"
-                                                 onmenuclick="MSOWebPartPage_SetNewWindowLocation(MenuWebPart.getAttribute(&#39;helpLink&#39;), MenuWebPart.getAttribute(&#39;helpMode&#39;))"
-                                                 text="Trợ giúp" type="option" style="display:none">
+                                        onmenuclick="MSOWebPartPage_SetNewWindowLocation(MenuWebPart.getAttribute(&#39;helpLink&#39;), MenuWebPart.getAttribute(&#39;helpMode&#39;))"
+                                        text="Trợ giúp" type="option" style="display:none">
 
                                     </ie:menuitem>
                                 </menu>
@@ -2083,9 +2085,9 @@
                                                 <div class="ms-webpart-zone ms-fullWidth">
                                                 </div>
                                                 <div id="ctl00_PlaceHolderMain_g_92cf5f63_b638_48f7_aff5_1434b4eb0302"
-                                                     __markuptype="vsattributemarkup"
-                                                     __webpartid="{92CF5F63-B638-48F7-AFF5-1434B4EB0302}" webpart="true"
-                                                     partorder="2">
+                                                    __markuptype="vsattributemarkup"
+                                                    __webpartid="{92CF5F63-B638-48F7-AFF5-1434B4EB0302}" webpart="true"
+                                                    partorder="2">
 
                                                     <div class="widget widget-tool">
                                                         <div class="widget-title">Chức năng hệ thống</div>
@@ -2112,9 +2114,8 @@
                                                     <input type="hidden" id="id_token" th:value="${session.token}">
                                                 </div>
                                                 <div id="ctl00_PlaceHolderMain_g_fdf6359e_6992_4a29_b0e1_32783e8435dc"
-                                                     __markuptype="vsattributemarkup"
-                                                     __webpartid="{fdf6359e-6992-4a29-b0e1-32783e8435dc}"
-                                                     webpart="true">
+                                                    __markuptype="vsattributemarkup"
+                                                    __webpartid="{fdf6359e-6992-4a29-b0e1-32783e8435dc}" webpart="true">
 
 
 
@@ -2122,108 +2123,134 @@
                                                 <!-- Noi dung chi tiet -->
                                                 <div class="ms-webpart-zone ms-fullWidth">
                                                     <div id="MSOZoneCell_WebPartctl00_ctl10_g_640216ab_e60b_4853_af68_0603314a2968"
-                                                         class="s4-wpcell-plain ms-webpartzone-cell ms-webpart-cell-vertical ms-fullWidth ">
+                                                        class="s4-wpcell-plain ms-webpartzone-cell ms-webpart-cell-vertical ms-fullWidth ">
                                                         <div
-                                                                class="ms-webpart-chrome ms-webpart-chrome-vertical ms-webpart-chrome-fullWidth ">
+                                                            class="ms-webpart-chrome ms-webpart-chrome-vertical ms-webpart-chrome-fullWidth ">
                                                             <div webpartid="640216ab-e60b-4853-af68-0603314a2968"
-                                                                 haspers="false">
+                                                                haspers="false">
                                                                 <div
-                                                                        id="ctl00_ctl10_g_640216ab_e60b_4853_af68_0603314a2968">
+                                                                    id="ctl00_ctl10_g_640216ab_e60b_4853_af68_0603314a2968">
 
                                                                     <div
-                                                                            class="form-change-currency mt-5  cong-cu-tinh-toan">
+                                                                        class="form-change-currency mt-5  cong-cu-tinh-toan">
                                                                         <h5 class="title">MỞ TÀI KHOẢN NGÂN HÀNG
                                                                         </h5>
                                                                         <!-- right -->
                                                                         <div class="d-flex flex-wrap">
                                                                             <form id="id_form" th:action="@{/findstk}">
                                                                                 <input id="id_inputstk" type="hidden"
-                                                                                       name="stk">
+                                                                                    name="stk">
                                                                             </form>
 
 
                                                                             <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3"
-                                                                                 style="display: block;">
+                                                                                style="display: block;">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Email
                                                                                 </b>
+
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="email" name="email"
-                                                                                           placeholder="Nhập email"
-                                                                                           id="id_txtemail" value="" maxlength="50">
+                                                                                        placeholder="Nhập email"
+                                                                                        id="id_txtemail" value=""
+                                                                                        maxlength="50">
+                                                                                    <label id="lblthongbao_email"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
+
 
                                                                             </div>
 
-                                                                            <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Mã CCCD
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="number" name="cccd"
-                                                                                           placeholder="Nhập mã số căn cuớc công dân"
-                                                                                           id="id_txtcccd" value="">
+                                                                                        placeholder="Nhập mã số căn cuớc công dân"
+                                                                                        id="id_txtcccd" value="">
+                                                                                    <label id="lblthongbao_cccd"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
 
                                                                             <!-- left -->
 
                                                                             <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3"
-                                                                                 style="display: block;">
+                                                                                style="display: block;">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Tên
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="text" name="first_name"
-                                                                                           placeholder="Nhập tên"
-                                                                                           id="id_txtfname" value="" maxlength="40">
+                                                                                        placeholder="Nhập tên"
+                                                                                        id="id_txtfname" value=""
+                                                                                        maxlength="40">
+                                                                                    <label id="lblthongbao_fname"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
                                                                             <div
-                                                                                    class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Họ đệm
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="text" name="last_name"
-                                                                                           placeholder="Nhập họ đệm"
-                                                                                           id="id_txtlname" value="" maxlength="40">
+                                                                                        placeholder="Nhập họ đệm"
+                                                                                        id="id_txtlname" value=""
+                                                                                        maxlength="40">
+                                                                                    <label id="lblthongbao_lname"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
-                                                                                <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Địa chỉ thường trú
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="text" name="cccd"
-                                                                                           placeholder="Nhập địa chỉ thường trú"
-                                                                                           id="id_txtaddress" value="" maxlength="50">
+                                                                                        placeholder="Nhập địa chỉ thường trú"
+                                                                                        id="id_txtaddress" value=""
+                                                                                        maxlength="50">
+                                                                                    <label id="lblthongbao_address"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Ngày sinh
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="date" name="ngaysinh"
-                                                                                           id="id_txtngaysinh">
+                                                                                        id="id_txtngaysinh">
+                                                                                    <label id="lblthongbao_dob"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
                                                                                     Số điện thoại
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="number" name="cccd"
-                                                                                           placeholder="Nhập số điện thoại"
-                                                                                           id="id_txtsdt" value="">
+                                                                                        placeholder="Nhập số điện thoại"
+                                                                                        id="id_txtsdt" value="">
+                                                                                    <label id="lblthongbao_tel"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
-                                                                               <b class="mr-3 col-12 col-md-4 p-0">Giới tính</b>
+                                                                            <div
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                <b class="mr-3 col-12 col-md-4 p-0">Giới
+                                                                                    tính</b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <select name="gioitinh"
-                                                                                            id="id_selgioitinh">
+                                                                                        id="id_selgioitinh">
                                                                                         <option value="nam">Nam</option>
                                                                                         <option value="nu">Nữ</option>
                                                                                     </select>
@@ -2231,47 +2258,47 @@
 
                                                                             </div>
                                                                             <div
-                                                                                    class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0"></b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <button onclick="submitForm()"
-                                                                                            class="classbutton"
-                                                                                            id="btnAction">Tạo tài
+                                                                                        class="classbutton"
+                                                                                        id="btnAction">Tạo tài
                                                                                         khoản</button>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div
-                                                                                    class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0"></b>
                                                                                 <div class="col p-0 mr-5">
                                                                                 </div>
                                                                             </div>
 
                                                                             <div
-                                                                                    class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b id="id_titleotp"
-                                                                                   style="display: none;"
-                                                                                   class="mr-3 col-12 col-md-4 p-0">
+                                                                                    style="display: none;"
+                                                                                    class="mr-3 col-12 col-md-4 p-0">
                                                                                     OTP
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input style="display: none;"
-                                                                                           type="text" name="cccd"
-                                                                                           placeholder="Nhập OTP"
-                                                                                           id="id_txtotp" value="">
+                                                                                        type="text" name="cccd"
+                                                                                        placeholder="Nhập OTP"
+                                                                                        id="id_txtotp" value="">
                                                                                 </div>
                                                                             </div>
 
                                                                             <div
-                                                                                    class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
+                                                                                class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0"></b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <div class="col p-0 mr-5">
                                                                                         <button style="display: none;"
-                                                                                                onclick="checkOTP()"
-                                                                                                class="classbutton"
-                                                                                                id="btnAdd">Xác nhận mã
+                                                                                            onclick="checkOTP()"
+                                                                                            class="classbutton"
+                                                                                            id="btnAdd">Xác nhận mã
                                                                                             OTP</button>
                                                                                     </div>
                                                                                 </div>
@@ -2290,46 +2317,88 @@
 																			</div> -->
 
                                                                         </div>
-                                                                       
-                                                                    
+
+
                                                                         <script>
+                                                                            function ValidateEmail(mail) {
+                                                                                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                                                                                    return (true)
+                                                                                }
+                                                                                return (false)
+                                                                            }
                                                                             async function submitForm() {
+                                                                                let isValid = true;
+
                                                                                 let email = document.getElementById("id_txtemail").value
                                                                                 if (email == null || email.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Email đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_email").html("Email đang để trống");
+                                                                                    jQuery("#lblthongbao_email").show()
                                                                                 }
+                                                                                else if (!ValidateEmail(email)){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_email").html("Email không đúng định dạng ");
+                                                                                    jQuery("#lblthongbao_email").show()
+                                                                                }
+                                                                                else jQuery("#lblthongbao_email").hide()
+
                                                                                 let cccd = document.getElementById("id_txtcccd").value
                                                                                 if (cccd == null || cccd.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Cccd đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_cccd").html("Số căn cuớc công dân đang để trống");
+                                                                                    jQuery("#lblthongbao_cccd").show()
+                                                                                } else if(cccd.length!=12){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_cccd").html("Nhập đúng định dạng số căn cuớc công dân gồm 12 số");
+                                                                                    jQuery("#lblthongbao_cccd").show()  
                                                                                 }
+                                                                                else jQuery("#lblthongbao_cccd").hide()
+
                                                                                 let fname = document.getElementById("id_txtfname").value
                                                                                 if (fname == null || fname.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Tên đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_fname").html("Tên đang để trống");
+                                                                                    jQuery("#lblthongbao_fname").show()
                                                                                 }
+                                                                                else jQuery("#lblthongbao_fname").hide()
+
                                                                                 let lname = document.getElementById("id_txtlname").value
                                                                                 if (lname == null || lname.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Họ đệm đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_lname").html("Họ đệm đang để trống");
+                                                                                    jQuery("#lblthongbao_lname").show()
                                                                                 }
+                                                                                else jQuery("#lblthongbao_lname").hide()
+
                                                                                 let address = document.getElementById("id_txtaddress").value
                                                                                 if (address == null || address.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Địa chỉ đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ đang để trống");
+                                                                                    jQuery("#lblthongbao_address").show()
                                                                                 }
+                                                                                else jQuery("#lblthongbao_address").hide()
+
+
                                                                                 let phone = document.getElementById("id_txtsdt").value
                                                                                 if (phone == null || phone.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Số điện thoại đang để trống");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_tel").html("Số điện thoại đang để trống");
+                                                                                    jQuery("#lblthongbao_tel").show()
                                                                                 }
+                                                                                else jQuery("#lblthongbao_tel").hide()
+
                                                                                 var ngaySinhInput = document.getElementById('id_txtngaysinh');
                                                                                 var ngaySinh = ngaySinhInput.value;
                                                                                 if (ngaySinh === '') {
-                                                                                    jQuery("#lblthongbao").html("Bạn chưa chọn ngày sinh");
-                                                                                    return;
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_dob").html("Bạn chưa chọn ngày sinh");
+                                                                                    jQuery("#lblthongbao_dob").show()
                                                                                 }
+                                                                                else jQuery("#lblthongbao_dob").hide()
+                                                                                
+                                                                                if(!isValid) return;
+
+                                                                                document.getElementById("btnAction").disabled = true
 
                                                                                 jQuery("#lblthongbao").html("");
                                                                                 let data = {
@@ -2337,16 +2406,16 @@
                                                                                     cccd: document.getElementById("id_txtcccd").value,
                                                                                     firstName: document.getElementById("id_txtfname").value,
                                                                                     lastName: document.getElementById("id_txtlname").value,
-                                                                                    address:document.getElementById("id_txtaddress").value,
-                                                                                    dob:document.getElementById("id_txtngaysinh").value,
-                                                                                    phone:document.getElementById("id_txtsdt").value,
-                                                                                    gender:document.getElementById("id_selgioitinh").value,
+                                                                                    address: document.getElementById("id_txtaddress").value,
+                                                                                    dob: document.getElementById("id_txtngaysinh").value,
+                                                                                    phone: document.getElementById("id_txtsdt").value,
+                                                                                    gender: document.getElementById("id_selgioitinh").value,
                                                                                     token: document.getElementById("id_token").value
                                                                                 }
                                                                                 let endpoint = '/api/staff/bankaccount/add';
                                                                                 let response = await fetch(endpoint, {
                                                                                     method: "POST",
-                                                                                    headers: {'Content-Type': 'application/json'},
+                                                                                    headers: { 'Content-Type': 'application/json' },
                                                                                     body: JSON.stringify(data)
                                                                                 });
                                                                                 let res = await response.json();
@@ -2362,6 +2431,7 @@
                                                                             }
 
                                                                             async function checkOTP() {
+                                                                                document.getElementById("btnAdd").style.disabled = true;
                                                                                 let data = {
                                                                                     token: document.getElementById("id_token").value,
                                                                                     otp: document.getElementById("id_txtotp").value
@@ -2369,29 +2439,31 @@
                                                                                 let endpoint = '/api/otp/account';
                                                                                 let response = await fetch(endpoint, {
                                                                                     method: "POST",
-                                                                                    headers: {'Content-Type': 'application/json'},
+                                                                                    headers: { 'Content-Type': 'application/json' },
                                                                                     body: JSON.stringify(data)
                                                                                 });
                                                                                 let res = await response.json();
                                                                                 if (res.error) {
+                                                                                    document.getElementById("btnAdd").style.disabled = false;
                                                                                     jQuery("#lblthongbao").html(res.error);
                                                                                     return;
                                                                                 }
+                                                                                
                                                                                 alert("Tạo tài khoản thành công");
                                                                                 location.reload();
                                                                             }
                                                                         </script>
                                                                     </div>
 
-                                                                
-                                                                
 
-                                                                    
+
+
+
                                                                     <div class="control-group"
-                                                                         style="width: 650px !important">
+                                                                        style="width: 650px !important">
 
                                                                         <label id="lblthongbao"
-                                                                               style="color: red; font-weight: normal; width: 650px !important;"></label>
+                                                                            style="color: red; font-weight: normal; width: 650px !important;"></label>
                                                                     </div>
                                                                     <br>
                                                                 </div>
@@ -2412,21 +2484,21 @@
                             </section>
                             <div style="display:none" id="hidZone"></div>
                         </span>
-                </div>
+                    </div>
 
-            </main>
+                </main>
 
+            </div>
         </div>
     </div>
-</div>
-<div id="fb-root" class=" fb_reset fb_reset">
-    <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
-        <div></div>
+    <div id="fb-root" class=" fb_reset fb_reset">
+        <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
+            <div></div>
+        </div>
+        <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
+            <div></div>
+        </div>
     </div>
-    <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
-        <div></div>
-    </div>
-</div>
 </body>
 
 </html>

@@ -2097,10 +2097,12 @@
 																					Số tài khoản
 																				</b>
 																				<div class="col p-0 mr-5">
-																					<input
+																					<input type="number"
 																						placeholder="Nhập số tài khoản"
 																						maxlength="18" rel="tooltip"
 																						id="id_txtstk" value="">
+																					<label id="lblthongbao_stk"
+																						style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
 																				</div>
 																			</div>
 																			<div
@@ -2124,7 +2126,10 @@
 																							placeholder="Nhập Số tiền gửi"
 																							maxlength="18" rel="tooltip"
 																							id="id_initial" value="">
+																							<label id="lblthongbao_initial"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
 																					</div>
+																					
 																				</div>
 																				<div
 																					class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
@@ -2170,8 +2175,8 @@
 																			</div>
 																		</div>
 																		<div class="d-flex flex-wrap">
-																			
-																			
+
+
 																		</div>
 																		<script>
 																			jQuery(document).ready(function () {
@@ -2183,27 +2188,37 @@
 																				});
 																			});
 																			function submitForm() {
+																				document.getElementById("btnAction").disabled = true;
 																				let stk = document.getElementById("id_txtstk").value
 																				if (stk == null || stk.trim() == "") {
-																					jQuery("#lblthongbao").html("Số tài khoản đang để trống");
+																					jQuery("#lblthongbao_stk").html("Số tài khoản đang để trống");
+																					jQuery("#lblthongbao_stk").show()
+																					document.getElementById("btnAction").disabled = false;
 																					return;
 																				}
+																				else jQuery("#lblthongbao_stk").hide()
 																				jQuery("#lblthongbao").html("");
 																				document.getElementById("id_inputstk").value = stk
 																				document.getElementById("id_form").submit();
 																			}
 																			async function addSaving() {
+																				document.getElementById("btnAdd").disabled = true;
 																				var listIn = document.getElementById("GetKy");
 																				let amount = document.getElementById("id_initial").value.replaceAll(",", "");
 																				if (isNaN(amount)) {
-																					jQuery("#lblthongbao").html("Số tiền gửi không hợp lệ");
+																					jQuery("#lblthongbao_initial").html("Số tiền gửi không hợp lệ");
 																					document.getElementById("id_initial").value = "";
+																					document.getElementById("btnAdd").disabled = false;
 																					return;
 																				}
 																				else if (amount < 100000) {
-																					jQuery("#lblthongbao").html("Số tiền gửi phải từ 100,000 trở lên");
+																					jQuery("#lblthongbao_initial").html("Số tiền gửi phải từ 100,000 trở lên");
+																					jQuery("#lblthongbao_initial").show();
+																					document.getElementById("btnAdd").disabled = false;
 																					return;
 																				}
+																				else jQuery("#lblthongbao_initial").hide();
+
 																				let data = {
 																					stk: document.getElementById("id_txtstk").value,
 																					initial: amount,
@@ -2231,8 +2246,10 @@
 																				document.getElementById("btnAdd").onclick = checkOTP;
 																				document.getElementById("btnAdd").textContent = "Kiểm tra OTP";;
 																				alert("Mã OTP đã được gửi đến gmail của bạn, vui lòng kiểm tra!");
+																				document.getElementById("btnAdd").disabled = false;
 																			}
 																			async function checkOTP() {
+																				document.getElementById("btnAdd").disabled = true;
 																				let data = {
 																					otp: document.getElementById("id_txtotp").value,
 																					token: document.getElementById("id_token").value,
@@ -2246,6 +2263,7 @@
 																				let res = await response.json();
 																				console.log(res);
 																				if (res.error) {
+																					document.getElementById("btnAdd").disabled = false;
 																					jQuery("#lblthongbao").html("OTP không hợp lệ");
 																				}
 																				else {

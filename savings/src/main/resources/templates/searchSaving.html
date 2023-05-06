@@ -2108,11 +2108,13 @@
                                                                                     Mã sổ tiết kiệm
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
-                                                                                    <input
+                                                                                    <input type="number"
                                                                                         placeholder="Nhập mã sổ tiết kiệm"
                                                                                         maxlength="18" rel="tooltip"
                                                                                         id="id_txtNumberSaving"
                                                                                         value="">
+                                                                                    <label id="lblthongbao_stk"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2130,10 +2132,13 @@
                                                                         <div class="d-flex flex-wrap">
                                                                             <div
                                                                                 class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
-                                                                                <b id="id_title" style="display: none;" class="mr-3 col-12 col-md-4 p-0">Lựa chọn rút</b>
+                                                                                <b id="id_title" style="display: none;"
+                                                                                    class="mr-3 col-12 col-md-4 p-0">Lựa
+                                                                                    chọn rút</b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <select class="col p-0 mr-5"
-                                                                                        id="selected" style="display: none;">
+                                                                                        id="selected"
+                                                                                        style="display: none;">
                                                                                         <option value="1">Rút về tài
                                                                                             khoản ngân hàng</option>
                                                                                         <option value="2">Rút tiền
@@ -2155,24 +2160,25 @@
                                                                                     <input type="hidden" name="number">
                                                                                 </form>
                                                                             </div>
-                                                                            
 
 
-                                                                            
+
+
                                                                         </div>
 
                                                                         <div class="d-flex flex-wrap">
                                                                             <div
                                                                                 class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
-                                                                                <b id="id_titleotp" style="display: none;" class="mr-3 col-12 col-md-4 p-0">
+                                                                                <b id="id_titleotp"
+                                                                                    style="display: none;"
+                                                                                    class="mr-3 col-12 col-md-4 p-0">
                                                                                     OTP
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
-                                                                                    <input
-                                                                                        placeholder="Nhập OTP"
+                                                                                    <input placeholder="Nhập OTP"
                                                                                         maxlength="18" rel="tooltip"
-                                                                                        id="id_txtotp" style="display: none;"
-                                                                                        value="">
+                                                                                        id="id_txtotp"
+                                                                                        style="display: none;" value="">
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2181,7 +2187,9 @@
                                                                                 <div class="col p-0 mr-5">
                                                                                     <button onclick="verifyotp()"
                                                                                         class="classbutton"
-                                                                                        id="id_btnotp" style="display: none;">Xác thực</button>
+                                                                                        id="id_btnotp"
+                                                                                        style="display: none;">Xác
+                                                                                        thực</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -2189,37 +2197,42 @@
                                                                             function submitForm() {
                                                                                 let numberSaving = document.getElementById("id_txtNumberSaving").value
                                                                                 if (numberSaving == null || numberSaving.trim() == "") {
-                                                                                    jQuery("#lblthongbao").html("Mã sổ tiết kiệm đang để trống");
+                                                                                    jQuery("#lblthongbao_stk").html("Mã sổ tiết kiệm đang để trống");
+                                                                                    jQuery("#lblthongbao_stk").show()
                                                                                     return;
                                                                                 }
+                                                                                else jQuery("#lblthongbao_stk").hide()
                                                                                 jQuery("#lblthongbao").html("");
                                                                                 document.getElementById("id_inputNumberSaving").value = numberSaving
                                                                                 document.getElementById("id_form").submit();
                                                                             }
 
-                                                                            async function verifyotp(){
+                                                                            async function verifyotp() {
+                                                                                document.getElementById("id_btnotp").disabled = true;
                                                                                 let data = {
-																					otp: document.getElementById("id_txtotp").value,
-																					token: document.getElementById("id_token").value,
-																				};
-																				let endpoint = "/api/otp/saving"
-																				let response = await fetch(endpoint, {
-																					method: "POST",
-																					headers: { 'Content-Type': 'application/json' },
-																					body: JSON.stringify(data)
-																				});
-																				let res = await response.json();
-																				console.log(res);
-																				if (res.error) {
-																					jQuery("#lblthongbao").html("OTP không hợp lệ");
-																				}
-																				else {
-																					alert(res.message);
-																					location.reload();
-																				};
+                                                                                    otp: document.getElementById("id_txtotp").value,
+                                                                                    token: document.getElementById("id_token").value,
+                                                                                };
+                                                                                let endpoint = "/api/otp/saving"
+                                                                                let response = await fetch(endpoint, {
+                                                                                    method: "POST",
+                                                                                    headers: { 'Content-Type': 'application/json' },
+                                                                                    body: JSON.stringify(data)
+                                                                                });
+                                                                                let res = await response.json();
+                                                                                console.log(res);
+                                                                                if (res.error) {
+                                                                                    document.getElementById("id_btnotp").disabled = false;
+                                                                                    jQuery("#lblthongbao").html("OTP không hợp lệ");
+                                                                                }
+                                                                                else {
+                                                                                    alert(res.message);
+                                                                                    location.reload();
+                                                                                };
                                                                             }
 
                                                                             function searchSaving() {
+                                                                                document.getElementById("btnRut").disabled = true;
                                                                                 var selectElement = document.getElementById("selected");
                                                                                 var selectedValue = selectElement.selectedIndex;
                                                                                 console.log(selectedValue)
@@ -2243,6 +2256,7 @@
                                                                                             document.getElementById("id_txtotp").style.display = null;
                                                                                             document.getElementById("id_titleotp").style.display = null;
                                                                                         } else {
+                                                                                            document.getElementById("btnRut").disabled = false;
                                                                                             alert("Sổ tiết kiệm đã được rút truớc đó")
                                                                                             throw new Error(response.status);
                                                                                         }
