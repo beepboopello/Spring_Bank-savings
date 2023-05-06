@@ -20,7 +20,7 @@ public class UpdateSavings {
     @Autowired SavingRepository savingRepo;
     @Autowired OTPRepository otpRepo;
     // @Scheduled(cron = "0 0 */1 * * *")
-    @Scheduled(cron = "0 * * * * MON-FRI")
+    @Scheduled(cron = "0 0 * * * *")
     public void hourlySavingUpdate(){
         List<Saving> list = savingRepo.findAll();
         for(Saving s:list){

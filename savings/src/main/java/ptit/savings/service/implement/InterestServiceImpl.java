@@ -15,7 +15,7 @@ public class InterestServiceImpl implements InterestService {
 
     @Override
     public List<Interest> getAllInterests() {
-        return null;
+        return interestRepo.findAll();
     }
 
     @Override
