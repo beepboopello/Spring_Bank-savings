@@ -45,7 +45,7 @@ public class InterestRest {
 
     @PostMapping("/api/admin/interest/edit")
     public ResponseEntity<Object> edit(
-            @RequestBody @Valid EditBody body, BindingResult bindingResult) {
+            @RequestBody @Valid EditBody body) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
         List<Staff> admin = staffRepo.findByToken(body.getToken());

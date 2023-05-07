@@ -11,9 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import ptit.savings.model.Interest;
+import ptit.savings.model.Staff;
 import ptit.savings.model.requestBody.Interest.AddBody;
 import ptit.savings.model.requestBody.Interest.DeleteBody;
+import ptit.savings.model.requestBody.Interest.EditBody;
 import ptit.savings.repository.InterestRepository;
+import ptit.savings.repository.StaffRepository;
 
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class InterestControllerTest {
     private InterestRepository repo;
     @Autowired
     private InterestRest interestController;
+    @Autowired
+    private StaffRepository staffRepo;
 
     @Test
     public void testDeleteInterest() {
@@ -56,29 +61,68 @@ public class InterestControllerTest {
 
 
     }
-
 //    @Test
-//    public void testAddInterest() {
-//        // Tạo một đối tượng AddBody để thêm interest mới
-//        AddBody body = new AddBody();
-//        body.setMonths(6);
-//        body.setRate(5);
-//        body.setToken("admin_token");
+//    public void testEditInterest() {
+//        // Tạo một đối tượng admin
+//        Staff admin = new Staff(3L, "first name", "last name", "email@gmail.com", "username", "password", 1);
+//        staffRepo.save(admin);
 //
-//        // Gọi phương thức add trong InterestController
+//        EditBody body = new EditBody();
+//        body.setMonths(30);
+//        body.setRate(8);
+//        body.setToken("");
+//        // nếu admin không tồn tại thì trả về mã lỗi FORBIDDEN
 //        ResponseEntity<Object> response = interestController.add(body);
-//        // Kiểm tra xem phương thức có trả về 200 OK hay không
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//
-//        // Kiểm tra xem interest đã được thêm thành công hay không
+//        Assert.assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+//        //nếu là admin và không bị trùng số tháng kỳ hạn thì trả về OK
+//        body.setToken(admin.getToken());
+//        ResponseEntity<Object> response1 = interestController.add(body);
+//        Assert.assertEquals(HttpStatus.OK, response1.getStatusCode());
+//        // Kiểm tra xem interest đã được thêm vào csdl hay chưa
 //        List<Interest> interests = repo.findAll();
 //        boolean interestFound = false;
 //        for (Interest interest : interests) {
-//            if (interest.getMonths() == 6 && interest.getRate() == 0.05) {
+//            if (interest.getMonths() == body.getMonths() && interest.getRate() == body.getRate()) {
 //                interestFound = true;
 //                break;
 //            }
 //        }
-//        Assert.assertTrue(interestFound);
+//        Assert.assertEquals(interestFound, true);
+//        // nếu số tháng kỳ hạn bị trùng thì trả về mã lỗi BAD_REQUEST
+//        body.setMonths(30);
+//        ResponseEntity<Object> response2 = interestController.add(body);
+//        Assert.assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
 //    }
+    @Test
+    public void testAddInterest() {
+        // Tạo một đối tượng admin
+        Staff admin = new Staff(3L, "first name", "last name", "email@gmail.com", "username", "password", 1);
+        staffRepo.save(admin);
+
+        AddBody body = new AddBody();
+        body.setMonths(30);
+        body.setRate(8);
+        body.setToken("");
+        // nếu admin không tồn tại thì trả về mã lỗi FORBIDDEN
+        ResponseEntity<Object> response = interestController.add(body);
+        Assert.assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        //nếu là admin và không bị trùng số tháng kỳ hạn thì trả về OK
+        body.setToken(admin.getToken());
+        ResponseEntity<Object> response1 = interestController.add(body);
+        Assert.assertEquals(HttpStatus.OK, response1.getStatusCode());
+        // Kiểm tra xem interest đã được thêm vào csdl hay chưa
+        List<Interest> interests = repo.findAll();
+        boolean interestFound = false;
+        for (Interest interest : interests) {
+            if (interest.getMonths() == body.getMonths() && interest.getRate() == body.getRate()) {
+                interestFound = true;
+                break;
+            }
+        }
+        Assert.assertEquals(interestFound, true);
+        // nếu số tháng kỳ hạn bị trùng thì trả về mã lỗi BAD_REQUEST
+        body.setMonths(30);
+        ResponseEntity<Object> response2 = interestController.add(body);
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
+    }
 }
