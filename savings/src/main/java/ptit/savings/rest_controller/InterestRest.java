@@ -33,14 +33,12 @@ public class InterestRest {
 
     @PostMapping("/api/admin/interest/delete")
     public ResponseEntity<Object> delete(
-            @RequestBody @Valid DeleteBody body, BindingResult bindingResult // Body gom id lai suat can xoa
+            @RequestBody @Valid DeleteBody body // Body gom id lai suat can xoa
     ) {
         if (interestService.getInterestById(body.getId()) != null) {
             interestService.deleteInterest(body.getId());
             return new ResponseEntity<>("Interest deleted successfully", HttpStatus.OK);
-        }
-
-        else {
+        } else {
             return new ResponseEntity<>("Interest with given id does not exist", HttpStatus.NOT_FOUND);
         }
     }
@@ -69,7 +67,7 @@ public class InterestRest {
 
     @PostMapping("/api/admin/interest/add")
     public ResponseEntity<Object> add(
-            @RequestBody @Valid AddBody body, BindingResult bindingResult    //Body gom ten, so thang, lai suat(theo %), token
+            @RequestBody @Valid AddBody body    //Body gom ten, so thang, lai suat(theo %), token
     ) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
