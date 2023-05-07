@@ -77,7 +77,7 @@ public class StaffRest {
         Staff staff = repository.findById(body.getId()).orElse(null);
         if (staff == null) {
             response.put("error", "Couldn't find employee with id: " + body.getId());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
         if (staff.getVerified() == 1) {
             response.put("error", "Employee with id: " + body.getId() + " has already been verified");
