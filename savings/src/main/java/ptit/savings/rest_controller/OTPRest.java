@@ -64,6 +64,7 @@ public class OTPRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+        body.setOtp(body.getOtp().trim());
         OTP otp = otpRepository.findByStrValue(body.getOtp()).get(0);
         if(otp.getAction().compareTo("verify account")!=0){
             error.put("otp","OTP không hợp lệ");
@@ -105,6 +106,7 @@ public class OTPRest {
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+        body.setOtp(body.getOtp().trim());
         OTP otp = otpRepository.findByStrValue(body.getOtp()).get(0);
         Saving saving = savingRepo.findByNumber(otp.getAccount()).get(0);
 

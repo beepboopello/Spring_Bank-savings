@@ -2099,8 +2099,20 @@
 																				<div class="col p-0 mr-5">
 																					<input type="number"
 																						placeholder="Nhập số tài khoản"
-																						maxlength="18" rel="tooltip"
-																						id="id_txtstk" value="">
+																						maxlength="18" rel="tooltip" autofocus
+																						id="id_txtstk" value="" onkeypress="enterClickSearch(event)">
+																						<script>
+																							window.onload = function(){
+																								if (document.getElementById("id_liststk").rows.length == 1) {
+																								jQuery("#lblthongbao_stk").html("Không tìm thấy tài khoản tiết kiệm nào");
+																								jQuery("#lblthongbao_stk").show()
+																							}
+																							}
+																							function enterClickSearch(event){
+															
+																								if(event.keyCode === 13) document.getElementById("btnAction").click()
+																							}
+																						</script>
 																					<label id="lblthongbao_stk"
 																						style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
 																				</div>
@@ -2125,7 +2137,12 @@
 																						<input
 																							placeholder="Nhập Số tiền gửi"
 																							maxlength="18" rel="tooltip"
-																							id="id_initial" value="">
+																							id="id_initial" value="" onkeypress="enterClickAdd(event)">
+																							<script>
+																								function enterClickAdd(event){
+																									if(event.keyCode === 13) document.getElementById("btnAdd").click()
+																								}
+																							</script>
 																							<label id="lblthongbao_initial"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
 																					</div>
@@ -2158,7 +2175,7 @@
 																					<div class="col p-0 mr-5">
 																						<input placeholder="Nhập mã OTP"
 																							maxlength="18" rel="tooltip"
-																							id="id_txtotp" value="">
+																							id="id_txtotp" value="" onkeypress="enterClickAdd(event)">
 																					</div>
 																				</div>
 																			</div>
@@ -2190,23 +2207,32 @@
 																			function submitForm() {
 																				document.getElementById("btnAction").disabled = true;
 																				let stk = document.getElementById("id_txtstk").value
-																				if (stk == null || stk.trim() == "") {
-																					jQuery("#lblthongbao_stk").html("Số tài khoản đang để trống");
-																					jQuery("#lblthongbao_stk").show()
-																					document.getElementById("btnAction").disabled = false;
-																					return;
-																				}
-																				else jQuery("#lblthongbao_stk").hide()
-																				jQuery("#lblthongbao").html("");
-																				document.getElementById("id_inputstk").value = stk
+																				// if (stk == null || stk.trim() == "") {
+																				// 	jQuery("#lblthongbao_stk").html("Số tài khoản đang để trống");
+																				// 	jQuery("#lblthongbao_stk").show()
+																				// 	document.getElementById("btnAction").disabled = false;
+																				// 	return;
+																				// }
+																				// else jQuery("#lblthongbao_stk").hide()
+																				// jQuery("#lblthongbao").html("");
+											
+																				document.getElementById("id_inputstk").value = stk.trim()
 																				document.getElementById("id_form").submit();
 																			}
 																			async function addSaving() {
 																				document.getElementById("btnAdd").disabled = true;
 																				var listIn = document.getElementById("GetKy");
 																				let amount = document.getElementById("id_initial").value.replaceAll(",", "");
+																				if(amount == null || amount.trim() == ""){
+																					jQuery("#lblthongbao_initial").html("Số tiền gửi không được bỏ trống");
+																					jQuery("#lblthongbao_initial").show()
+																					document.getElementById("id_initial").value = "";
+																					document.getElementById("btnAdd").disabled = false;
+																					return;
+																				}
 																				if (isNaN(amount)) {
 																					jQuery("#lblthongbao_initial").html("Số tiền gửi không hợp lệ");
+																					jQuery("#lblthongbao_initial").show()
 																					document.getElementById("id_initial").value = "";
 																					document.getElementById("btnAdd").disabled = false;
 																					return;
@@ -2249,6 +2275,7 @@
 																				document.getElementById("btnAdd").disabled = false;
 																			}
 																			async function checkOTP() {
+																				document.getElementById("id_txtotp").value = document.getElementById("id_txtotp").value.trim()
 																				document.getElementById("btnAdd").disabled = true;
 																				let data = {
 																					otp: document.getElementById("id_txtotp").value,
@@ -2296,18 +2323,23 @@
 																						data-type="1">
 																						<thead>
 																							<tr>
+																								<th>Stk</th>
 																								<th>CCCD</th>
 																								<th>Tên</th>
 																								<th>Họ và tên đệm
 																								</th>
 																								<th>Email</th>
-																								<th>Stk</th>
+																								
 																								<th>Chọn</th>
 																							</tr>
 																						</thead>
 																						<tbody>
 																							<tr
 																								th:each="account : ${accountList}">
+																								<td><span
+																									th:text="${account.stk}">
+																									Author
+																								</span></td>
 																								<td><span
 																										th:text="${account.cccd}">
 																										Author
@@ -2324,10 +2356,7 @@
 																										th:text="${account.email}">
 																										Author
 																									</span></td>
-																								<td><span
-																										th:text="${account.stk}">
-																										Author
-																									</span></td>
+																								
 
 																								<td>
 																									<button

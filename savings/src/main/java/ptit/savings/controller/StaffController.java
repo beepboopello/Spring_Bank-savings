@@ -121,6 +121,12 @@ public class StaffController {
             return "redirect:/";
         else if (staff.getIsAdmin() == 1)
             return "redirect:/admin";
+        else if (stk.trim().length()==0){
+            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            model.addAttribute("accountList", accountRepo.findAll());
+            model.addAttribute("savingList", savingRepo.findByAccount_Stk(stk));
+            return "addSaving";
+        }
         else {
             System.out.println(stk);
             model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
@@ -152,6 +158,10 @@ public class StaffController {
             return "redirect:/";
         else if (staff.getIsAdmin() == 1)
             return "redirect:/admin";
+        else if(number.trim().length()==0){
+            model.addAttribute("savingList", savingRepo.findAll());
+            return "searchSaving";
+        }
         else {
             System.out.println(number);
             model.addAttribute("savingList", savingRepo.findByNumber(number));
@@ -201,6 +211,8 @@ public class StaffController {
                         @RequestParam("token") String token,
                         Model model,
                         HttpSession session) {
+        username = username.trim();
+        password = password.trim();
         List<Staff> list = staffRepo.findByUsername(username);
         if (list.isEmpty()) {
             model.addAttribute("error", "Không tồn tại nguời dùng");
