@@ -33,15 +33,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class StaffControllerTest {
     @Autowired
-    private InterestRepository repo;
-    @Autowired
-    private InterestRest interestController;
-    @Autowired
     private StaffRepository staffRepo;
     @Autowired
     private StaffRest staffRest;
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @BeforeEach
     void setUp() {

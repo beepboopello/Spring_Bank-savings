@@ -55,16 +55,16 @@ public class SavingRest {
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
 
-        if(bindingResult.hasErrors()){
-            for (Object object : bindingResult.getAllErrors()) {
-                if(object instanceof FieldError) {
-                    FieldError fieldError = (FieldError) object;
-                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
-                }
-            }
-            response.put("error",error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-        }
+//        if(bindingResult.hasErrors()){
+//            for (Object object : bindingResult.getAllErrors()) {
+//                if(object instanceof FieldError) {
+//                    FieldError fieldError = (FieldError) object;
+//                    error.put(fieldError.getField().toString(), fieldError.getDefaultMessage());
+//                }
+//            }
+//            response.put("error",error);
+//            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+//        }
         
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("error", "Xác minh token thất bại");
@@ -78,14 +78,15 @@ public class SavingRest {
 
         if(accountRepo.findByStk(stk).isEmpty()){
             error.put("stk", "stk doesn't exist");
-        }
-        if(interestRepo.findById(interestId).isEmpty()){
-            error.put("interestId", "Interest id doesn't exist");
-        }
-        if(!error.isEmpty()){
             response.put("error", error);
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
+        if(interestRepo.findById(interestId).isEmpty()){
+            error.put("interestId", "Interest id doesn't exist");
+            response.put("error", error);
+            return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+        }
+
         String number;
         Random random = new Random();
         do {
@@ -117,16 +118,16 @@ public class SavingRest {
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
 
-        if(bindingResult.hasErrors()){
-            error = new HashMap<>();
-            for (Object object : bindingResult.getAllErrors()) {
-                if(object instanceof FieldError) {
-                    FieldError fieldError = (FieldError) object;
-                    response.put("error", fieldError.getDefaultMessage());
-                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-                }
-            }
-        }
+//        if(bindingResult.hasErrors()){
+//            error = new HashMap<>();
+//            for (Object object : bindingResult.getAllErrors()) {
+//                if(object instanceof FieldError) {
+//                    FieldError fieldError = (FieldError) object;
+//                    response.put("error", fieldError.getDefaultMessage());
+//                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
+//                }
+//            }
+//        }
 
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("error", "Xác minh token thất bại");
