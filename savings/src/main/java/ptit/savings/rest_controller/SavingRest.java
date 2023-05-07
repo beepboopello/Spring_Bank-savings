@@ -42,7 +42,6 @@ public class SavingRest {
 
     @Autowired
     private AccountRepository accountRepo;
-
     @Autowired
     private OTPRepository otpRepo;
 

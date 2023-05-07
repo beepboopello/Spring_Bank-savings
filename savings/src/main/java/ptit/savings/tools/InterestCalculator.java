@@ -14,9 +14,9 @@ public class InterestCalculator {
         if (saving.getInterest().getMonths() == 0) {
             // Tính tổng tiền nhận được sau khi rút
             rate = saving.getInterest().getRate() / 100;
-            long actualDays = (long) ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
+            long actualDays = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
             total = (saving.getInitial() * rate * actualDays) / 365;
-            return (long) (saving.getInitial() + total);
+            return Math.round(saving.getInitial() + total);
         } else {
             long actualMonth = ChronoUnit.MONTHS.between(saving.getCreated_at(), LocalDateTime.now());
             if (actualMonth == 0) {
@@ -24,11 +24,11 @@ public class InterestCalculator {
             }
             rate = saving.getInterest().getRate() / 100;
             total = (saving.getInitial() * rate * ((double) actualMonth / 12));
-            System.out.println("saving.getInitial(): " + saving.getInitial());
-            System.out.println("actualMonth: " + actualMonth);
-            System.out.println("rate: " + rate);
-            System.out.println(total);
-            return (long) (saving.getInitial() + total);
+//            System.out.println("saving.getInitial(): " + saving.getInitial());
+//            System.out.println("actualMonth: " + actualMonth);
+//            System.out.println("rate: " + rate);
+//            System.out.println(total);
+            return Math.round(saving.getInitial() + total);
         }
     }
 
@@ -38,12 +38,12 @@ public class InterestCalculator {
 
     public static Long calculate_interest(Long amount, Interest interest) {
         long total = 0L;
-        System.out.println("amount: " + amount);
-        System.out.println("rate: " + interest.getRate());
-        System.out.println("months: " + interest.getMonths());
+//        System.out.println("amount: " + amount);
+//        System.out.println("rate: " + interest.getRate());
+//        System.out.println("months: " + interest.getMonths());
         long months = interest.getMonths();
         double rate = interest.getRate();
-        total = (long) (amount * rate / 100 * ((double) months / 12));
+        total = Math.round(amount * rate / 100 * ((double) months / 12));
         return total;
     }
 
@@ -54,7 +54,7 @@ public class InterestCalculator {
         double interestRate = saving.getInterest().getRate() / 100;
         Double total = (saving.getInitial() * interestRate * actualDay) / 365;
 //        Tính tổng tiền nhận được sau khi rút = số tiền ban đầu gửi + số tiền lãi
-        return (long) (saving.getInitial() + total);
+        return Math.round(saving.getInitial() + total);
     }
 
 }
