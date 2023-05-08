@@ -46,7 +46,7 @@ public class AccountRest {
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("message","Token verification failed!");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-        };
+        }
         Account b = new Account();
         b.setEmail(body.getEmail());
         b.setFirst_name(body.getFirstName());
