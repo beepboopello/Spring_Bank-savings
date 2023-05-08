@@ -50,7 +50,6 @@
     <script src="https://localhost:8080/calculate_files/jquery-3.4.1.js"></script>
     <script src="https://localhost:8080/calculate_files/bootstrap.min.js"></script>
     <script src="https://localhost:8080/calculate_files/owl.carousel.min.js"></script>
-    <script src="https://localhost:8080/calculate_files/main.js"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="" src="https://localhost:8080/calculate_files/js"></script>
@@ -2117,10 +2116,19 @@
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input placeholder="Nhập số tiền"
                                                                                            maxlength="18" rel="tooltip"
-                                                                                           name="txtsotien"
+                                                                                           name="txtsotien" autofocus
                                                                                            id="txtsotien"
+                                                                                           onkeypress="enterClickCalculate(event)"
                                                                                            value="">
+                                                                                           <label id="lblthongbao"
+                                                                                           style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
+                                                                            
                                                                                 </div>
+                                                                                <script>
+                                                                                    function enterClickCalculate(event){
+                                                                                        if(event.keyCode === 13) document.getElementById("btnAction").click()
+                                                                                    }
+                                                                                </script>
                                                                             </div>
                                                                             <div
                                                                                     class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
@@ -2128,14 +2136,16 @@
                                                                                     Kỳ hạn gửi
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
-                                                                                    <select id="GetKy" name="GetKy">
+                                                             
+                                                                                    <select id="GetKy" name="GetKy" >
                                                                                         <option
                                                                                                 th:each="interest : ${interestList}"
-                                                                                                th:text="${interest.name} + ' - ' + ${interest.rate} + '%/năm'"
+                                                                                                th:text="${interest.name} + ' - ' + ${interest.rate*100} + '%/năm'"
                                                                                                 th:value="${interest.name}"
                                                                                                 th:id="'id_in' + ${interest.id}"
                                                                                                 th:rate="${interest.rate}"
                                                                                                 th:months="${interest.months}">
+
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
@@ -2195,8 +2205,25 @@
                                                                                 interestId: listIn.options[listIn.selectedIndex].id.substr(5),
                                                                                 token: document.getElementById("id_token").value,
                                                                             };
-                                                                            document.getElementById('idInterest').value = data.amount;
-                                                                            document.getElementById('amount').value = data.interestId;
+                                                                            // document.getElementById('idInterest').value = data.amount;
+                                                                            // document.getElementById('amount').value = data.interestId;
+                                                                            if(document.getElementById('txtsotien').value == null || document.getElementById('txtsotien').value.trim() == ""){
+                                                                                jQuery("#lblthongbao").html("Vui lòng nhập số tiền!");
+                                                                                jQuery("#lblthongbao").show()
+                                                                                document.getElementById('id_profit').innerHTML = ""
+                                                                                document.getElementById('result').innerHTML = ""
+                                                                                return
+                                                                            }
+                                                                            else if(document.getElementById("txtsotien").value.replaceAll(",", "")<100000){
+                                                                                jQuery("#lblthongbao").html("Số tiền gửi tối thiểu 100,000");
+                                                                                jQuery("#lblthongbao").show()
+                                                                                document.getElementById('id_profit').innerHTML = ""
+                                                                                document.getElementById('result').innerHTML = ""
+                                                                                return
+                                                                            }
+                                                                            else {
+                                                                                jQuery("#lblthongbao").hide()
+                                                                            }
                                                                             // Send request to API
                                                                             fetch('/calculate-interest?idInterest=' + data.interestId + '&amount=' + data.amount)
                                                                                 .then(response => response.text())
@@ -2264,7 +2291,7 @@
                                                         <div class="widget-title">Chức năng hệ thống</div>
                                                         <div class="widget-content">
                                                             <ul>
-                                                                <li><a href="/addAccount">Mở tài khoản ngân hàng</a>
+                                                                <li><a href="/addAccount">Mở tài khoản tiết kiệm</a>
                                                                 </li>
                                                                 <li><a href="/addSaving">Mở sổ tiết kiệm</a></li>
                                                                 <li><a href="/searchSaving">Tra cứu / rút sổ tiết

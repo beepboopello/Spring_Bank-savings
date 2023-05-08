@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <title>
 
-        Tính lãi tiết kiệm
+        Tra cứu / rút sổ tiết kiệm
 
     </title>
 
@@ -2111,8 +2111,19 @@
                                                                                     <input type="number"
                                                                                         placeholder="Nhập mã sổ tiết kiệm"
                                                                                         maxlength="18" rel="tooltip"
-                                                                                        id="id_txtNumberSaving"
-                                                                                        value="">
+                                                                                        id="id_txtNumberSaving" autofocus
+                                                                                        value="" onkeypress="enterClickSearch(event)">
+                                                                                    <script>
+                                                                                        window.onload = function(){
+                                                                                            if (document.getElementById("id_liststk").rows.length == 1) {
+																								jQuery("#lblthongbao_stk").html("Không tìm thấy sổ tiết kiệm nào, nhập đúng mã sổ tiết kiệm để tìm");
+																								jQuery("#lblthongbao_stk").show()
+                                                                                            }
+                                                                                        }
+                                                                                        function enterClickSearch(event){
+                                                                                            if(event.keyCode === 13) document.getElementById("btnAction").click()
+                                                                                        }
+                                                                                    </script>
                                                                                     <label id="lblthongbao_stk"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
@@ -2195,13 +2206,7 @@
                                                                         </div>
                                                                         <script>
                                                                             function submitForm() {
-                                                                                let numberSaving = document.getElementById("id_txtNumberSaving").value
-                                                                                if (numberSaving == null || numberSaving.trim() == "") {
-                                                                                    jQuery("#lblthongbao_stk").html("Mã sổ tiết kiệm đang để trống");
-                                                                                    jQuery("#lblthongbao_stk").show()
-                                                                                    return;
-                                                                                }
-                                                                                else jQuery("#lblthongbao_stk").hide()
+                                                                                let numberSaving = document.getElementById("id_txtNumberSaving").value.trim()
                                                                                 jQuery("#lblthongbao").html("");
                                                                                 document.getElementById("id_inputNumberSaving").value = numberSaving
                                                                                 document.getElementById("id_form").submit();
@@ -2333,7 +2338,7 @@
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.interest.rate}">
+                                                                                                        th:text="${saving.interest.rate*100} + '% / năm'">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
@@ -2355,6 +2360,7 @@
                                                                                     </table>
                                                                                     <script>
                                                                                         function showForm(clicked_id) {
+                                                                                            document.getElementById("id_txtNumberSaving").disabled = true;
                                                                                             document.getElementById("id_title").style.display = "inline";
                                                                                             document.getElementById("selected").style.display = "block";
                                                                                             document.getElementById("btnRut").style.display = "block";
@@ -2404,7 +2410,7 @@
                                                     <div class="widget-title">Chức năng hệ thống</div>
                                                     <div class="widget-content">
                                                         <ul>
-                                                            <li><a href="/addAccount">Mở tài khoản ngân hàng</a></li>
+                                                            <li><a href="/addAccount">Mở tài khoản tiết kiệm</a></li>
                                                             <li><a href="/addSaving">Mở sổ tiết kiệm</a></li>
                                                             <li><a href="/searchSaving">Tra cứu / rút sổ tiết
                                                                     kiệm</a></li>

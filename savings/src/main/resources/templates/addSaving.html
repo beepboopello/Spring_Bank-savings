@@ -12,7 +12,7 @@
 	<meta http-equiv="Expires" content="0">
 	<title>
 
-		Tính lãi tiết kiệm
+		Mở sổ tiết kiệm
 
 	</title>
 
@@ -2104,12 +2104,12 @@
 																						<script>
 																							window.onload = function(){
 																								if (document.getElementById("id_liststk").rows.length == 1) {
-																								jQuery("#lblthongbao_stk").html("Không tìm thấy tài khoản tiết kiệm nào");
+																								jQuery("#lblthongbao_stk").html("Không tìm thấy tài khoản tiết kiệm nào, nhập đúng số tài khoản để tìm");
 																								jQuery("#lblthongbao_stk").show()
 																							}
 																							}
 																							function enterClickSearch(event){
-															
+														
 																								if(event.keyCode === 13) document.getElementById("btnAction").click()
 																							}
 																						</script>
@@ -2176,7 +2176,10 @@
 																						<input placeholder="Nhập mã OTP"
 																							maxlength="18" rel="tooltip"
 																							id="id_txtotp" value="" onkeypress="enterClickAdd(event)">
+																							<label id="lblthongbao"
+																					style="color: red; font-weight: normal; width: 650px !important; font-size: small;"></label>
 																					</div>
+																					
 																				</div>
 																			</div>
 																			<div
@@ -2218,8 +2221,10 @@
 											
 																				document.getElementById("id_inputstk").value = stk.trim()
 																				document.getElementById("id_form").submit();
+																				
 																			}
 																			async function addSaving() {
+																				document.getElementById("btnAction").disabled = true;
 																				document.getElementById("btnAdd").disabled = true;
 																				var listIn = document.getElementById("GetKy");
 																				let amount = document.getElementById("id_initial").value.replaceAll(",", "");
@@ -2260,7 +2265,7 @@
 																				let res = await response.json();
 
 																				if (res.error) {
-																					console(res.error);
+																					console.log(res.error);
 																					jQuery("#lblthongbao").html("Có lỗi xảy ra, xin hãy thử lại sau");
 																				}
 
@@ -2273,14 +2278,21 @@
 																				document.getElementById("btnAdd").textContent = "Kiểm tra OTP";;
 																				alert("Mã OTP đã được gửi đến gmail của bạn, vui lòng kiểm tra!");
 																				document.getElementById("btnAdd").disabled = false;
+																				document.getElementById("id_txtotp").focus()
 																			}
 																			async function checkOTP() {
 																				document.getElementById("id_txtotp").value = document.getElementById("id_txtotp").value.trim()
 																				document.getElementById("btnAdd").disabled = true;
+
 																				let data = {
 																					otp: document.getElementById("id_txtotp").value,
 																					token: document.getElementById("id_token").value,
 																				};
+																				if (data.otp == null || data.otp == ""){
+																					document.getElementById("btnAdd").disabled = false;
+																					jQuery("#lblthongbao").html("Chưa nhập OTP");
+																					return;
+																				}
 																				let endpoint = "/api/otp/saving"
 																				let response = await fetch(endpoint, {
 																					method: "POST",
@@ -2369,11 +2381,14 @@
 																					</table>
 																					<script>
 																						function showForm(clicked_id) {
+												
 																							document.getElementById("id_info").style.display = "contents";
 																							document.getElementById("btnAdd").style.display = "block";
 																							if (!document.getElementById("id_txtstk").disabled)
 																								document.getElementById("id_txtstk").value = clicked_id;
+																							document.getElementById("id_txtstk").disabled = true;
 																							console.log(clicked_id);
+																							document.getElementById("id_initial").focus()
 																						}
 																					</script>
 																				</div>
@@ -2384,8 +2399,7 @@
 																	<div class="control-group"
 																		style="width: 650px !important">
 
-																		<label id="lblthongbao"
-																			style="color: red; font-weight: normal; width: 650px !important;"></label>
+																		
 																	</div>
 																	<br>
 																</div>
@@ -2417,7 +2431,7 @@
 														<div class="widget-title">Chức năng hệ thống</div>
 														<div class="widget-content">
 															<ul>
-																<li><a href="/addAccount">Mở tài khoản ngân hàng</a>
+																<li><a href="/addAccount">Mở tài khoản tiết kiệm</a>
 																</li>
 																<li><a href="/addSaving">Mở sổ tiết kiệm</a></li>
 																<li><a href="/searchSaving">Tra cứu / rút sổ tiết

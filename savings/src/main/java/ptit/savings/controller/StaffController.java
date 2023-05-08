@@ -177,7 +177,9 @@ public class StaffController {
         else if (staff.getIsAdmin() == 1)
             return "redirect:/admin";
         else {
-            model.addAttribute("interestList", interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months")));
+            List<Interest> list = interestRepo.findAll(Sort.by(Sort.Direction.ASC, "months"));
+            list.remove(0);
+            model.addAttribute("interestList", list);
             return "calculate";
         }
     }
