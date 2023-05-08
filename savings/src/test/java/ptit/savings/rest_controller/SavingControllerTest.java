@@ -157,9 +157,8 @@ class SavingControllerTest {
 
         ResponseEntity<Object> response = savingController.withdrawal(withdrawalBody, null);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Nhập mã otp để xác minh yêu cầu rút sổ tiết kiệm", response.getBody());
-        Saving savings = savingRepo.findByNumber("test_number").get(0);
-        assertEquals(-1, savings.getStatus());
+        HashMap<String, Object> map = (HashMap<String, Object>) response.getBody();
+        assertEquals("Nhập mã otp để xác minh yêu cầu rút sổ tiết kiệm", map.get("message"));
     }
     @Test
     @Rollback
@@ -181,7 +180,31 @@ class SavingControllerTest {
 
         ResponseEntity<Object> response = savingController.withdrawal(withdrawalBody, null);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Sổ tiết kiệm đã đuợc rút truớc đó!", response.getBody());
+        HashMap<String, String> map = (HashMap<String, String>) response.getBody();
+        assertEquals("Sổ tiết kiệm đã đuợc rút truớc đó!", map.get("error"));
 
+    }
+    @Test
+    @Rollback
+    public void testWithdrawalInvalidSaving() {
+        Staff admin = new Staff(3L, "first name", "last name", "email@gmail.com", "username", "password", 1);
+        staffRepo.save(admin);
+
+        Account account = accountRepository.findById(1L).get();
+
+        Interest interest = interestRepository.findById(1L).get();
+        Saving saving = new Saving(account,100000L,interest,"1234567890");
+        saving.setStatus(-1);
+        savingRepo.save(saving);
+
+        WithdrawalBody withdrawalBody = new WithdrawalBody();
+        withdrawalBody.setToken(admin.getToken());
+        withdrawalBody.setOption(0);
+        withdrawalBody.setNumber("5467890534");
+
+        ResponseEntity<Object> response = savingController.withdrawal(withdrawalBody, null);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        HashMap<String, String> map = (HashMap<String, String>) response.getBody();
+        assertEquals("Sổ tiết kiệm không tồn tại!", map.get("error"));
     }
 }

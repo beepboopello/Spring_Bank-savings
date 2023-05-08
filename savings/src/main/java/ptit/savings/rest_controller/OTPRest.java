@@ -47,13 +47,6 @@ public class OTPRest {
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
         
-
-        if(bindingResult.hasErrors()){
-            error.put("message", "Invalid request body");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-        }
-
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
@@ -90,11 +83,6 @@ public class OTPRest {
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
 
-        if(bindingResult.hasErrors()){
-            error.put("message", "Invalid request body");
-            response.put("error", error);
-            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-        }
 
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("error", "Xác minh token thất bại");

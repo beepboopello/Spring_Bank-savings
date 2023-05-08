@@ -117,18 +117,6 @@ public class SavingRest {
         ){
         HashMap<String,Object> response = new HashMap<>();
         HashMap<String,Object> error = new HashMap<>();
-
-//        if(bindingResult.hasErrors()){
-//            error = new HashMap<>();
-//            for (Object object : bindingResult.getAllErrors()) {
-//                if(object instanceof FieldError) {
-//                    FieldError fieldError = (FieldError) object;
-//                    response.put("error", fieldError.getDefaultMessage());
-//                    return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
-//                }
-//            }
-//        }
-
         if(staffRepo.findByToken(body.getToken()).isEmpty()){
             response.put("error", "Xác minh token thất bại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
@@ -141,16 +129,16 @@ public class SavingRest {
             saving = savingRepo.findByNumber(number).get(0);
         }
         catch(IndexOutOfBoundsException e){
-            error.put("id","Sổ tiết kiệm không tồn tại!");
-            response.put("error",error);
+//            error.put("id","Sổ tiết kiệm không tồn tại!");
+            response.put("error","Sổ tiết kiệm không tồn tại!");
             return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
         }
         
 //        Optional<Saving> optionalSaving = savingRepo.findById(id);
 //        if(!optionalSaving.isPresent()){
         if(saving.getStatus() == -1){
-            error.put("status","Sổ tiết kiệm đã đuợc rút truớc đó!");
-            response.put("error",error);
+//            error.put("status","Sổ tiết kiệm đã đuợc rút truớc đó!");
+            response.put("error","Sổ tiết kiệm đã đuợc rút truớc đó!");
             return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
         OTP otp = new OTP();

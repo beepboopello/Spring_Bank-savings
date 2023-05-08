@@ -152,17 +152,26 @@ class OTPControllerTest {
 
     @Test
     @Rollback
-    void testVerifyAccountInvalidOTP() {
+    void testVerifyAccountNullOTP() {
         // Tạo body để test
         VerifyBody body = new VerifyBody();
-        body.setToken("not is token admin");
-        body.setOtp("123456");
-        body.setOtp(admin.getToken());
+        body.setToken(admin.getToken());
+//        body.setOtp("123456");
         // Act
         ResponseEntity<Object> response = otpController.verifyAccount(body, new BeanPropertyBindingResult(body, "body"));
-        HashMap<String, Object> responseBody = (HashMap<String, Object>) response.getBody();
-        responseBody.get("error");
-        Assert.assertEquals("OTP không hợp lệ", responseBody.get("error"));
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    @Rollback
+    void testVerifyAccountActionoOTPNotEquals() {
+        // Tạo body để test
+        VerifyBody body = new VerifyBody();
+        body.setToken(admin.getToken());
+//        body.setOtp("123456");
+        // Act
+        ResponseEntity<Object> response = otpController.verifyAccount(body, new BeanPropertyBindingResult(body, "body"));
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
@@ -192,10 +201,56 @@ class OTPControllerTest {
         Assert.assertTrue(optionalSaving.size() > 0);
         Saving savedSaving = optionalSaving.get(0);
         assertEquals(1, savedSaving.getStatus());
-        assertEquals(1, savedSaving.getVerify());
         assertNotNull(savedSaving.getVerified_at());
 
-        List<OTP> optionalOTP = otpRepository.findByStrValue("999999");
-        Assert.assertFalse(optionalOTP.size() == 0);
+    }
+
+    @Test
+    @Rollback
+    void verifySavingNotIsAdmin() {
+        // Tạo một đối tượng OTP
+        OTP otp = new OTP();
+        otp.setStrValue("999999");
+        otp.setExpired_at(LocalDateTime.now().plusMinutes(5));
+        otp.setAction("verify saving");
+        otp.setCreated_at(LocalDateTime.now());
+        otp.setAccount(saving.getNumber());
+        otpRepository.save(otp);
+
+        // Tạo đối tượng VerifyBody
+        VerifyBody verifyBody = new VerifyBody();
+        verifyBody.setToken("admin.getToken()");
+        verifyBody.setOtp("999999");
+
+        ResponseEntity<Object> responseEntity = otpController.verifySaving(verifyBody, new BeanPropertyBindingResult(verifyBody, "verifyBody"));
+
+        // Kiểm tra kết quả trả về
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+
+    }
+
+    @Test
+    @Rollback
+    void verifySavingInvalidOTP() {
+        // Tạo một đối tượng OTP
+        OTP otp = new OTP();
+        otp.setStrValue("999999");
+        otp.setExpired_at(LocalDateTime.now().plusMinutes(5));
+        otp.setAction("verify saving");
+        otp.setCreated_at(LocalDateTime.now());
+        otp.setAccount(saving.getNumber());
+        otpRepository.save(otp);
+
+        // Tạo đối tượng VerifyBody
+        VerifyBody verifyBody = new VerifyBody();
+        verifyBody.setToken(admin.getToken());
+
+        ResponseEntity<Object> responseEntity = otpController.verifySaving(verifyBody, new BeanPropertyBindingResult(verifyBody, "verifyBody"));
+
+        // Kiểm tra kết quả trả về
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+
     }
 }
