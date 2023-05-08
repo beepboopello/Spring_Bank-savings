@@ -2140,7 +2140,7 @@
                                                                                     <select id="GetKy" name="GetKy" >
                                                                                         <option
                                                                                                 th:each="interest : ${interestList}"
-                                                                                                th:text="${interest.name} + ' - ' + ${interest.rate*100} + '%/năm'"
+                                                                                                th:text="${interest.name} + ' - ' + ${interest.rate} + '%/năm'"
                                                                                                 th:value="${interest.name}"
                                                                                                 th:id="'id_in' + ${interest.id}"
                                                                                                 th:rate="${interest.rate}"
