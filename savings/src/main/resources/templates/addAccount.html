@@ -2133,7 +2133,7 @@
 
                                                                     <div
                                                                         class="form-change-currency mt-5  cong-cu-tinh-toan">
-                                                                        <h5 class="title">MỞ TÀI KHOẢN NGÂN HÀNG
+                                                                        <h5 class="title">MỞ TÀI KHOẢN TIẾT KIỆM
                                                                         </h5>
                                                                         <!-- right -->
                                                                         <div class="d-flex flex-wrap">
@@ -2287,6 +2287,8 @@
                                                                                         type="text" name="cccd"
                                                                                         placeholder="Nhập OTP"
                                                                                         id="id_txtotp" value="">
+                                                                                        <label id="lblthongbao_otp"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
 
@@ -2349,7 +2351,7 @@
                                                                                     jQuery("#lblthongbao_cccd").show()
                                                                                 } else if(cccd.length!=12){
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_cccd").html("Nhập đúng định dạng số căn cuớc công dân gồm 12 số");
+                                                                                    jQuery("#lblthongbao_cccd").html("Nhập số căn cuớc công dân gồm 12 số");
                                                                                     jQuery("#lblthongbao_cccd").show()  
                                                                                 }
                                                                                 else jQuery("#lblthongbao_cccd").hide()
@@ -2379,10 +2381,15 @@
                                                                                 else jQuery("#lblthongbao_address").hide()
 
 
-                                                                                let phone = document.getElementById("id_txtsdt").value
-                                                                                if (phone == null || phone.trim() == "") {
+                                                                                let phone = document.getElementById("id_txtsdt").value.trim()
+                                                                                if (phone == null || phone == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_tel").html("Số điện thoại đang để trống");
+                                                                                    jQuery("#lblthongbao_tel").show()
+                                                                                }
+                                                                                else if(phone.length != 10){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_tel").html("Nhập đúng số điện thoại có 10 chữ số");
                                                                                     jQuery("#lblthongbao_tel").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_tel").hide()
@@ -2431,6 +2438,24 @@
                                                                             }
 
                                                                             async function checkOTP() {
+                                                                                document.getElementById("btnAdd").disabled = true;
+                                                                                otpStr = document.getElementById("id_txtotp").value.trim()
+                                                                                if(otpStr.length == 0){
+                                                                                    jQuery("#lblthongbao_otp").html("Ô nhập OTP đang để trống");
+                                                                                    jQuery("#lblthongbao_otp").show()
+                                                                                    document.getElementById("btnAdd").disabled = false;
+                                                                                    return;
+                                                                                }
+                                                                                if(otpStr.length!=6){
+                                                                                    jQuery("#lblthongbao_otp").html("Nhập đúng mã OTP gồm 6 chữ số");
+                                                                                    jQuery("#lblthongbao_otp").show()
+                                                                                    document.getElementById("btnAdd").disabled = false;
+                                                                                    return;
+                                                                                }
+    
+                                                                                else{
+                                                                                    jQuery("#lblthongbao_otp").hide()
+                                                                                }
                                                                                 document.getElementById("btnAdd").style.disabled = true;
                                                                                 let data = {
                                                                                     token: document.getElementById("id_token").value,
@@ -2445,10 +2470,12 @@
                                                                                 let res = await response.json();
                                                                                 if (res.error) {
                                                                                     document.getElementById("btnAdd").style.disabled = false;
-                                                                                    jQuery("#lblthongbao").html(res.error);
+                                                                                    jQuery("#lblthongbao_otp").html("OTP không hợp lệ");
+                                                                                    jQuery("#lblthongbao_otp").show()
+                                                                                    document.getElementById("btnAdd").disabled = false;
                                                                                     return;
                                                                                 }
-                                                                                
+                                                                                jQuery("#lblthongbao_otp").hide()
                                                                                 alert("Tạo tài khoản thành công");
                                                                                 location.reload();
                                                                             }

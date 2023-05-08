@@ -2151,7 +2151,7 @@
                                                                                         id="selected"
                                                                                         style="display: none;">
                                                                                         <option value="1">Rút về tài
-                                                                                            khoản ngân hàng</option>
+                                                                                            khoản tiết kiệm</option>
                                                                                         <option value="2">Rút tiền
                                                                                             mặt tại quầy</option>
                                                                                     </select>
@@ -2190,6 +2190,8 @@
                                                                                         maxlength="18" rel="tooltip"
                                                                                         id="id_txtotp"
                                                                                         style="display: none;" value="">
+                                                                                        <label id="lblthongbao_otp"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2214,6 +2216,20 @@
 
                                                                             async function verifyotp() {
                                                                                 document.getElementById("id_btnotp").disabled = true;
+
+                                                                                otpStr = document.getElementById("id_txtotp").value.trim()
+                                                                                if(otpStr.length == 0){
+                                                                                    jQuery("#lblthongbao_otp").html("Ô nhập OTP đang để trống");
+                                                                                    jQuery("#lblthongbao_otp").show()
+                                                                                    document.getElementById("id_btnotp").disabled = false;
+                                                                                    return;
+                                                                                }
+                                                                                if(otpStr.length!=6){
+                                                                                    jQuery("#lblthongbao_otp").html("Nhập đúng mã OTP gồm 6 chữ số");
+                                                                                    jQuery("#lblthongbao_otp").show()
+                                                                                    document.getElementById("id_btnotp").disabled = false;
+                                                                                    return;
+                                                                                }
                                                                                 let data = {
                                                                                     otp: document.getElementById("id_txtotp").value,
                                                                                     token: document.getElementById("id_token").value,
@@ -2338,7 +2354,7 @@
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.interest.rate*100} + '% / năm'">
+                                                                                                        th:text="${saving.interest.rate} + '% / năm'">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
