@@ -83,7 +83,6 @@ class AccountControllerTest {
         HashMap<String, Object> responseBodyMap = (HashMap<String, Object>) response.getBody();
         // kiểm tra message trả về
         Assert.assertEquals("New account created successfully!", responseBodyMap.get("message"));
-        // Kiêm tra account trả về có giống với body
 
         // Kiểm tra account có tồn tại trong csdl
         Account account = accountRepository.findByCccd("123456789");
