@@ -2339,19 +2339,19 @@
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.initial}">
+                                                                                                        th:text="${saving.initial} + ' VND'">
                                                                                                         Title
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.mature}">
+                                                                                                        th:text="${saving.mature} + ' VND'">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.created_at}">
+                                                                                                    th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy HH:mm')}">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.interest.getMonths()}">
+                                                                                                        th:text="${saving.interest.getMonths()} + ' Tháng'">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
@@ -2360,10 +2360,11 @@
                                                                                                     </span></td>
                                                                                                 <td><span
                                                                                                         th:text="${saving.status == 1 ? 'Đang hoạt động' : 'Không hoạt động'}">
+<!--                                                                                                    th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy HH:mm')}">-->
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.status != 1 ? saving.updated_at :'---'}">
+                                                                                                        th:text="${saving.status != 1 ? #temporals.format(saving.getUpdated_at(), 'dd/MM/yyyy HH:mm') :'---'}">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td>
