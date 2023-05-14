@@ -64,7 +64,7 @@ public class Saving {
         this.number = number;
         this.current = initial;
         this.interest = interest;
-        this.created_at = LocalDateTime.now();
+        this.created_at = LocalDateTime.now().plusMonths(-1);
         this.started_at = this.created_at;
         this.updated_at = this.created_at;
         this.verify = 0;
@@ -81,12 +81,12 @@ public class Saving {
     public void hourlyUpdate() {
         try {
             this.current = InterestCalculator.update(this);
-            if (receive_at != null) {
+            if (this.receive_at != null) {
                 if (LocalDateTime.now().isAfter(receive_at)) {
-                    initial = mature;
-                    mature = InterestCalculator.calculate(initial, interest);
-                    started_at = receive_at;
-                    receive_at = started_at.plusMonths(interest.getMonths());
+                    this.initial = this.mature;
+                    this.mature = InterestCalculator.calculate(this.initial, this.interest);
+                    this.started_at = this.receive_at;
+                    this.receive_at = this.started_at.plusMonths(this.interest.getMonths());
                 }
             } else {
                 this.mature = this.current;

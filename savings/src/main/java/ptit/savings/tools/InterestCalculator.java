@@ -14,11 +14,11 @@ public class InterestCalculator {
         if (saving.getInterest().getMonths() == 0) {
             // Tính tổng tiền nhận được sau khi rút
             rate = saving.getInterest().getRate() / 100;
-            long actualDays = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
+            long actualDays = ChronoUnit.DAYS.between(saving.getStarted_at(), LocalDateTime.now());
             total = (saving.getInitial() * rate * actualDays) / 365;
             return Math.round(saving.getInitial() + total);
         } else {
-            long actualMonth = ChronoUnit.MONTHS.between(saving.getCreated_at(), LocalDateTime.now());
+            long actualMonth = ChronoUnit.MONTHS.between(saving.getStarted_at(), LocalDateTime.now());
             if (actualMonth == 0) {
                 return saving.getCurrent();
             }
@@ -50,7 +50,7 @@ public class InterestCalculator {
     public static Long withdrawal(Saving saving) {
 //        Hàm tính lãi rút sớm hơn kỳ hạn
 //        Số ngày thực đã gửi
-        Long actualDay = ChronoUnit.DAYS.between(saving.getCreated_at(), LocalDateTime.now());
+        Long actualDay = ChronoUnit.DAYS.between(saving.getStarted_at(), LocalDateTime.now());
         double interestRate = saving.getInterest().getRate() / 100;
         Double total = (saving.getInitial() * interestRate * actualDay) / 365;
 //        Tính tổng tiền nhận được sau khi rút = số tiền ban đầu gửi + số tiền lãi
