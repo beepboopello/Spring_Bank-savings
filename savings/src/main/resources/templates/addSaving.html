@@ -2157,7 +2157,7 @@
 																						<select id="GetKy" name="GetKy">
 																							<option
 																								th:each="interest : ${interestList}"
-																								th:text="${interest.name}"
+																								th:text="${interest.name} + ' ' + ${interest.getRate()} + '%/năm'"
 																								th:value="${interest.name}"
 																								th:id="'id_in' + ${interest.id}">
 																						</select>
@@ -2335,7 +2335,7 @@
 																						data-type="1">
 																						<thead>
 																							<tr>
-																								<th>Stk</th>
+																								<th>Số tài khoản</th>
 																								<th>CCCD</th>
 																								<th>Tên</th>
 																								<th>Họ và tên đệm
