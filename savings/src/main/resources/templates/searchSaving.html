@@ -2023,6 +2023,7 @@
         <div class="container">
             <div class="header">
                 <div class="top-bar">
+                    <input type="hidden" id="shouldShowError" th:value="${shouldShowError}">
                     <ul class="link-top">
 
                         <li>
@@ -2115,7 +2116,7 @@
                                                                                         value="" onkeypress="enterClickSearch(event)">
                                                                                     <script>
                                                                                         window.onload = function(){
-                                                                                            if (document.getElementById("id_liststk").rows.length == 1) {
+                                                                                            if (document.getElementById("id_liststk").rows.length == 1 && document.getElementById("shouldShowError").value == 1) {
 																								jQuery("#lblthongbao_stk").html("Không tìm thấy sổ tiết kiệm nào, nhập đúng mã sổ tiết kiệm để tìm");
 																								jQuery("#lblthongbao_stk").show()
                                                                                             }
@@ -2218,6 +2219,7 @@
                                                                                 document.getElementById("id_btnotp").disabled = true;
 
                                                                                 otpStr = document.getElementById("id_txtotp").value.trim()
+
                                                                                 if(otpStr.length == 0){
                                                                                     jQuery("#lblthongbao_otp").html("Ô nhập OTP đang để trống");
                                                                                     jQuery("#lblthongbao_otp").show()
@@ -2231,7 +2233,7 @@
                                                                                     return;
                                                                                 }
                                                                                 let data = {
-                                                                                    otp: document.getElementById("id_txtotp").value,
+                                                                                    otp: otpStr,
                                                                                     token: document.getElementById("id_token").value,
                                                                                 };
                                                                                 let endpoint = "/api/otp/saving"
@@ -2289,7 +2291,7 @@
                                                                             }
                                                                         </script>
                                                                     </div>
-
+                                                                
                                                                 </div>
                                                                 <div class="box-tab-details">
                                                                     <div class="content">
@@ -2339,15 +2341,15 @@
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.initial} + ' VND'">
+                                                                                                        th:text="${#numbers.formatDecimal(saving.initial,3,'COMMA',0,'COMMA')} + ' VND'">
                                                                                                         Title
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                        th:text="${saving.mature} + ' VND'">
+                                                                                                        th:text="${#numbers.formatDecimal(saving.mature,3,'COMMA',0,'COMMA')} + ' VND'">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span
-                                                                                                    th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy HH:mm')}">
+                                                                                                    th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy')}">
                                                                                                         Author
                                                                                                     </span></td>
                                                                                                 <td><span

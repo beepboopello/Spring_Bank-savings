@@ -160,10 +160,12 @@ public class StaffController {
             return "redirect:/admin";
         else if(number.trim().length()==0){
             model.addAttribute("savingList", savingRepo.findAll());
+            model.addAttribute("shouldShowError", 0);
             return "searchSaving";
         }
         else {
             System.out.println(number);
+            model.addAttribute("shouldShowError", 1);
             model.addAttribute("savingList", savingRepo.findByNumber(number));
             return "searchSaving";
         }
