@@ -2152,8 +2152,8 @@
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="email" name="email"
                                                                                         placeholder="Nhập email"
-                                                                                        id="id_txtemail" value="" autofocus
-                                                                                        maxlength="50">
+                                                                                        id="id_txtemail" value=""
+                                                                                        autofocus maxlength="50">
                                                                                     <label id="lblthongbao_email"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
@@ -2194,15 +2194,14 @@
                                                                             <div
                                                                                 class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
                                                                                 <b class="mr-3 col-12 col-md-4 p-0">
-                                                                                    Họ đệm
+                                                                                    Họ và tên đệm
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="text" name="last_name"
                                                                                         placeholder="Nhập họ đệm"
                                                                                         id="id_txtlname" value=""
                                                                                         maxlength="40">
-                                                                                    <label id="lblthongbao_lname"
-                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
+                                                                                   
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2230,6 +2229,23 @@
                                                                                     <label id="lblthongbao_dob"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
+                                                                                <script>
+                                                                                    $(function () {
+                                                                                        var dtToday = new Date();
+
+                                                                                        var month = dtToday.getMonth() + 1;
+                                                                                        var day = dtToday.getDate();
+                                                                                        var year = dtToday.getFullYear();
+
+                                                                                        if (month < 10)
+                                                                                            month = '0' + month.toString();
+                                                                                        if (day < 10)
+                                                                                            day = '0' + day.toString();
+
+                                                                                        var maxDate = year + '-' + month + '-' + day;
+                                                                                        $('#id_txtngaysinh').attr('max', maxDate);
+                                                                                    });
+                                                                                </script>
                                                                             </div>
                                                                             <div
                                                                                 class="item col-12 col-lg-6 p-0 d-md-flex flex-column flex-md-row mb-3">
@@ -2287,7 +2303,7 @@
                                                                                         type="text" name="cccd"
                                                                                         placeholder="Nhập OTP"
                                                                                         id="id_txtotp" value="">
-                                                                                        <label id="lblthongbao_otp"
+                                                                                    <label id="lblthongbao_otp"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
@@ -2337,7 +2353,7 @@
                                                                                     jQuery("#lblthongbao_email").html("Email đang để trống");
                                                                                     jQuery("#lblthongbao_email").show()
                                                                                 }
-                                                                                else if (!ValidateEmail(email)){
+                                                                                else if (!ValidateEmail(email)) {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_email").html("Email không đúng định dạng ");
                                                                                     jQuery("#lblthongbao_email").show()
@@ -2349,10 +2365,10 @@
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_cccd").html("Số căn cuớc công dân đang để trống");
                                                                                     jQuery("#lblthongbao_cccd").show()
-                                                                                } else if(cccd.length!=12){
+                                                                                } else if (cccd.length != 12) {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_cccd").html("Nhập số căn cuớc công dân gồm 12 số");
-                                                                                    jQuery("#lblthongbao_cccd").show()  
+                                                                                    jQuery("#lblthongbao_cccd").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_cccd").hide()
 
@@ -2387,7 +2403,7 @@
                                                                                     jQuery("#lblthongbao_tel").html("Số điện thoại đang để trống");
                                                                                     jQuery("#lblthongbao_tel").show()
                                                                                 }
-                                                                                else if(phone.length != 10){
+                                                                                else if (phone.length != 10) {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_tel").html("Nhập đúng số điện thoại có 10 chữ số");
                                                                                     jQuery("#lblthongbao_tel").show()
@@ -2402,8 +2418,8 @@
                                                                                     jQuery("#lblthongbao_dob").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_dob").hide()
-                                                                                
-                                                                                if(!isValid) return;
+
+                                                                                if (!isValid) return;
 
                                                                                 document.getElementById("btnAction").disabled = true
 
@@ -2440,26 +2456,26 @@
                                                                             async function checkOTP() {
                                                                                 document.getElementById("btnAdd").disabled = true;
                                                                                 otpStr = document.getElementById("id_txtotp").value.trim()
-                                                                                if(otpStr.length == 0){
+                                                                                if (otpStr.length == 0) {
                                                                                     jQuery("#lblthongbao_otp").html("Ô nhập OTP đang để trống");
                                                                                     jQuery("#lblthongbao_otp").show()
                                                                                     document.getElementById("btnAdd").disabled = false;
                                                                                     return;
                                                                                 }
-                                                                                if(otpStr.length!=6){
+                                                                                if (otpStr.length != 6) {
                                                                                     jQuery("#lblthongbao_otp").html("Nhập đúng mã OTP gồm 6 chữ số");
                                                                                     jQuery("#lblthongbao_otp").show()
                                                                                     document.getElementById("btnAdd").disabled = false;
                                                                                     return;
                                                                                 }
-    
-                                                                                else{
+
+                                                                                else {
                                                                                     jQuery("#lblthongbao_otp").hide()
                                                                                 }
                                                                                 document.getElementById("btnAdd").style.disabled = true;
                                                                                 let data = {
                                                                                     token: document.getElementById("id_token").value,
-                                                                                    otp: document.getElementById("id_txtotp").value
+                                                                                    otp: otpStr
                                                                                 }
                                                                                 let endpoint = '/api/otp/account';
                                                                                 let response = await fetch(endpoint, {

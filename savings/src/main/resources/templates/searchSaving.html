@@ -2332,40 +2332,40 @@
                                                                                         <tbody>
                                                                                             <tr
                                                                                                 th:each="saving : ${savingList}">
-                                                                                                <td><span
+                                                                                                <td style="text-align: right;"><span
                                                                                                         th:text="${saving.number}">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                         th:text="${saving.account.last_name} + ' ' +${saving.account.first_name}">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: right;"><span
                                                                                                         th:text="${#numbers.formatDecimal(saving.initial,3,'COMMA',0,'COMMA')} + ' VND'">
                                                                                                         Title
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: right;"><span
                                                                                                         th:text="${#numbers.formatDecimal(saving.mature,3,'COMMA',0,'COMMA')} + ' VND'">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                     th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy')}">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                         th:text="${saving.interest.getMonths()} + ' Tháng'">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                         th:text="${saving.interest.rate} + '% / năm'">
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                         th:text="${saving.status == 1 ? 'Đang hoạt động' : 'Không hoạt động'}">
 <!--                                                                                                    th:text="${#temporals.format(saving.getCreated_at(), 'dd/MM/yyyy HH:mm')}">-->
                                                                                                         Author
                                                                                                     </span></td>
-                                                                                                <td><span
+                                                                                                <td style="text-align: left;"><span
                                                                                                         th:text="${saving.status != 1 ? #temporals.format(saving.getUpdated_at(), 'dd/MM/yyyy HH:mm') :'---'}">
                                                                                                         Author
                                                                                                     </span></td>
