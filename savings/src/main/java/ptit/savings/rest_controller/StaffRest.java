@@ -35,7 +35,7 @@ public class StaffRest {
         HashMap<String, Object> error = new HashMap<>();
         if (!repository.findByUsername(body.getUsername()).isEmpty()) {
 //            error.put("username", "Duplicate username");
-            response.put("message", "Duplicate username");
+            response.put("error", "Tài khoản đã tồn tại");
             return new ResponseEntity<Object>(response, HttpStatus.FORBIDDEN);
         }
         Staff newStaff = new Staff(body.getFirstName(),

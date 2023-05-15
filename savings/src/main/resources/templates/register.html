@@ -26,6 +26,19 @@
     };
 
 
+    function validateInput(inputField) {
+        var input = inputField.value;
+        
+        var regex = /[^a-zA-Z\u0080-\uFFFF\s]/g;
+        input = input.replace(regex, '');
+
+        if(input !== inputField.value){
+            alert("Các trường nhập họ tên chỉ cho phép nhập ký tự")
+        }
+
+        inputField.value = input;
+    }
+
     function register() {
         let error = false;
         let data = {
@@ -113,10 +126,7 @@
                     location.href = '/';
                 }
                 console.log(obj.body.error);
-                for (var error in obj.body.error) {
-                    document.getElementById("id_err-" + error).innerHTML = obj.body.error[error]
-                    console.log("id_err-" + error + " " + obj.body.error[error])
-                }
+                document.getElementById("id_error").innerHTML = obj.body.error
             });
 
     }
@@ -132,7 +142,8 @@
 
                 <div class="form-group">
                     <label>Tên</label>
-                    <input id="id_fistName" type="text" class="form-control" name="username" placeholder="Nhập tên">
+                    <input id="id_fistName" type="text" class="form-control" name="username" placeholder="Nhập tên"
+                        oninput="validateInput(this)">
                     <div class="error_div">
                         <i class="error_msg" id="id_err-firstName"></i>
                     </div>
@@ -140,7 +151,7 @@
                 <div class="form-group">
                     <label>Họ + tên đệm</label>
                     <input id="id_lastName" type="text" class="form-control" name="username"
-                        placeholder="Nhập họ và tên đệm">
+                        placeholder="Nhập họ và tên đệm" oninput="validateInput(this)">
                     <div class="error_div">
                         <i class="error_msg" id="id_err-lastName"></i>
                     </div>
@@ -167,7 +178,7 @@
                     </div>
                 </div>
 
-                <p style="color: red" th:text="${error}"></p>
+                <p id="id_error" style="color: red" th:text="${error}"></p>
                 <button id="id_btn_register" onclick="register()" class="btn btn-primary">Đăng ký</button>
                 <button id="id_btn_verify" onclick="verify()" style="display: none" class="btn btn-primary">Xác
                     nhận</button>

@@ -28,7 +28,7 @@
                 <script>
                     function focusOutUsername(){
                         if(document.getElementById("username").value.trim()==""){
-                            jQuery("#error_username").html("Vui lòng nhập Tên đăng nhập");
+                            jQuery("#error_username").html("Vui lòng nhập Tài khoản");
                             jQuery("#error_username").show()
                             return 1;
                         }
@@ -58,7 +58,7 @@
                 <form id="id_form" action="login" method="post">
                     <div class="form-group">
                         <label>Tên đăng nhập</label>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="Nhập tên đăng nhập" onfocusout="focusOutUsername()">
+                        <input id="username" type="text" class="form-control" name="username" placeholder="Nhập tài khoản" onfocusout="focusOutUsername()">
                         <div class="error_div">
                             <i class="error_msg" id="error_username"></i>
                         </div>

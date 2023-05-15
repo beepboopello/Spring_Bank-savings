@@ -2186,7 +2186,7 @@
                                                                                     <input type="text" name="first_name"
                                                                                         placeholder="Nhập tên"
                                                                                         id="id_txtfname" value=""
-                                                                                        maxlength="40">
+                                                                                        maxlength="40" oninput="validateInput(this)">
                                                                                     <label id="lblthongbao_fname"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
@@ -2198,10 +2198,10 @@
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="text" name="last_name"
-                                                                                        placeholder="Nhập họ đệm"
+                                                                                        placeholder="Nhập họ và tên đệm"
                                                                                         id="id_txtlname" value=""
-                                                                                        maxlength="40">
-                                                                                   
+                                                                                        maxlength="40" oninput="validateInput(this)">
+
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2338,6 +2338,19 @@
 
 
                                                                         <script>
+
+                                                                            function validateInput(inputField) {
+                                                                                var input = inputField.value;
+
+                                                                                var regex = /[^a-zA-Z\u0080-\uFFFF\s]/g;
+                                                                                input = input.replace(regex, '');
+
+                                                                                if (input !== inputField.value) {
+                                                                                    alert("Các trường nhập họ tên chỉ cho phép nhập ký tự")
+                                                                                }
+
+                                                                                inputField.value = input;
+                                                                            }
                                                                             function ValidateEmail(mail) {
                                                                                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
                                                                                     return (true)
