@@ -2201,7 +2201,8 @@
                                                                                         placeholder="Nhập họ và tên đệm"
                                                                                         id="id_txtlname" value=""
                                                                                         maxlength="40" oninput="validateInput(this)">
-
+                                                                                        <label id="lblthongbao_lname"
+                                                                                        style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -2360,10 +2361,15 @@
                                                                             async function submitForm() {
                                                                                 let isValid = true;
 
-                                                                                let email = document.getElementById("id_txtemail").value
+                                                                                let email = document.getElementById("id_txtemail").value.trim()
                                                                                 if (email == null || email.trim() == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_email").html("Email đang để trống");
+                                                                                    jQuery("#lblthongbao_email").show()
+                                                                                }
+                                                                                else if(email.length >255){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_email").html("Email nhập không quá 255 ký tự");
                                                                                     jQuery("#lblthongbao_email").show()
                                                                                 }
                                                                                 else if (!ValidateEmail(email)) {
@@ -2373,7 +2379,7 @@
                                                                                 }
                                                                                 else jQuery("#lblthongbao_email").hide()
 
-                                                                                let cccd = document.getElementById("id_txtcccd").value
+                                                                                let cccd = document.getElementById("id_txtcccd").value.trim()
                                                                                 if (cccd == null || cccd.trim() == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_cccd").html("Số căn cuớc công dân đang để trống");
@@ -2385,19 +2391,29 @@
                                                                                 }
                                                                                 else jQuery("#lblthongbao_cccd").hide()
 
-                                                                                let fname = document.getElementById("id_txtfname").value
+                                                                                let fname = document.getElementById("id_txtfname").value.trim()
                                                                                 if (fname == null || fname.trim() == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_fname").html("Tên đang để trống");
                                                                                     jQuery("#lblthongbao_fname").show()
                                                                                 }
+                                                                                else if(fname.length > 255 ||fname.length < 4){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_fname").html("Tên nhập trong khoảng 4 đến 255 ký tự");
+                                                                                    jQuery("#lblthongbao_fname").show()
+                                                                                }
                                                                                 else jQuery("#lblthongbao_fname").hide()
 
-                                                                                let lname = document.getElementById("id_txtlname").value
+                                                                                let lname = document.getElementById("id_txtlname").value.trim()
                                                                                 if (lname == null || lname.trim() == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_lname").html("Họ đệm đang để trống");
                                                                                     jQuery("#lblthongbao_lname").show()
+                                                                                }
+                                                                                else if(lname.length < 4 || lname.length > 255){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_lname").html("Họ và tên đệm nhập trong khoảng 4 đến 255 ký tự");
+                                                                                    jQuery("#lblthongbao_lname").show() 
                                                                                 }
                                                                                 else jQuery("#lblthongbao_lname").hide()
 
@@ -2405,6 +2421,11 @@
                                                                                 if (address == null || address.trim() == "") {
                                                                                     isValid = false;
                                                                                     jQuery("#lblthongbao_address").html("Địa chỉ đang để trống");
+                                                                                    jQuery("#lblthongbao_address").show()
+                                                                                }
+                                                                                else if(address.length>255){
+                                                                                    isValid = false;
+                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ nhập không quá 255 ký tự");
                                                                                     jQuery("#lblthongbao_address").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_address").hide()

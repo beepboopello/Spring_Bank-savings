@@ -223,8 +223,13 @@ public class StaffController {
             return "login";
         }
         Staff staff = list.get(0);
+        System.out.println(staff.getUsername() + username);
         if (staff.getVerified() != 1) {
             model.addAttribute("error", "Nguời dùng chưa đuợc xác minh");
+            return "login";
+        }
+        else if(staff.getUsername().compareTo(username)!=0){
+            model.addAttribute("error", "Không tồn tại nguời dùng");
             return "login";
         } else if (!BCrypt.checkpw(password, staff.getPassword())) {
             model.addAttribute("error", "Sai mật khẩu");

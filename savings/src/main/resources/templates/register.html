@@ -53,9 +53,9 @@
             jQuery("#id_err-firstName").html("Tên đang để trống");
             jQuery("#id_err-firstName").show()
         }
-        else if (data.firstName.trim().length >= 255) {
+        else if (data.firstName.trim().length > 255 || data.firstName.trim().length < 4 ) {
             error = true;
-            jQuery("#id_err-firstName").html("Tên nhập không quá 255 ký tự");
+            jQuery("#id_err-firstName").html("Tên nhập trong khoảng 4 đến 255 ký tự");
             jQuery("#id_err-firstName").show()
         } else jQuery("#id_err-firstName").hide()
 
@@ -64,9 +64,9 @@
             jQuery("#id_err-lastName").html("Họ và tên đệm đang để trống");
             jQuery("#id_err-lastName").show()
         }
-        else if (data.firstName.trim().length >= 255) {
+        else if (data.lastName.trim().length > 255 || data.lastName.trim().length < 4) {
             error = true;
-            jQuery("#id_err-lastName").html("Họ và tên đệm nhập không quá 255 ký tự");
+            jQuery("#id_err-lastName").html("Họ và tên đệm nhập trong khoảng 4 đến 255 ký tự");
             jQuery("#id_err-lastName").show()
         } else jQuery("#id_err-lastName").hide()
 
@@ -75,7 +75,7 @@
             jQuery("#id_err-email").html("Email đang để trống");
             jQuery("#id_err-email").show()
         }
-        else if (data.email.trim().length >= 255) {
+        else if (data.email.trim().length > 255) {
             error = true;
             jQuery("#id_err-email").html("Email nhập không quá 255 ký tự");
             jQuery("#id_err-email").show()
@@ -92,9 +92,9 @@
             jQuery("#id_err-username").html("Username đang để trống");
             jQuery("#id_err-username").show()
         }
-        else if (data.firstName.trim().length >= 255) {
+        else if (data.username.trim().length > 16 || data.username.trim().length < 4) {
             error = true;
-            jQuery("#id_err-username").html("Username nhập không quá 255 ký tự");
+            jQuery("#id_err-username").html("Username nhập trong khoảng 4 đến 16 ký tự");
             jQuery("#id_err-username").show()
         } else jQuery("#id_err-username").hide()
 
@@ -104,9 +104,9 @@
             jQuery("#id_err-password").html("Password đang để trống");
             jQuery("#id_err-password").show()
         }
-        else if (data.firstName.trim().length >= 255) {
+        else if (data.password.trim().length > 16 || data.password.trim().length < 4) {
             error = true;
-            jQuery("#id_err-password").html("Password nhập không quá 255 ký tự");
+            jQuery("#id_err-password").html("Password nhập trong khoảng 4 đến 16 ký tự");
             jQuery("#id_err-password").show()
         } else jQuery("#id_err-password").hide()
 
