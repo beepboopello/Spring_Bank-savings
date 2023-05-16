@@ -2168,7 +2168,7 @@
                                                                                 </b>
                                                                                 <div class="col p-0 mr-5">
                                                                                     <input type="number" name="cccd"
-                                                                                        placeholder="Nhập mã số căn cuớc công dân"
+                                                                                        placeholder="Nhập mã CCCD"
                                                                                         id="id_txtcccd" value="">
                                                                                     <label id="lblthongbao_cccd"
                                                                                         style="color: red; font-weight: normal; width: 650px !important; display: none;font-size: small;"></label>
@@ -2382,11 +2382,11 @@
                                                                                 let cccd = document.getElementById("id_txtcccd").value.trim()
                                                                                 if (cccd == null || cccd.trim() == "") {
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_cccd").html("Số căn cuớc công dân đang để trống");
+                                                                                    jQuery("#lblthongbao_cccd").html("Mã CCCD đang để trống");
                                                                                     jQuery("#lblthongbao_cccd").show()
                                                                                 } else if (cccd.length != 12) {
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_cccd").html("Nhập số căn cuớc công dân gồm 12 số");
+                                                                                    jQuery("#lblthongbao_cccd").html("Nhập mã CCCD là 12 số");
                                                                                     jQuery("#lblthongbao_cccd").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_cccd").hide()
@@ -2407,7 +2407,7 @@
                                                                                 let lname = document.getElementById("id_txtlname").value.trim()
                                                                                 if (lname == null || lname.trim() == "") {
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_lname").html("Họ đệm đang để trống");
+                                                                                    jQuery("#lblthongbao_lname").html("Họ và tên đệm đang để trống");
                                                                                     jQuery("#lblthongbao_lname").show()
                                                                                 }
                                                                                 else if(lname.length < 4 || lname.length > 255){
@@ -2420,12 +2420,12 @@
                                                                                 let address = document.getElementById("id_txtaddress").value
                                                                                 if (address == null || address.trim() == "") {
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ đang để trống");
+                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ thường trú đang để trống");
                                                                                     jQuery("#lblthongbao_address").show()
                                                                                 }
                                                                                 else if(address.length>255){
                                                                                     isValid = false;
-                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ nhập không quá 255 ký tự");
+                                                                                    jQuery("#lblthongbao_address").html("Địa chỉ thường trú nhập không quá 255 ký tự");
                                                                                     jQuery("#lblthongbao_address").show()
                                                                                 }
                                                                                 else jQuery("#lblthongbao_address").hide()
